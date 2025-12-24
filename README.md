@@ -1,36 +1,245 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Madina Basketball - Community Court Website
 
-## Getting Started
+A modern, community-centric website for the Madina Basketball court in Libya Quarters, Madina (Accra, Ghana). Built with Next.js, TypeScript, and Tailwind CSS.
 
-First, run the development server:
+## 🎯 Project Overview
+
+This website serves as:
+- **Operational Platform**: Player registration, court bookings, event management
+- **Historical Archive**: Complete documentation of the renovation journey
+- **Community Hub**: Information, updates, and engagement
+- **Transparency Portal**: Financial documentation and project transparency
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Node.js 20.9.0 or higher (currently using 18.20.8 - may need upgrade)
+- npm or yarn
+
+### Installation
 
 ```bash
+# Install dependencies
+npm install
+
+# Run development server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+
+# Build for production
+npm run build
+
+# Start production server
+npm start
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) to view the website.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 📁 Project Structure
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```
+madinabasketball/
+├── app/                    # Next.js App Router pages
+│   ├── about/             # About the Project
+│   ├── journey/           # The Journey timeline
+│   ├── court/             # The Court information
+│   ├── training/          # Training & Programs
+│   ├── register/         # Register to Play
+│   ├── book/              # Book the Court
+│   ├── transparency/     # Transparency & Financials
+│   ├── partners/          # Partners & Supporters
+│   ├── media/             # Media & Gallery
+│   └── contact/           # Contact page
+├── components/            # Reusable components
+│   ├── Header.tsx         # Navigation header
+│   └── Footer.tsx         # Site footer
+├── public/                # Static assets
+└── README.md
+```
 
-## Learn More
+## 🎨 Design System
 
-To learn more about Next.js, take a look at the following resources:
+### Colors
+- **Primary**: `#ff6b35` (Orange) - Basketball court accents
+- **Secondary**: `#004e89` (Blue) - Trust and professionalism
+- **Accent**: `#ffd23f` (Yellow) - Highlights
+- **Muted**: `#f5f5f5` (Light gray) - Backgrounds
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Typography
+- **Font**: Inter (Google Fonts)
+- **Headings**: Bold, large, impactful
+- **Body**: Clean, readable, accessible
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 📝 Customization Guide
 
-## Deploy on Vercel
+### 1. Replace Placeholder Content
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+#### Google Forms
+- **Registration Form** (`/app/register/page.tsx`): Replace placeholder with your Google Form embed
+- **Booking Form** (`/app/book/page.tsx`): Replace placeholder with your Google Form embed
+- **Contact Form** (`/app/contact/page.tsx`): Replace placeholder with your Google Form embed
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+To embed a Google Form:
+1. Open your Google Form
+2. Click "Send" → Embed icon
+3. Copy the iframe code
+4. Replace the placeholder div with the iframe
+
+#### Contact Information
+Update contact details in:
+- `components/Footer.tsx`
+- `app/contact/page.tsx`
+- Replace `233XXXXXXXXX` with actual WhatsApp number
+- Replace `info@madinabasketball.com` with actual email
+
+#### Social Media Links
+Update social media links in:
+- `components/Footer.tsx`
+- `app/contact/page.tsx`
+- `app/media/page.tsx`
+- Replace placeholder URLs with actual Facebook/Instagram links
+
+### 2. Add Real Images
+
+Replace placeholder image divs with actual photos:
+
+#### Home Page
+- Hero image of the completed court
+- Stats section can use icons or small images
+
+#### Journey Page
+- Before/after photos
+- Renovation progress photos
+- Launch day photos
+
+#### Court Page
+- Current court photos
+- Location map (Google Maps embed)
+
+#### Media Page
+- Launch game photos
+- Training session photos
+- Event photos
+- Videos (YouTube/Vimeo embeds)
+
+### 3. Update Financial Information
+
+In `app/transparency/page.tsx`:
+- Add actual BOQ breakdown with real amounts
+- Upload contractor invoice (redacted if needed)
+- Update fundraising dashboard with real data
+- Add actual financial statements
+
+### 4. Add Partner Information
+
+In `app/partners/page.tsx`:
+- Add actual supporter names/logos
+- Add business partner logos
+- List volunteer contributors
+- Add partner testimonials if available
+
+### 5. Configure Maps
+
+Add Google Maps embed:
+1. Go to Google Maps
+2. Search for "Libya Quarters, Madina, Accra"
+3. Click "Share" → "Embed a map"
+4. Copy iframe code
+5. Replace placeholder in:
+   - `app/court/page.tsx`
+   - `app/contact/page.tsx`
+
+### 6. Update Metadata
+
+In `app/layout.tsx`:
+- Update title and description
+- Add Open Graph tags for social sharing
+- Add Twitter Card metadata
+
+## 🔧 Technical Details
+
+### Tech Stack
+- **Framework**: Next.js 16 (App Router)
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS 4
+- **Icons**: Lucide React
+- **Deployment**: Ready for Vercel/Netlify
+
+### Performance
+- Mobile-first responsive design
+- Optimized images (use Next.js Image component)
+- Fast page loads
+- SEO-friendly structure
+
+### Browser Support
+- Modern browsers (Chrome, Firefox, Safari, Edge)
+- Mobile browsers (iOS Safari, Chrome Mobile)
+
+## 📱 Mobile Optimization
+
+The website is fully responsive and mobile-first:
+- Hamburger menu for mobile navigation
+- Touch-friendly buttons and links
+- Optimized typography for small screens
+- Fast loading on mobile networks
+
+## 🚢 Deployment
+
+### Vercel (Recommended)
+
+1. Push code to GitHub
+2. Import project in Vercel
+3. Deploy automatically
+
+### Netlify
+
+1. Push code to GitHub
+2. Connect repository in Netlify
+3. Build command: `npm run build`
+4. Publish directory: `.next`
+
+### Environment Variables
+
+No environment variables required for basic setup. Add if needed for:
+- Analytics (Google Analytics, etc.)
+- Contact form backend
+- Email service
+
+## 📊 Future Enhancements
+
+Consider adding:
+- Blog/news section for updates
+- Event calendar
+- Online payment integration for bookings
+- Player database/management
+- Photo gallery with lightbox
+- Video player integration
+- Newsletter signup
+- Donation system (if reopening fundraising)
+
+## 🤝 Contributing
+
+This is a community project. To contribute:
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Submit a pull request
+
+## 📄 License
+
+This project is for the Madina Basketball community.
+
+## 📞 Support
+
+For questions or issues:
+- Check the customization guide above
+- Review Next.js documentation
+- Contact the development team
+
+## 🙏 Acknowledgments
+
+Built with transparency and community spirit for the Madina Basketball community.
+
+---
+
+**Note**: This website is designed to outlive social media and serve as the canonical source of truth for the Madina Basketball court project.
