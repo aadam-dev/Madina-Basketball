@@ -257,6 +257,202 @@ This file serves as a comprehensive log of all updates, changes, and improvement
 - File structure recommendations
 ---
 
+## Entry 7: Admin CMS System & Event Schedule
+**Date:** December 2024  
+**Time:** Complete admin CMS implementation
+
+### Overview
+Implemented a full-featured admin content management system using Supabase for data storage, allowing admins to update all website content without touching code.
+
+### Team Page Layout Fix
+
+**Fixed Executive Body Layout:**
+- Shafic and Adam now displayed on the same row (centered, 2-column grid)
+- Remaining executives (Mustafa, Hisham, Kwame Focus, Titus) displayed below in a 4-column grid
+- Special conditional rendering for Executive Body section
+
+**File Modified:**
+- app/team/page.tsx - Updated layout logic for executive body section
+
+### Supabase Integration
+
+**New Dependencies:**
+- `@supabase/supabase-js` - Supabase client library
+- `bcryptjs` - Password hashing (for future use)
+
+**New Files Created:**
+- `lib/supabase.ts` - Client-side Supabase client (public data access)
+- `lib/supabase-admin.ts` - Server-side admin client (bypasses RLS)
+- `SUPABASE_SETUP.md` - Comprehensive setup guide with SQL scripts
+
+**Database Schema:**
+- `events` table - Stores all events/games with full details
+- `content_sections` table - Stores editable content sections
+- `team_members` table - Stores team member information
+- Row Level Security (RLS) enabled for public read access
+
+### Authentication System
+
+**New Files:**
+- `lib/auth.ts` - Authentication utilities (session management, credential verification)
+- `app/admin/login/page.tsx` - Admin login page with form
+- `app/api/auth/login/route.ts` - Login API endpoint
+- `app/api/auth/logout/route.ts` - Logout API endpoint
+- `components/admin/LogoutButton.tsx` - Client-side logout button
+
+**Features:**
+- Simple email/password authentication
+- Two admin accounts configured via environment variables
+- Session management using Next.js cookies
+- Protected admin routes with automatic redirect to login
+
+### Admin Portal
+
+**New Files:**
+- `app/admin/layout.tsx` - Protected admin layout with sidebar navigation
+- `app/admin/page.tsx` - Admin dashboard with statistics and quick actions
+
+**Admin Portal Sections:**
+1. **Dashboard** - Overview with stats and upcoming events
+2. **Events** - Full CRUD for events/games
+3. **Content** - Edit homepage and page content
+4. **Team** - Manage team members
+
+### Events Management
+
+**New Files:**
+- `app/admin/events/page.tsx` - Events list with filtering
+- `app/admin/events/new/page.tsx` - Create new event
+- `app/admin/events/[id]/page.tsx` - Edit existing event
+- `components/admin/EventForm.tsx` - Reusable event form component
+
+**Features:**
+- Create, read, update, delete events
+- Upload event images (stored in Supabase Storage)
+- Filter by status (upcoming, completed, cancelled)
+- Mark events as featured for homepage
+- Full event details: date, time, location, teams, type, registration links
+
+**API Routes:**
+- `app/api/events/route.ts` - GET (list), POST (create)
+- `app/api/events/[id]/route.ts` - GET, PUT, DELETE for single event
+
+### Content Management
+
+**New Files:**
+- `app/admin/content/page.tsx` - Content editor interface
+
+**Editable Content Sections:**
+- Hero title, subtitle, description
+- Mission section text
+- Stats (amount raised, players, events)
+- All content stored in Supabase for easy updates
+
+**API Routes:**
+- `app/api/content/route.ts` - GET (list), PUT (upsert)
+
+### Team Management
+
+**New Files:**
+- `app/admin/team/page.tsx` - Team members list with filtering
+- `app/admin/team/new/page.tsx` - Add new team member
+- `app/admin/team/[id]/page.tsx` - Edit team member
+- `components/admin/TeamMemberForm.tsx` - Reusable team member form
+
+**Features:**
+- Add, edit, delete team members
+- Upload team member photos
+- Filter by section (executive, coach, maintenance, etc.)
+- Reorder team members with order_index
+
+**API Routes:**
+- `app/api/team/route.ts` - GET (list), POST (create)
+- `app/api/team/[id]/route.ts` - GET, PUT, DELETE for single member
+
+### Image Upload System
+
+**New Files:**
+- `app/api/upload/route.ts` - Image upload handler
+
+**Features:**
+- Upload images to Supabase Storage
+- Two buckets: `events` and `team`
+- File validation (type, size limits)
+- Returns public URL for use in forms
+
+### Homepage Event Schedule
+
+**New Files:**
+- `components/EventCard.tsx` - Reusable event card component
+
+**Features:**
+- Fetches upcoming events from Supabase
+- Displays up to 3 upcoming events on homepage
+- Beautiful card layout with event details
+- Shows date, time, location, teams, registration links
+- Only shows if events exist
+
+**File Modified:**
+- app/page.tsx - Added "Upcoming Events" section after stats
+
+### Deployment Guide
+
+**New File:**
+- `DEPLOYMENT.md` - Comprehensive deployment guide
+
+**Contents:**
+- Step-by-step Supabase setup
+- GitHub repository setup
+- Vercel deployment instructions
+- Environment variables configuration
+- Post-deployment checklist
+- Troubleshooting guide
+- Security best practices
+
+### Environment Variables
+
+**Required Variables:**
+- `NEXT_PUBLIC_SUPABASE_URL` - Supabase project URL
+- `NEXT_PUBLIC_SUPABASE_ANON_KEY` - Public anon key
+- `SUPABASE_SERVICE_ROLE_KEY` - Service role key (secret)
+- `ADMIN_EMAIL_1` / `ADMIN_PASSWORD_1` - First admin credentials
+- `ADMIN_EMAIL_2` / `ADMIN_PASSWORD_2` - Second admin credentials
+
+**File Created:**
+- `.env.local.example` - Template for environment variables
+
+### Key Features Summary
+
+1. **Full CMS System** - Edit all content without code
+2. **Event Management** - Create and manage events/games
+3. **Team Management** - Add/edit team members with photos
+4. **Content Editing** - Update homepage text and stats
+5. **Image Uploads** - Upload and manage images
+6. **Secure Authentication** - Protected admin portal
+7. **Homepage Integration** - Events automatically appear on homepage
+8. **Mobile Responsive** - Admin portal works on all devices
+
+### Technical Implementation
+
+- **Database**: Supabase (PostgreSQL)
+- **Storage**: Supabase Storage for images
+- **Authentication**: Cookie-based sessions
+- **API Routes**: Next.js API routes for all CRUD operations
+- **Client Components**: React hooks for forms and interactions
+- **Server Components**: Data fetching in server components
+
+### Next Steps for User
+
+1. Set up Supabase project (follow `SUPABASE_SETUP.md`)
+2. Create database tables (run SQL scripts)
+3. Set up storage buckets
+4. Configure environment variables
+5. Deploy to Vercel (follow `DEPLOYMENT.md`)
+6. Test admin portal
+7. Start adding content!
+
+---
+
 ## Entry 6: Timeline & Team Updates
 **Date:** December 2024  
 **Time:** Timeline correction and comprehensive team restructuring

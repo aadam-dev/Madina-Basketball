@@ -30,10 +30,10 @@ export default function Team() {
       image: "/images/team/hisham.jpg",
     },
     {
-      name: "Kwame",
+      name: "Kwame Focus",
       role: "Executive",
       description: "Member of the executive body driving strategic developments for Madina Basketball.",
-      image: "/images/team/kwame.jpg",
+      image: "/images/team/kwame-focus.jpg",
     },
     {
       name: "Titus",
@@ -112,10 +112,22 @@ export default function Team() {
   // Media Team
   const mediaTeam = [
     {
-      name: "Media Team Member",
-      role: "Photographer/Videographer",
+      name: "Adam",
+      role: "Media Team",
       description: "Documenting games, events, and community moments to share the Madina Basketball story.",
-      image: "/images/team/media-1.jpg",
+      image: "/images/team/adam.jpg",
+    },
+    {
+      name: "Jamal",
+      role: "Media Team",
+      description: "Capturing and sharing the story of Madina Basketball through photos, videos, and content.",
+      image: "/images/team/jamal.jpg",
+    },
+    {
+      name: "Mcdwin",
+      role: "Media Team",
+      description: "Creating and managing visual content to showcase the community and basketball activities.",
+      image: "/images/team/mcdwin.jpg",
     },
   ];
 
@@ -219,11 +231,29 @@ export default function Team() {
                 <p className="text-xl text-gray-600 max-w-2xl mx-auto">{section.description}</p>
               </div>
               
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {section.members.map((member, memberIndex) => (
-                  <TeamMemberCard key={memberIndex} member={member} />
-                ))}
-              </div>
+              {/* Special layout for Executive Body: Shafic and Adam on first row, rest below */}
+              {section.title === "Executive Body" ? (
+                <div>
+                  {/* First Row: Shafic and Adam (centered) */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-2xl mx-auto mb-8">
+                    {section.members.slice(0, 2).map((member, memberIndex) => (
+                      <TeamMemberCard key={memberIndex} member={member} />
+                    ))}
+                  </div>
+                  {/* Second Row: Rest of executives */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                    {section.members.slice(2).map((member, memberIndex) => (
+                      <TeamMemberCard key={memberIndex + 2} member={member} />
+                    ))}
+                  </div>
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                  {section.members.map((member, memberIndex) => (
+                    <TeamMemberCard key={memberIndex} member={member} />
+                  ))}
+                </div>
+              )}
             </div>
           </div>
         </section>

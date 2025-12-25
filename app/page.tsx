@@ -1,8 +1,32 @@
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight, Calendar, Users, Trophy, CheckCircle, MapPin } from "lucide-react";
+import { supabase } from "@/lib/supabase";
+import EventCard from "@/components/EventCard";
 
-export default function Home() {
+async function getUpcomingEvents() {
+  try {
+    const { data, error } = await supabase
+      .from("events")
+      .select("*")
+      .eq("status", "upcoming")
+      .order("date", { ascending: true })
+      .limit(3);
+
+    if (error) {
+      console.error("Error fetching events:", error);
+      return [];
+    }
+
+    return data || [];
+  } catch (error) {
+    console.error("Error fetching events:", error);
+    return [];
+  }
+}
+
+export default async function Home() {
+  const upcomingEvents = await getUpcomingEvents();
   return (
     <div className="min-h-screen">
       {/* Hero Section - Improved Design */}
@@ -83,6 +107,30 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* Upcoming Events Section */}
+      {upcomingEvents.length > 0 && (
+        <section className="py-20 bg-muted">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="max-w-6xl mx-auto">
+              <div className="text-center mb-12">
+                <div className="inline-flex items-center justify-center w-16 h-16 bg-primary rounded-lg mb-4">
+                  <Calendar className="w-8 h-8 text-white" />
+                </div>
+                <h2 className="text-4xl sm:text-5xl font-bold mb-4 uppercase tracking-tight">Upcoming Events</h2>
+                <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+                  Don't miss out on the next games, tournaments, and community events
+                </p>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {upcomingEvents.map((event) => (
+                  <EventCard key={event.id} event={event} />
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* Mission Section */}
       <section className="py-20 bg-muted">
