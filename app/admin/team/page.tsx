@@ -38,8 +38,11 @@ export default function TeamPage() {
     }
   };
 
-  const handleDelete = async (id: string) => {
-    if (!confirm("Are you sure you want to delete this team member?")) return;
+  const handleDelete = async (id: string, memberName: string) => {
+    const confirmed = confirm(
+      `⚠️ WARNING: Delete Team Member?\n\n"${memberName}"\n\nThis action cannot be undone. Are you sure you want to delete this team member?`
+    );
+    if (!confirmed) return;
 
     try {
       const response = await fetch(`/api/team/${id}`, {
@@ -140,8 +143,9 @@ export default function TeamPage() {
                     <Edit className="w-4 h-4" />
                   </Link>
                   <button
-                    onClick={() => handleDelete(member.id)}
+                    onClick={() => handleDelete(member.id, member.name)}
                     className="p-2 text-gray-600 hover:text-red-600 hover:bg-red-50 rounded"
+                    title="Delete team member"
                   >
                     <Trash2 className="w-4 h-4" />
                   </button>

@@ -1,4 +1,5 @@
 import { Target, Heart, Users, Shield } from "lucide-react";
+import Link from "next/link";
 
 export default function About() {
   return (
@@ -7,69 +8,47 @@ export default function About() {
       <section className="bg-gradient-to-br from-secondary to-primary text-white py-20">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl mx-auto text-center">
-            <h1 className="text-4xl sm:text-5xl font-bold mb-6">About the Project</h1>
+            <h1 className="text-4xl sm:text-5xl font-bold mb-6">About Madina Basketball</h1>
             <p className="text-xl text-white/90">
-              Understanding why this matters and how we got here
+              A community-driven basketball hub serving Libya Quarters and beyond
             </p>
           </div>
         </div>
       </section>
 
-      {/* The Problem */}
+      {/* What We Do Today */}
       <section className="py-20">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto">
-            <h2 className="text-3xl sm:text-4xl font-bold mb-8">The Problem</h2>
+            <h2 className="text-3xl sm:text-4xl font-bold mb-8">What We Do</h2>
             <div className="prose prose-lg max-w-none">
               <p className="text-gray-700 text-lg leading-relaxed mb-6">
-                Madina has a large basketball-playing population, but historically lacked a standard public court.
-                The community court at Libya Quarters, which once served as a gathering place for youth and players,
-                fell into disrepair. Without proper infrastructure, the community's passion for basketball had no place
-                to flourish.
+                The Madina Basketball court is more than just a place to play—it's a thriving community hub where players of all ages and skill levels come together. We host daily pick-up games, structured training sessions, competitive tournaments, and community events that bring the neighborhood together.
               </p>
               <p className="text-gray-700 text-lg leading-relaxed">
-                This wasn't just about a broken court—it was about lost opportunities for youth development,
-                community cohesion, and the simple joy of playing the game.
+                Home to teams like Zurak Basketball and Madina Old Gees, the court serves as the foundation for youth development, competitive play, and community building. The upcoming Madina CITI Foundation will expand this work, combining basketball with broader social impact initiatives across Madina.
               </p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* The Community Response */}
+      {/* How It Started */}
       <section className="py-20 bg-muted">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto">
-            <h2 className="text-3xl sm:text-4xl font-bold mb-8">The Community Response</h2>
+            <h2 className="text-3xl sm:text-4xl font-bold mb-8">How It Started</h2>
             <div className="prose prose-lg max-w-none">
               <p className="text-gray-700 text-lg leading-relaxed mb-6">
-                A grassroots team recognized the need and took action. <strong>Shafic and Adam led the court renovation project</strong>, 
-                bringing together their expertise, community connections, and dedication to make this vision a reality. 
-                Shafic's connections were instrumental in securing funding and support for the project. Rather than waiting 
-                for external help, the community mobilized:
+                Madina has always had a passionate basketball community, but lacked proper infrastructure. When community leaders <strong>Shafic and Adam</strong> saw the deteriorating Libya Quarters court, they mobilized the community to transform it into what it is today.
               </p>
-              <ul className="space-y-4 text-gray-700 text-lg">
-                <li className="flex items-start">
-                  <span className="text-primary mr-3 font-bold">•</span>
-                  <span>Engineers assessed the site and prepared a detailed Bill of Quantities (BOQ)</span>
-                </li>
-                <li className="flex items-start">
-                  <span className="text-primary mr-3 font-bold">•</span>
-                  <span>Funds were raised transparently through community contributions (GHS 44,750 from 18 donors), with Shafic's connections helping to secure key funding</span>
-                </li>
-                <li className="flex items-start">
-                  <span className="text-primary mr-3 font-bold">•</span>
-                  <span>Contractors executed the renovation with community oversight led by Shafic and Adam</span>
-                </li>
-                <li className="flex items-start">
-                  <span className="text-primary mr-3 font-bold">•</span>
-                  <span>The court was renovated, painted, standardized, and launched</span>
-                </li>
-              </ul>
-              <p className="text-gray-700 text-lg leading-relaxed mt-6">
-                Today, the court is active with training programs, pick-up games, and bookings.
-                A launch ceremony and opening game have already taken place, marking the beginning
-                of a new chapter for basketball in Madina.
+              <p className="text-gray-700 text-lg leading-relaxed">
+                Through transparent fundraising (GHS 44,750 from 18 donors), professional planning, and community oversight, the court was renovated and officially launched in June 2025. This grassroots effort proved what's possible when a community comes together around a shared vision.
+              </p>
+              <p className="text-gray-600 text-base mt-4">
+                <Link href="/journey" className="text-primary hover:underline font-semibold">
+                  Read the full story of the renovation journey →
+                </Link>
               </p>
             </div>
           </div>

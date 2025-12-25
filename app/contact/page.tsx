@@ -192,19 +192,34 @@ export default function Contact() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-6xl mx-auto">
             <h2 className="text-3xl sm:text-4xl font-bold mb-8 text-center">Find Us</h2>
-            <div className="bg-muted rounded-xl overflow-hidden aspect-video">
-              <div className="w-full h-full flex items-center justify-center">
-                <div className="text-center p-8">
-                  <MapPin className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-                  <p className="text-gray-600 mb-2">Interactive map will be embedded here</p>
-                  <p className="text-sm text-gray-500">
-                    (Add Google Maps embed with court location)
-                  </p>
-                  <p className="text-sm text-gray-500 mt-2">
-                    Location: Libya Quarters, Madina, Accra, Ghana
-                  </p>
-                </div>
+            <div className="bg-muted rounded-xl overflow-hidden shadow-lg">
+              <div className="aspect-video w-full">
+                <iframe
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3970.249890652173!2d-0.18554152476553573!3d5.6769715943046135!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xfdf9deb5ca772db%3A0x40b7af9f253fbc39!2sMadina%20Zongo%20Sports%20Complex!5e0!3m2!1sen!2snl!4v1766677396637!5m2!1sen!2snl"
+                  width="100%"
+                  height="100%"
+                  style={{ border: 0 }}
+                  allowFullScreen
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  title="Madina Basketball Court Location"
+                />
               </div>
+            </div>
+            <div className="mt-6 text-center text-gray-600">
+              <p className="font-semibold text-lg text-gray-900 mb-2">Madina Zongo Sports Complex</p>
+              <p>Libya Quarters, Madina</p>
+              <p>Accra, Ghana</p>
+              <p className="text-sm text-gray-500 mt-4">
+                <a 
+                  href="https://goo.gl/maps/YOUR_SHORT_LINK" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="text-primary hover:underline"
+                >
+                  Get Directions →
+                </a>
+              </p>
             </div>
           </div>
         </div>

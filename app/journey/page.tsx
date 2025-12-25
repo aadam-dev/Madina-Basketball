@@ -4,55 +4,55 @@ import Link from "next/link";
 export default function Journey() {
   const timelineEvents = [
     {
-      date: "April 10, 2024",
+      date: "April 10, 2025",
       title: "The Plan Begins",
       description: "Shafic reaches out to Adam to discuss the renovation. This marks the official start of the renovation plan. Adam would go on to source contractors, design dashboards, and track the project, while Shafic led stakeholder engagements with community leaders and fundraising from his network.",
       phase: "planning",
     },
     {
-      date: "April 26, 2024",
+      date: "April 26, 2025",
       title: "Contractor Contacted",
       description: "After speaking with a couple of people and engineers, we finally reached out to the contractor who would work on the court.",
       phase: "planning",
     },
     {
-      date: "May 3, 2024",
+      date: "May 3, 2025",
       title: "Site Assessment",
       description: "The engineering team met the renovation team on the court to assess the state of the facility. Full damage assessment completed and scope of work defined.",
       phase: "planning",
     },
     {
-      date: "May 14-21, 2024",
+      date: "May 14-21, 2025",
       title: "BOQ Prepared",
       description: "Bill of Quantities prepared for 3 different scenarios. Final BOQ finalized at GHS 37,250. The community raised GHS 44,750 from 18 donors, exceeding the target. All costs itemized and published for transparency.",
       phase: "planning",
     },
     {
-      date: "June 5, 2024",
+      date: "June 5, 2025",
       title: "Renovation Begins",
       description: "Work started on the court renovation. Surface repair, painting, and equipment installation commenced under community oversight.",
       phase: "renovation",
     },
     {
-      date: "June 12, 2024",
+      date: "June 12, 2025",
       title: "Renovation Complete",
       description: "Full court renovation finished in one week. Standard markings, new hoops, and resurfaced playing area completed. The court is ready for play.",
       phase: "renovation",
     },
     {
-      date: "June 22, 2024",
+      date: "June 22, 2025",
       title: "Court Launch",
       description: "Official opening ceremony held. First official game: Madina vs Kawukudi. Community celebration with photos and videos documented. The court is officially open!",
       phase: "active",
     },
     {
-      date: "July 12, 2024",
+      date: "July 12, 2025",
       title: "Madina Old Gees Join the Court",
       description: "Madina Old Gees joined the court and have been influential since. Their presence and leadership have significantly contributed to the growth and development of basketball in Madina.",
       phase: "active",
     },
     {
-      date: "November 2024",
+      date: "November 2025",
       title: "Zurak Basketball Team Launched",
       description: "Zurak Basketball Team officially launched, expanding the basketball community in Madina.",
       phase: "active",
@@ -197,7 +197,7 @@ export default function Journey() {
                     Madina vs Kawukudi
                   </h2>
                   <p className="text-lg text-gray-700 leading-relaxed mb-4">
-                    The opening ceremony game on June 22, 2024 marked the official launch of the renovated court. 
+                    The opening ceremony game on June 22, 2025 marked the official launch of the renovated court. 
                     Madina faced Kawukudi in a memorable match that brought the community together 
                     to celebrate this achievement.
                   </p>

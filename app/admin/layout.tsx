@@ -1,8 +1,9 @@
 import { redirect } from 'next/navigation';
 import { getSession } from '@/lib/auth';
 import Link from 'next/link';
-import { LogOut, Calendar, FileText, Users, Home } from 'lucide-react';
+import { LogOut, Calendar, FileText, Users, Home, LayoutDashboard, UserCog, Trophy } from 'lucide-react';
 import LogoutButton from '@/components/admin/LogoutButton';
+import NotificationBell from '@/components/admin/NotificationBell';
 
 export default async function AdminLayout({
   children,
@@ -11,10 +12,14 @@ export default async function AdminLayout({
 }) {
   const session = await getSession();
 
-  // Redirect to login if not authenticated
+  // If no session, just render children (which will be login page)
+  // Don't redirect here to avoid redirect loop
   if (!session) {
-    redirect('/admin/login');
+    return <>{children}</>;
   }
+
+  // If authenticated, show admin UI with sidebar and header
+  // Note: This layout wraps admin pages and excludes the site header/footer
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -29,6 +34,7 @@ export default async function AdminLayout({
               <span className="text-sm text-gray-500">| {session.email}</span>
             </div>
             <div className="flex items-center space-x-4">
+              <NotificationBell />
               <Link
                 href="/"
                 className="text-sm text-gray-600 hover:text-primary flex items-center space-x-1"
@@ -45,35 +51,70 @@ export default async function AdminLayout({
       <div className="flex">
         {/* Sidebar Navigation */}
         <aside className="w-64 bg-white border-r border-gray-200 min-h-[calc(100vh-4rem)]">
-          <nav className="p-4 space-y-2">
-            <Link
-              href="/admin"
-              className="flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
-            >
-              <Home className="w-5 h-5" />
-              <span>Dashboard</span>
-            </Link>
-            <Link
-              href="/admin/events"
-              className="flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
-            >
-              <Calendar className="w-5 h-5" />
-              <span>Events</span>
-            </Link>
-            <Link
-              href="/admin/content"
-              className="flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
-            >
-              <FileText className="w-5 h-5" />
-              <span>Content</span>
-            </Link>
-            <Link
-              href="/admin/team"
-              className="flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
-            >
-              <Users className="w-5 h-5" />
-              <span>Team</span>
-            </Link>
+          <nav className="p-4 space-y-6">
+            {/* Dashboard */}
+            <div>
+              <Link
+                href="/admin"
+                className="flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors font-medium"
+              >
+                <LayoutDashboard className="w-5 h-5" />
+                <span>Dashboard</span>
+              </Link>
+            </div>
+
+            {/* Content Management Section */}
+            <div>
+              <div className="px-4 mb-2 text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                Content Management
+              </div>
+              <div className="space-y-1">
+                <Link
+                  href="/admin/content"
+                  className="flex items-center space-x-3 px-4 py-2.5 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors text-sm"
+                >
+                  <FileText className="w-4 h-4" />
+                  <span>Page Content</span>
+                </Link>
+                <Link
+                  href="/admin/events"
+                  className="flex items-center space-x-3 px-4 py-2.5 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors text-sm"
+                >
+                  <Calendar className="w-4 h-4" />
+                  <span>Events</span>
+                </Link>
+                <Link
+                  href="/admin/games"
+                  className="flex items-center space-x-3 px-4 py-2.5 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors text-sm"
+                >
+                  <Trophy className="w-4 h-4" />
+                  <span>Games</span>
+                </Link>
+              </div>
+            </div>
+
+            {/* People Management Section */}
+            <div>
+              <div className="px-4 mb-2 text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                People Management
+              </div>
+              <div className="space-y-1">
+                <Link
+                  href="/admin/players"
+                  className="flex items-center space-x-3 px-4 py-2.5 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors text-sm"
+                >
+                  <Users className="w-4 h-4" />
+                  <span>Players</span>
+                </Link>
+                <Link
+                  href="/admin/staff"
+                  className="flex items-center space-x-3 px-4 py-2.5 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors text-sm"
+                >
+                  <UserCog className="w-4 h-4" />
+                  <span>Staff & Leadership</span>
+                </Link>
+              </div>
+            </div>
           </nav>
         </aside>
 

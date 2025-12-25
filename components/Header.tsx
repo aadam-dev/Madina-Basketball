@@ -2,21 +2,30 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { Menu, X } from "lucide-react";
+import { Menu, X, ChevronDown } from "lucide-react";
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isResourcesOpen, setIsResourcesOpen] = useState(false);
 
   const navLinks = [
     { href: "/", label: "Home" },
     { href: "/about", label: "About" },
-    { href: "/journey", label: "Journey" },
     { href: "/court", label: "The Court" },
-    { href: "/training", label: "Programs" },
-    { href: "/team", label: "Team" },
+    { href: "/team", label: "Leadership" },
+    { href: "/teams", label: "Our Teams" },
+    { href: "/training", label: "Training" },
     { href: "/partners", label: "Partners" },
-    { href: "/transparency", label: "Transparency" },
     { href: "/contact", label: "Contact" },
+  ];
+
+  const resourcesLinks = [
+    { href: "/game", label: "Live Game Scoreboard" },
+    { href: "/book", label: "Book Court" },
+    { href: "/teamsheet", label: "Team Sheet Generator" },
+    { href: "/statssheet", label: "Stats Sheet Generator" },
+    { href: "/journey", label: "Our Story" },
+    { href: "/transparency", label: "Transparency" },
   ];
 
   return (
@@ -38,7 +47,7 @@ export default function Header() {
 
           {/* Desktop Navigation */}
           <div className="hidden lg:flex items-center space-x-1">
-            {navLinks.slice(1, 7).map((link) => (
+            {navLinks.slice(1, -1).map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
@@ -47,18 +56,38 @@ export default function Header() {
                 {link.label}
               </Link>
             ))}
-            <Link
-              href="/register"
-              className="px-3 py-2 text-sm font-medium text-gray-700 hover:text-primary transition-colors rounded-md hover:bg-muted"
-            >
-              Register
-            </Link>
-            <Link
-              href="/book"
-              className="px-3 py-2 text-sm font-medium text-gray-700 hover:text-primary transition-colors rounded-md hover:bg-muted"
-            >
-              Book Court
-            </Link>
+
+            {/* Resources Dropdown */}
+            <div className="relative">
+              <button
+                onClick={() => setIsResourcesOpen(!isResourcesOpen)}
+                onMouseEnter={() => setIsResourcesOpen(true)}
+                onMouseLeave={() => setIsResourcesOpen(false)}
+                className="flex items-center space-x-1 px-3 py-2 text-sm font-medium text-gray-700 hover:text-primary transition-colors rounded-md hover:bg-muted"
+              >
+                <span>Resources</span>
+                <ChevronDown className={`w-4 h-4 transition-transform ${isResourcesOpen ? 'rotate-180' : ''}`} />
+              </button>
+              {isResourcesOpen && (
+                <div
+                  className="absolute left-0 mt-1 w-56 bg-white rounded-lg shadow-xl border border-gray-200 py-2 z-50"
+                  onMouseEnter={() => setIsResourcesOpen(true)}
+                  onMouseLeave={() => setIsResourcesOpen(false)}
+                >
+                  {resourcesLinks.map((link) => (
+                    <Link
+                      key={link.href}
+                      href={link.href}
+                      onClick={() => setIsResourcesOpen(false)}
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-primary transition-colors"
+                    >
+                      {link.label}
+                    </Link>
+                  ))}
+                </div>
+              )}
+            </div>
+
             <Link
               href="/contact"
               className="ml-4 px-4 py-2 bg-primary text-white text-sm font-medium rounded-md hover:bg-primary-dark transition-colors"
@@ -81,7 +110,7 @@ export default function Header() {
         {isMenuOpen && (
           <div className="lg:hidden py-4 border-t border-border">
             <div className="flex flex-col space-y-1">
-              {navLinks.map((link) => (
+              {navLinks.slice(1, -1).map((link) => (
                 <Link
                   key={link.href}
                   href={link.href}
@@ -91,19 +120,30 @@ export default function Header() {
                   {link.label}
                 </Link>
               ))}
+              
+              {/* Resources Section */}
+              <div className="border-t border-gray-200 my-2 pt-2">
+                <div className="px-4 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                  Resources
+                </div>
+                {resourcesLinks.map((link) => (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    onClick={() => setIsMenuOpen(false)}
+                    className="px-4 py-2 text-sm font-medium text-gray-700 hover:text-primary hover:bg-muted transition-colors rounded-md"
+                  >
+                    {link.label}
+                  </Link>
+                ))}
+              </div>
+
               <Link
-                href="/register"
+                href="/contact"
                 onClick={() => setIsMenuOpen(false)}
                 className="px-4 py-2 text-sm font-medium text-gray-700 hover:text-primary hover:bg-muted transition-colors rounded-md"
               >
-                Register
-              </Link>
-              <Link
-                href="/book"
-                onClick={() => setIsMenuOpen(false)}
-                className="px-4 py-2 text-sm font-medium text-gray-700 hover:text-primary hover:bg-muted transition-colors rounded-md"
-              >
-                Book Court
+                Contact
               </Link>
             </div>
           </div>

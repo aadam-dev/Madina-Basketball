@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import "./globals.css";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
+import SiteWrapper from "@/components/SiteWrapper";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -21,12 +20,12 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // Admin routes have their own layout, so we don't need Header/Footer there
+  // The admin layout will handle its own structure
   return (
     <html lang="en" className="scroll-smooth">
       <body className={`${poppins.variable} font-sans antialiased`}>
-        <Header />
-        <main className="min-h-screen">{children}</main>
-        <Footer />
+        <SiteWrapper>{children}</SiteWrapper>
       </body>
     </html>
   );

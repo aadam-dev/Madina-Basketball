@@ -133,13 +133,74 @@ CREATE POLICY "Team members are viewable by everyone" ON team_members
    - File size limit: 5 MB
    - Allowed MIME types: `image/jpeg, image/png, image/webp`
 
-4. For each bucket, go to **Policies** and add:
-   - **Public Access Policy** (for reading):
+4. For each bucket, set up storage policies:
+   
+   **Important:** Supabase Storage uses Row Level Security (RLS) policies. You need to create policies for both reading (SELECT) and uploading (INSERT).
+   
+   Go to **Storage** → Click on your bucket (e.g., `events`) → **Policies** tab
+   
+   Click **"New Policy"** and create policies using the SQL Editor:
+   
+   **For the `events` bucket:**
+   
+   a. **Public Read Policy** (allows anyone to view images):
+   - Policy name: `Public can view events images`
+   - Allowed operation: `SELECT`
+   - Policy definition:
      ```sql
-     CREATE POLICY "Public Access" ON storage.objects
-       FOR SELECT USING (bucket_id = 'events');
+     (bucket_id = 'events')
      ```
-     (Repeat for 'team' bucket)
+   
+   b. **Authenticated Upload Policy** (allows authenticated users to upload):
+   - Policy name: `Authenticated users can upload to events`
+   - Allowed operation: `INSERT`
+   - Policy definition:
+     ```sql
+     (bucket_id = 'events' AND auth.role() = 'authenticated')
+     ```
+   
+   **For the `team` bucket:**
+   
+   a. **Public Read Policy**:
+   - Policy name: `Public can view team images`
+   - Allowed operation: `SELECT`
+   - Policy definition:
+     ```sql
+     (bucket_id = 'team')
+     ```
+   
+   b. **Authenticated Upload Policy**:
+   - Policy name: `Authenticated users can upload to team`
+   - Allowed operation: `INSERT`
+   - Policy definition:
+     ```sql
+     (bucket_id = 'team' AND auth.role() = 'authenticated')
+     ```
+   
+   **Alternative (Simpler) Approach:**
+   
+   If the above doesn't work, you can use the SQL Editor directly:
+   
+   1. Go to **SQL Editor** in Supabase dashboard
+   2. Run this SQL for both buckets:
+   
+   ```sql
+   -- For events bucket
+   CREATE POLICY "Public can view events images" ON storage.objects
+       FOR SELECT USING (bucket_id = 'events');
+   
+   CREATE POLICY "Authenticated can upload to events" ON storage.objects
+     FOR INSERT WITH CHECK (bucket_id = 'events' AND auth.role() = 'authenticated');
+   
+   -- For team bucket
+   CREATE POLICY "Public can view team images" ON storage.objects
+     FOR SELECT USING (bucket_id = 'team');
+   
+   CREATE POLICY "Authenticated can upload to team" ON storage.objects
+     FOR INSERT WITH CHECK (bucket_id = 'team' AND auth.role() = 'authenticated');
+   ```
+   
+   **Note:** Since your upload API uses the service role key (which bypasses RLS), the INSERT policies are technically not required, but they're good practice. The SELECT policies are essential for public image access.
 
 ## Step 5: Configure Environment Variables
 

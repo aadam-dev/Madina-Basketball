@@ -54,8 +54,7 @@ export default async function Home() {
             </p>
             
             <p className="text-lg sm:text-xl mb-8 text-white/90 max-w-2xl mx-auto leading-relaxed">
-              From a broken public court to a fully renovated basketball hub in Libya Quarters, Madina, Accra. 
-              Built by the community, for the community.
+              Libya Quarters' premier basketball hub. Home to pick-up games, training programs, tournaments, and a thriving community of players. Built by the community, for the community.
             </p>
             
             {/* CTAs */}
@@ -143,12 +142,10 @@ export default async function Home() {
                   Basketball for Everyone
                 </h2>
                 <p className="text-lg text-gray-700 leading-relaxed mb-4">
-                  Madina has always had a basketball-playing population, but never had a standard public court. 
-                  When the Libya Quarters court fell into disrepair, the community came together to change that.
+                  The Madina Basketball court is a thriving hub for players of all levels. From daily pick-up games to structured training sessions, from youth development programs to competitive tournaments—this is where the community comes to play.
                 </p>
                 <p className="text-lg text-gray-700 leading-relaxed mb-6">
-                  Through transparent fundraising, professional planning, and grassroots effort, we transformed 
-                  a neglected space into an active sports hub for youth development, pick-up games, and community events.
+                  Home to teams like Zurak Basketball and Madina Old Gees, the court hosts regular events and serves as the foundation for the upcoming Madina CITI Foundation's basketball and social impact initiatives.
                 </p>
                 <Link
                   href="/about"
@@ -160,8 +157,8 @@ export default async function Home() {
               </div>
               <div className="relative">
                 <div className="bg-white rounded-xl p-8 shadow-lg">
-                  <div className="text-6xl font-bold text-primary mb-2">2024</div>
-                  <div className="text-2xl font-semibold text-gray-800">Renovation Complete</div>
+                  <div className="text-6xl font-bold text-primary mb-2">2025</div>
+                  <div className="text-2xl font-semibold text-gray-800">Active & Growing</div>
                 </div>
                 {/* Placeholder for court image */}
                 <div className="mt-6 aspect-video bg-gray-200 rounded-xl flex items-center justify-center">
@@ -227,15 +224,15 @@ export default async function Home() {
                 <div className="w-12 h-12 bg-primary rounded-lg flex items-center justify-center mb-4">
                   <CheckCircle className="w-6 h-6 text-white" />
                 </div>
-                <h3 className="text-2xl font-bold mb-3 uppercase">View Transparency</h3>
+                <h3 className="text-2xl font-bold mb-3 uppercase">Our Story</h3>
                 <p className="text-gray-600 mb-6">
-                  See exactly how funds were raised and spent. Full transparency on our renovation journey.
+                  Learn how the community came together to create this basketball hub. Full transparency on the journey from vision to reality.
                 </p>
                 <Link
                   href="/transparency"
                   className="inline-flex items-center space-x-2 text-primary font-semibold hover:underline"
                 >
-                  <span>View Report</span>
+                  <span>Our Journey</span>
                   <ArrowRight className="w-5 h-5" />
                 </Link>
               </div>

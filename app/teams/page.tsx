@@ -84,12 +84,12 @@ export default function Teams() {
                     <Trophy className="w-8 h-8 text-white" />
                   </div>
                   <div>
-                    <div className="text-sm font-semibold text-primary mb-1 uppercase tracking-wide">Launched November 2024</div>
+                    <div className="text-sm font-semibold text-primary mb-1 uppercase tracking-wide">Launched November 2025</div>
                     <h3 className="text-2xl font-bold uppercase tracking-tight">Zurak Basketball Team</h3>
                   </div>
                 </div>
                 <p className="text-gray-700 leading-relaxed mb-4">
-                  Zurak Basketball Team was officially launched in November 2024, adding to the growing 
+                  Zurak Basketball Team was officially launched in November 2025, adding to the growing 
                   basketball community in Madina. The team represents the spirit of community basketball 
                   and provides opportunities for players to compete and develop their skills.
                 </p>
@@ -141,7 +141,7 @@ export default function Teams() {
               <div className="bg-white rounded-xl p-8 shadow-lg">
                 <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-4">
                   <div>
-                    <div className="text-sm font-semibold text-primary mb-2 uppercase tracking-wide">December 27, 2024</div>
+                    <div className="text-sm font-semibold text-primary mb-2 uppercase tracking-wide">December 27, 2025</div>
                     <h3 className="text-2xl sm:text-3xl font-bold uppercase tracking-tight mb-2">Old Gees Night Ball</h3>
                     <p className="text-lg text-gray-600">Madina Old Gees vs Oyibi Eagles</p>
                   </div>
@@ -200,7 +200,7 @@ export default function Teams() {
             <div className="bg-muted rounded-xl p-8 md:p-12">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
                 <div>
-                  <div className="text-sm font-semibold text-primary mb-3 uppercase tracking-wide">October 2024</div>
+                  <div className="text-sm font-semibold text-primary mb-3 uppercase tracking-wide">October 2025</div>
                   <h3 className="text-3xl sm:text-4xl font-bold mb-4 uppercase tracking-tight">
                     Opening Ceremony Game
                   </h3>

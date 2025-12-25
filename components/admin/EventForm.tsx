@@ -19,11 +19,12 @@ export default function EventForm({ eventId, initialData }: EventFormProps) {
     title: "",
     description: "",
     date: "",
+    end_date: "", // For multi-day events
     time: "",
     location: "",
     type: "game",
     teams: "",
-    image_url: "",
+    image_url: "", // Event flyer/poster
     registration_link: "",
     status: "upcoming",
     featured: false,

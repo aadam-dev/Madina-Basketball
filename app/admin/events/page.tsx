@@ -32,17 +32,28 @@ export default function EventsPage() {
     try {
       const url = filter === "all" ? "/api/events" : `/api/events?status=${filter}`;
       const response = await fetch(url);
+      
+      if (!response.ok) {
+        console.error('Failed to fetch events:', response.statusText);
+        setEvents([]);
+        return;
+      }
+      
       const data = await response.json();
-      setEvents(data);
+      setEvents(Array.isArray(data) ? data : []);
     } catch (error) {
       console.error("Error fetching events:", error);
+      setEvents([]);
     } finally {
       setLoading(false);
     }
   };
 
-  const handleDelete = async (id: string) => {
-    if (!confirm("Are you sure you want to delete this event?")) return;
+  const handleDelete = async (id: string, eventTitle: string) => {
+    const confirmed = confirm(
+      `⚠️ WARNING: Delete Event?\n\n"${eventTitle}"\n\nThis action cannot be undone. Are you sure you want to delete this event?`
+    );
+    if (!confirmed) return;
 
     try {
       const response = await fetch(`/api/events/${id}`, {
@@ -167,8 +178,9 @@ export default function EventsPage() {
                     <Edit className="w-5 h-5" />
                   </Link>
                   <button
-                    onClick={() => handleDelete(event.id)}
+                    onClick={() => handleDelete(event.id, event.title)}
                     className="p-2 text-gray-600 hover:text-red-600 hover:bg-red-50 rounded"
+                    title="Delete event"
                   >
                     <Trash2 className="w-5 h-5" />
                   </button>
