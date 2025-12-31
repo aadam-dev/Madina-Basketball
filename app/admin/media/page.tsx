@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Image as ImageIcon, Video, Upload, Youtube, FileText, Save, Eye, AlertCircle, CheckCircle, X, Plus } from "lucide-react";
 import Link from "next/link";
 
