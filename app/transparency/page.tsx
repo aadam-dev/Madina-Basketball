@@ -1,4 +1,6 @@
 import { FileText, DollarSign, CheckCircle, BarChart3, Receipt, ArrowRight } from "lucide-react";
+import Image from "next/image";
+import GoogleSheetsEmbed from "@/components/GoogleSheetsEmbed";
 
 export default function Transparency() {
   return (
@@ -91,8 +93,9 @@ export default function Transparency() {
                   <span className="text-lg font-bold text-primary">GHS 37,250</span>
                 </div>
               </div>
-              <p className="text-sm text-gray-500 mt-4 italic">
-                * Detailed breakdown available upon request. Contact us for the full BOQ document.
+              <p className="text-sm text-gray-600 mt-4">
+                <strong>Note:</strong> The proforma invoice below shows the complete breakdown. 
+                All line items and amounts are documented in the invoice.
               </p>
             </div>
           </div>
@@ -133,14 +136,12 @@ export default function Transparency() {
                 Our donation dashboard tracks all contributions in real-time, providing complete 
                 transparency on fundraising progress and donor recognition.
               </p>
-              <div className="bg-muted rounded-lg p-4 mb-4">
-                <p className="text-sm text-gray-600 mb-2">
-                  <strong>Donation Dashboard:</strong> A link to our live donation dashboard will be added here, 
-                  or we can embed key snippets showing fundraising progress and contributor recognition.
-                </p>
-                <p className="text-xs text-gray-500 italic">
-                  (Add donation dashboard link or embed key metrics here)
-                </p>
+              <div className="bg-muted rounded-lg overflow-hidden mb-4">
+                <GoogleSheetsEmbed
+                  sheetUrl="https://docs.google.com/spreadsheets/d/1fyjItPyghvd5aVZSrrF__4U3gwLQcemCZHu6psPL-BA/edit?gid=609525463#gid=609525463"
+                  title="Live Donation Dashboard"
+                  height="500px"
+                />
               </div>
               <div className="mt-6 pt-6 border-t border-gray-200">
                 <p className="text-gray-700 mb-4">
@@ -184,15 +185,20 @@ export default function Transparency() {
                 All contractor payments were made with proper documentation and oversight.
                 The invoice and payment receipts are maintained for transparency and accountability.
               </p>
-              <div className="bg-muted rounded-lg p-6 border-2 border-dashed border-gray-300">
-                <div className="text-center py-8">
-                  <Receipt className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-                  <p className="text-gray-600 mb-2">Contractor invoice will be displayed here</p>
-                  <p className="text-sm text-gray-500">
-                    (Redacted version available. Contact us for full documentation.)
-                  </p>
+              <div className="bg-muted rounded-lg overflow-hidden">
+                <div className="aspect-[3/4] relative">
+                  <Image
+                    src="/images/journey/proforma-invoice.jpg"
+                    alt="Proforma Invoice - Bill of Quantities"
+                    fill
+                    className="object-contain"
+                  />
                 </div>
               </div>
+              <p className="text-sm text-gray-600 mt-4">
+                <strong>Proforma Invoice:</strong> This document shows the detailed breakdown of all costs 
+                for the renovation project. All amounts are in GHS (Ghana Cedis).
+              </p>
               <p className="text-sm text-gray-500 mt-4">
                 <strong>Note:</strong> Sensitive information (contractor details, account numbers)
                 may be redacted for privacy, but payment amounts and dates are fully documented.

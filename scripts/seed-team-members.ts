@@ -9,20 +9,20 @@ console.log('Loading environment from:', envPath);
 
 if (fs.existsSync(envPath)) {
   dotenv.config({ path: envPath });
-  console.log('✓ Environment file found');
+  console.log('Environment file found');
 } else {
-  console.error('❌ .env.local file not found');
+  console.error('Error: .env.local file not found');
   process.exit(1);
 }
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
-console.log('Supabase URL:', supabaseUrl ? '✓ Found' : '❌ Missing');
-console.log('Service Role Key:', supabaseServiceRoleKey ? '✓ Found' : '❌ Missing');
+console.log('Supabase URL:', supabaseUrl ? 'Found' : 'Missing');
+console.log('Service Role Key:', supabaseServiceRoleKey ? 'Found' : 'Missing');
 
 if (!supabaseUrl || !supabaseServiceRoleKey) {
-  console.error('\n❌ Missing Supabase environment variables');
+  console.error('\nError: Missing Supabase environment variables');
   console.error('Please ensure .env.local contains:');
   console.error('  NEXT_PUBLIC_SUPABASE_URL');
   console.error('  SUPABASE_SERVICE_ROLE_KEY');
@@ -34,6 +34,7 @@ const supabase = createClient(supabaseUrl, supabaseServiceRoleKey);
 // Team members data from the public site
 const teamMembers = [
   // Executive Body
+  // Order: Shafic and Adam centered on first row, then Hisham, Kwame, Titus, Mustafa
   {
     name: "Shafic",
     role: "Executive & Renovation Lead",
@@ -51,20 +52,12 @@ const teamMembers = [
     order_index: 2,
   },
   {
-    name: "Mustafa",
-    role: "Executive",
-    description: "Member of the executive body driving strategic developments for Madina Basketball.",
-    image_url: "/images/team/mustafa.jpg",
-    section: "executive",
-    order_index: 3,
-  },
-  {
     name: "Hisham",
     role: "Executive & Coach",
     description: "Member of the executive body driving strategic developments. Also serves as a coach developing players.",
     image_url: "/images/team/hisham.jpg",
     section: "executive",
-    order_index: 4,
+    order_index: 3,
   },
   {
     name: "Kwame Focus",
@@ -72,7 +65,7 @@ const teamMembers = [
     description: "Member of the executive body driving strategic developments for Madina Basketball.",
     image_url: "/images/team/kwame-focus.jpg",
     section: "executive",
-    order_index: 5,
+    order_index: 4,
   },
   {
     name: "Titus",
@@ -80,33 +73,50 @@ const teamMembers = [
     description: "Member of the executive body driving strategic developments for Madina Basketball.",
     image_url: "/images/team/titus.jpg",
     section: "executive",
+    order_index: 5,
+  },
+  {
+    name: "Mustafa",
+    role: "Executive",
+    description: "Member of the executive body driving strategic developments for Madina Basketball.",
+    image_url: "/images/team/mustafa.jpg",
+    section: "executive",
     order_index: 6,
   },
 
   // Coaches
+  // Order: Kwame, Hisham, Lord, Jesse
+  {
+    name: "Kwame Focus",
+    role: "Coach",
+    description: "Developing players and building skills across all levels through training sessions.",
+    image_url: "/images/team/kwame-focus.jpg",
+    section: "coach",
+    order_index: 1,
+  },
   {
     name: "Hisham",
     role: "Coach",
     description: "Developing players and building skills across all levels through training sessions.",
     image_url: "/images/team/hisham.jpg",
     section: "coach",
-    order_index: 1,
-  },
-  {
-    name: "Mustafa",
-    role: "Coach",
-    description: "Leading training sessions and developing players' skills and character.",
-    image_url: "/images/team/mustafa.jpg",
-    section: "coach",
     order_index: 2,
   },
   {
-    name: "Peter",
+    name: "Lord",
     role: "Coach",
-    description: "Dedicated to player development and skill building in the community.",
-    image_url: "/images/team/peter.jpg",
+    description: "Leading training sessions and developing players' skills and character.",
+    image_url: "/images/team/lord.jpg",
     section: "coach",
     order_index: 3,
+  },
+  {
+    name: "Jesse",
+    role: "Coach",
+    description: "Dedicated to player development and skill building in the community.",
+    image_url: "/images/team/jesse.jpg",
+    section: "coach",
+    order_index: 4,
   },
 
   // Maintenance Team
@@ -186,6 +196,14 @@ const teamMembers = [
     section: "media",
     order_index: 3,
   },
+  {
+    name: "Shvdy Photography",
+    role: "Media Team",
+    description: "Professional photography capturing the essence of Madina Basketball through stunning visuals.",
+    image_url: "/images/team/shvdy.jpg",
+    section: "media",
+    order_index: 4,
+  },
 ];
 
 async function seedTeamMembers() {
@@ -214,7 +232,7 @@ async function seedTeamMembers() {
     if (error) {
       console.error(`Error inserting ${member.name} (${member.section}):`, error.message);
     } else {
-      console.log(`✓ Inserted ${member.name} (${member.section})`);
+      console.log(`Inserted ${member.name} (${member.section})`);
     }
   }
 
@@ -245,11 +263,11 @@ async function seedTeamMembers() {
 // Run the seed
 seedTeamMembers()
   .then(() => {
-    console.log('\n✅ Team members seeded successfully!');
+    console.log('\nTeam members seeded successfully!');
     process.exit(0);
   })
   .catch((error) => {
-    console.error('\n❌ Seeding failed:', error);
+    console.error('\nSeeding failed:', error);
     process.exit(1);
   });
 

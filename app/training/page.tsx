@@ -1,4 +1,4 @@
-import { Calendar, Users, Target, Trophy, Heart, Clock } from "lucide-react";
+import { Calendar, Users, Target, Trophy, Heart, Clock, Star } from "lucide-react";
 
 export default function Training() {
   return (
@@ -20,14 +20,25 @@ export default function Training() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto">
             <h2 className="text-3xl sm:text-4xl font-bold mb-8 text-center">Weekly Training Sessions</h2>
+            <div className="bg-green-50 border-2 border-green-200 rounded-xl p-6 mb-6">
+              <div className="flex items-center space-x-2 text-green-800 font-semibold mb-2">
+                <Trophy className="w-5 h-5" />
+                <span>Training Programs Now Active!</span>
+              </div>
+              <p className="text-green-700">
+                Our training programs are in full action. Regular sessions are running weekly, developing skills, 
+                building character, and strengthening our community. Join us!
+              </p>
+            </div>
             <div className="bg-muted rounded-xl p-8 mb-8">
               <div className="flex items-center space-x-3 mb-6">
                 <Calendar className="w-6 h-6 text-primary" />
-                <h3 className="text-2xl font-semibold">Regular Training</h3>
+                <h3 className="text-2xl font-semibold">Regular Training - Now Active</h3>
               </div>
               <p className="text-gray-700 text-lg leading-relaxed mb-6">
                 We run weekly training sessions focused on skill development, teamwork, and personal growth.
-                These sessions are open to players of all skill levels and ages.
+                These sessions are open to players of all skill levels and ages. <strong>Our training programs 
+                are currently active and welcoming new participants.</strong>
               </p>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="bg-white p-6 rounded-lg">
@@ -144,6 +155,20 @@ export default function Training() {
                 <p className="text-gray-600">
                   The Eid Games have become a highlight of the community calendar, combining
                   basketball competition with cultural celebration.
+                </p>
+              </div>
+              <div className="bg-muted rounded-xl p-8">
+                <div className="flex items-center space-x-3 mb-4">
+                  <Star className="w-8 h-8 text-primary" />
+                  <h3 className="text-2xl font-semibold">Night of Legends</h3>
+                </div>
+                <p className="text-gray-700 text-lg leading-relaxed mb-4">
+                  An annual celebration held on December 27th where the Madina Old Gees take on
+                  different communities in competitive games, followed by a community feast.
+                </p>
+                <p className="text-gray-600">
+                  This special event brings together veteran players and community members for
+                  a night of basketball, camaraderie, and celebration.
                 </p>
               </div>
               <div className="bg-muted rounded-xl p-8">

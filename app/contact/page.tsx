@@ -22,7 +22,7 @@ export default function Contact() {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
               {/* WhatsApp */}
               <a
-                href="https://wa.me/233XXXXXXXXX"
+                href="https://wa.me/233559602056"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="bg-muted rounded-xl p-8 hover:shadow-lg transition-all transform hover:scale-105"
@@ -32,7 +32,7 @@ export default function Contact() {
                 </div>
                 <h3 className="text-xl font-semibold mb-2">WhatsApp</h3>
                 <p className="text-gray-600 mb-4">Quick responses for bookings and inquiries</p>
-                <p className="text-primary font-medium">+233 XX XXX XXXX</p>
+                <p className="text-primary font-medium">+233 55 960 2056</p>
               </a>
 
               {/* Email */}

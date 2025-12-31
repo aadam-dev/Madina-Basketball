@@ -196,7 +196,7 @@ export default function Book() {
                 Contact Us
               </a>
               <a
-                href="https://wa.me/233XXXXXXXXX"
+                href="https://wa.me/233559602056"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="px-8 py-4 bg-transparent border-2 border-white text-white font-semibold rounded-lg hover:bg-white/10 transition-all"

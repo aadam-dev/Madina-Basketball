@@ -1,8 +1,26 @@
+/**
+ * TeamSelector Component
+ * 
+ * A searchable dropdown component for selecting basketball teams.
+ * Features:
+ * - Fetches teams from database API
+ * - Real-time search/filtering
+ * - Grouped display by category (Madina, Accra, Other)
+ * - Supports custom team entry
+ * - Keyboard navigation support
+ * - Click-outside-to-close functionality
+ * 
+ * @component
+ */
+
 "use client";
 
 import { useState, useEffect, useRef } from "react";
 import { ChevronDown, Search, Plus } from "lucide-react";
 
+/**
+ * Team data structure from API
+ */
 interface Team {
   id: string;
   name: string;
@@ -11,13 +29,16 @@ interface Team {
   league: string;
 }
 
+/**
+ * Props for TeamSelector component
+ */
 interface TeamSelectorProps {
-  value: string;
-  onChange: (teamName: string) => void;
-  placeholder?: string;
-  disabled?: boolean;
-  label?: string;
-  allowCustom?: boolean;
+  value: string; // Current selected team name
+  onChange: (teamName: string) => void; // Callback when team is selected
+  placeholder?: string; // Placeholder text for input
+  disabled?: boolean; // Disable the component
+  label?: string; // Label text above the input
+  allowCustom?: boolean; // Allow typing custom team names not in list
 }
 
 export default function TeamSelector({
@@ -35,19 +56,20 @@ export default function TeamSelector({
   const dropdownRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
+  // Fetch teams from API on component mount
   useEffect(() => {
     fetchTeams();
   }, []);
 
+  // Sync search term with external value changes
   useEffect(() => {
-    // Update search term when value changes externally
     if (value !== searchTerm) {
       setSearchTerm(value);
     }
   }, [value]);
 
+  // Close dropdown when clicking outside the component
   useEffect(() => {
-    // Close dropdown when clicking outside
     function handleClickOutside(event: MouseEvent) {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
         setIsOpen(false);
@@ -58,6 +80,9 @@ export default function TeamSelector({
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  /**
+   * Fetch teams from the basketball teams API endpoint
+   */
   const fetchTeams = async () => {
     try {
       const response = await fetch("/api/basketball-teams");
@@ -72,28 +97,47 @@ export default function TeamSelector({
     }
   };
 
+  /**
+   * Handle input field changes
+   * Updates search term and triggers onChange if custom entry is allowed
+   */
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = e.target.value;
     setSearchTerm(newValue);
+    
+    // If custom entry is allowed, immediately update parent component
     if (allowCustom) {
       onChange(newValue);
     }
+    
+    // Open dropdown when user starts typing
     if (!isOpen) {
       setIsOpen(true);
     }
   };
 
+  /**
+   * Handle team selection from dropdown
+   * Updates the value and closes the dropdown
+   */
   const handleSelectTeam = (teamName: string) => {
     setSearchTerm(teamName);
     onChange(teamName);
     setIsOpen(false);
-    inputRef.current?.blur();
+    inputRef.current?.blur(); // Remove focus from input
   };
 
+  /**
+   * Handle input focus - opens dropdown to show available teams
+   */
   const handleInputFocus = () => {
     setIsOpen(true);
   };
 
+  /**
+   * Filter teams based on search term
+   * Matches against both team name and short name
+   */
   const filteredTeams = teams.filter((team) =>
     team.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
     (team.short_name && team.short_name.toLowerCase().includes(searchTerm.toLowerCase()))

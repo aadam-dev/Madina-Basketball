@@ -1,5 +1,9 @@
-import { Calendar, CheckCircle, DollarSign, Hammer, Users, Trophy, ArrowRight } from "lucide-react";
+import { Calendar, CheckCircle, DollarSign, Hammer, Users, Trophy, ArrowRight, Video, FileText } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
+import YouTubeEmbed from "@/components/YouTubeEmbed";
+import GoogleSheetsEmbed from "@/components/GoogleSheetsEmbed";
+import { getVideo } from "@/lib/videos";
 
 export default function Journey() {
   const timelineEvents = [
@@ -60,7 +64,7 @@ export default function Journey() {
     {
       date: "Today",
       title: "Court Active",
-      description: "Regular pick-up games, training sessions, and events ongoing. The court is alive. Madina CITI Foundation in the works to serve as umbrella for all basketball and social/impact work in Madina.",
+      description: "Regular pick-up games, training sessions, and events ongoing. The court is alive. Madina Basketball continues to serve as the hub for all basketball and social/impact work in Madina.",
       phase: "active",
     },
   ];
@@ -104,35 +108,127 @@ export default function Journey() {
                 a fully operational basketball court.
               </p>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <div className="relative">
-                <div className="absolute top-4 left-4 bg-gray-800 text-white px-4 py-2 rounded-lg font-bold text-lg z-10 uppercase">
-                  Before
-                </div>
-                <div className="aspect-video bg-gray-200 rounded-2xl flex items-center justify-center overflow-hidden">
-                  <div className="text-center text-gray-400 p-8">
-                    <Users className="w-16 h-16 mx-auto mb-4" />
-                    <p className="text-sm">Before renovation photo</p>
-                    <p className="text-xs mt-2">Cracked surface, faded lines, unusable equipment</p>
+            {/* Before Images/Videos - 3 items */}
+            <div className="mb-12">
+              <h3 className="text-2xl font-bold mb-6 text-center">Before Renovation</h3>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {/* Before #1 - Abandoned Court */}
+                <div className="relative">
+                  <div className="absolute top-2 left-2 bg-gray-800 text-white px-3 py-1 rounded-lg font-bold text-sm z-10 uppercase">
+                    Before #1
+                  </div>
+                  <div className="aspect-video bg-gray-200 rounded-xl flex items-center justify-center overflow-hidden relative min-h-[200px]">
+                    <Image
+                      src="/images/journey/before/abandoned-court.jpg"
+                      alt="Before renovation - Abandoned court"
+                      fill
+                      className="object-contain"
+                      unoptimized
+                    />
                   </div>
                 </div>
-                <p className="text-gray-600 text-sm mt-3 text-center">
-                  Cracked surface, faded lines, unusable equipment
-                </p>
+                {/* Before #2 - Engineers at Work */}
+                <div className="relative">
+                  <div className="absolute top-2 left-2 bg-gray-800 text-white px-3 py-1 rounded-lg font-bold text-sm z-10 uppercase">
+                    Before #2
+                  </div>
+                  <div className="aspect-video bg-gray-200 rounded-xl overflow-hidden relative min-h-[200px]">
+                    <video 
+                      src="/videos/compressed/engineers-at-work.mp4"
+                      controls
+                      className="w-full h-full object-contain"
+                      preload="metadata"
+                    />
+                  </div>
+                </div>
+                {/* Before #3 - Court View From Afar */}
+                <div className="relative">
+                  <div className="absolute top-2 left-2 bg-gray-800 text-white px-3 py-1 rounded-lg font-bold text-sm z-10 uppercase">
+                    Before #3
+                  </div>
+                  <div className="aspect-video bg-gray-200 rounded-xl overflow-hidden relative min-h-[200px]">
+                    <video 
+                      src="/videos/compressed/before-from-afar.MOV"
+                      controls
+                      className="w-full h-full object-contain"
+                      preload="metadata"
+                    />
+                  </div>
+                </div>
               </div>
-              <div className="relative">
-                <div className="absolute top-4 left-4 bg-green-600 text-white px-4 py-2 rounded-lg font-bold text-lg z-10 uppercase">
-                  After
-                </div>
-                <div className="aspect-video bg-gray-200 rounded-2xl flex items-center justify-center overflow-hidden">
-                  <div className="text-center text-gray-400 p-8">
-                    <Trophy className="w-16 h-16 mx-auto mb-4" />
-                    <p className="text-sm">After renovation photo</p>
-                    <p className="text-xs mt-2">Fresh surface, standard markings, professional equipment</p>
+            </div>
+
+            {/* After Images/Videos - 3 items */}
+            <div className="mb-12">
+              <h3 className="text-2xl font-bold mb-6 text-center">After Renovation</h3>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {/* After #1 - B4 Launch Video */}
+                <div className="relative">
+                  <div className="absolute top-2 left-2 bg-green-600 text-white px-3 py-1 rounded-lg font-bold text-sm z-10 uppercase">
+                    After #1
+                  </div>
+                  <div className="aspect-video bg-gray-200 rounded-xl overflow-hidden relative min-h-[200px]">
+                    <video 
+                      src="/videos/compressed/b4launch.MOV"
+                      controls
+                      className="w-full h-full object-contain"
+                      preload="metadata"
+                    />
                   </div>
                 </div>
-                <p className="text-gray-600 text-sm mt-3 text-center">
-                  Fresh surface, standard markings, professional equipment
+                {/* After #2 */}
+                <div className="relative">
+                  <div className="absolute top-2 left-2 bg-green-600 text-white px-3 py-1 rounded-lg font-bold text-sm z-10 uppercase">
+                    After #2
+                  </div>
+                  <div className="aspect-video bg-gray-200 rounded-xl flex items-center justify-center overflow-hidden relative min-h-[200px]">
+                    <Image
+                      src="/images/journey/after/after-2.jpg"
+                      alt="After renovation 2"
+                      fill
+                      className="object-contain"
+                      unoptimized
+                    />
+                  </div>
+                </div>
+                {/* After #3 */}
+                <div className="relative">
+                  <div className="absolute top-2 left-2 bg-green-600 text-white px-3 py-1 rounded-lg font-bold text-sm z-10 uppercase">
+                    After #3
+                  </div>
+                  <div className="aspect-video bg-gray-200 rounded-xl overflow-hidden relative min-h-[200px]">
+                    <video 
+                      src="/videos/compressed/afternumber3.MOV"
+                      controls
+                      className="w-full h-full object-contain"
+                      preload="metadata"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Transformation Video (CapCut Edit) - Separate Section After Before/After */}
+            <div className="mb-12">
+              <h3 className="text-2xl font-bold mb-6 text-center">The Transformation</h3>
+              <div className="max-w-4xl mx-auto">
+                <div className="aspect-video bg-gray-200 rounded-xl overflow-hidden">
+                  {getVideo('capcut-edit')?.videoId ? (
+                    <YouTubeEmbed 
+                      videoId={getVideo('capcut-edit')!.videoId}
+                      title={getVideo('capcut-edit')!.title}
+                      className="rounded-xl"
+                    />
+                  ) : (
+                    <video 
+                      src="/videos/compressed/before-renovation-1.mp4"
+                      controls
+                      className="w-full h-full object-contain"
+                    />
+                  )}
+                </div>
+                <p className="text-center text-gray-600 mt-4">
+                  Watch the complete transformation from start to finish
                 </p>
               </div>
             </div>
@@ -212,13 +308,144 @@ export default function Journey() {
                     <ArrowRight className="w-5 h-5" />
                   </Link>
                 </div>
-                <div className="aspect-video bg-gray-200 rounded-lg flex items-center justify-center">
-                  <div className="text-center text-gray-400">
-                    <Trophy className="w-16 h-16 mx-auto mb-4" />
-                    <p className="text-sm">Opening Game Photos</p>
-                    <p className="text-xs mt-2">(Add actual photos here)</p>
+                <div className="aspect-video bg-gray-200 rounded-lg flex items-center justify-center overflow-hidden">
+                  {getVideo('launch-day-game')?.videoId ? (
+                    <YouTubeEmbed 
+                      videoId={getVideo('launch-day-game')!.videoId}
+                      title={getVideo('launch-day-game')!.title}
+                      className="rounded-lg"
+                    />
+                  ) : (
+                    <div className="text-center text-gray-400 p-8">
+                      <Trophy className="w-16 h-16 mx-auto mb-4" />
+                      <p className="text-sm">Opening Game Photos</p>
+                      <p className="text-xs mt-2">(Add YouTube video ID or photos here)</p>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Project Leads Announcement */}
+      <section className="py-20 bg-muted">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-4xl mx-auto">
+            <div className="text-center mb-8">
+              <div className="inline-flex items-center justify-center w-16 h-16 bg-primary rounded-lg mb-4">
+                <Users className="w-8 h-8 text-white" />
+              </div>
+              <h2 className="text-3xl sm:text-4xl font-bold mb-4 uppercase tracking-tight">Project Leads Announcement</h2>
+              <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+                Shafic's announcement closing the fundraiser and updating the community on the project progress. 
+                The post announced the revision from GHS 56k (tempered glass backboard) to GHS 37k (wooden backboard) 
+                and provided updates on contractor payments and timeline.
+              </p>
+            </div>
+            <div className="bg-white rounded-xl shadow-lg overflow-hidden">
+              <div className="aspect-[3/4] relative">
+                <Image
+                  src="/images/journey/project-leads-announcement.jpg"
+                  alt="Project Leads Announcement"
+                  fill
+                  className="object-contain"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Fundraising Info Sheet - Two Pages */}
+      <section className="py-20">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-6xl mx-auto">
+            <div className="text-center mb-8">
+              <div className="inline-flex items-center justify-center w-16 h-16 bg-primary rounded-lg mb-4">
+                <FileText className="w-8 h-8 text-white" />
+              </div>
+              <h2 className="text-3xl sm:text-4xl font-bold mb-4 uppercase tracking-tight">Fundraising Information Sheet</h2>
+              <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+                The information sheet we used to communicate the renovation project and fundraising goals to the community.
+              </p>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="bg-white rounded-xl shadow-lg overflow-hidden">
+                <div className="aspect-[3/4] relative">
+                  <Image
+                    src="/images/journey/fundraising-info-sheet-1.jpg"
+                    alt="Fundraising Information Sheet - Page 1"
+                    fill
+                    className="object-contain"
+                  />
+                </div>
+              </div>
+              <div className="bg-white rounded-xl shadow-lg overflow-hidden">
+                <div className="aspect-[3/4] relative">
+                  <Image
+                    src="/images/journey/fundraising-info-sheet-2.jpg"
+                    alt="Fundraising Information Sheet - Page 2"
+                    fill
+                    className="object-contain"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* BOQ & Dashboard */}
+      <section className="py-20 bg-muted">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-6xl mx-auto">
+            <div className="text-center mb-8">
+              <div className="inline-flex items-center justify-center w-16 h-16 bg-primary rounded-lg mb-4">
+                <DollarSign className="w-8 h-8 text-white" />
+              </div>
+              <h2 className="text-3xl sm:text-4xl font-bold mb-4 uppercase tracking-tight">Financial Transparency</h2>
+              <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+                Complete financial documentation including Bill of Quantities and real-time fundraising dashboard.
+              </p>
+            </div>
+            
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+              {/* BOQ / Proforma Invoice */}
+              <div className="bg-white rounded-xl shadow-lg p-6">
+                <h3 className="text-xl font-bold mb-4">Proforma Invoice / Bill of Quantities</h3>
+                <p className="text-gray-600 mb-4">
+                  Detailed breakdown of all materials, labor, and services required for the renovation.
+                  Total BOQ: <strong className="text-primary">GHS 37,250</strong>
+                </p>
+                <div className="bg-muted rounded-lg overflow-hidden">
+                  <div className="aspect-[3/4] relative">
+                    <Image
+                      src="/images/journey/proforma-invoice.jpg"
+                      alt="Proforma Invoice - Bill of Quantities"
+                      fill
+                      className="object-contain"
+                    />
                   </div>
                 </div>
+                <p className="text-xs text-gray-500 mt-2 text-center">
+                  All amounts in GHS (Ghana Cedis). See transparency page for detailed breakdown.
+                </p>
+              </div>
+
+              {/* Dashboard */}
+              <div className="bg-white rounded-xl shadow-lg p-6">
+                <h3 className="text-xl font-bold mb-4">Real-Time Fundraising Dashboard</h3>
+                <p className="text-gray-600 mb-4">
+                  Live tracking of all donations and fundraising progress. Complete transparency in real-time.
+                </p>
+                {/* Google Sheets Embed */}
+                <GoogleSheetsEmbed
+                  sheetUrl="https://docs.google.com/spreadsheets/d/1fyjItPyghvd5aVZSrrF__4U3gwLQcemCZHu6psPL-BA/edit?gid=609525463#gid=609525463"
+                  title="Fundraising Dashboard"
+                  height="600px"
+                />
               </div>
             </div>
           </div>

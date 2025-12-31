@@ -59,15 +59,18 @@ export default function Court() {
                   Madina community and surrounding areas.
                 </p>
               </div>
-              <div className="bg-gray-100 rounded-xl flex items-center justify-center min-h-[300px]">
-                <div className="text-center p-8">
-                  <MapPin className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-                  <p className="text-gray-600">
-                    Interactive map will be embedded here
-                  </p>
-                  <p className="text-sm text-gray-500 mt-2">
-                    (Add Google Maps embed with court location)
-                  </p>
+              <div className="bg-gray-100 rounded-xl overflow-hidden shadow-lg">
+                <div className="aspect-video w-full">
+                  <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3970.249890652173!2d-0.18554152476553573!3d5.6769715943046135!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xfdf9deb5ca772db%3A0x40b7af9f253fbc39!2sMadina%20Zongo%20Sports%20Complex!5e0!3m2!1sen!2snl!4v1766677396637!5m2!1sen!2snl"
+                    width="100%"
+                    height="100%"
+                    style={{ border: 0 }}
+                    allowFullScreen
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                    title="Madina Basketball Court Location"
+                  />
                 </div>
               </div>
             </div>
@@ -85,9 +88,9 @@ export default function Court() {
                 <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
                   <Ruler className="w-6 h-6 text-primary" />
                 </div>
-                <h3 className="text-xl font-semibold mb-2">Standard Dimensions</h3>
+                <h3 className="text-xl font-semibold mb-2">Court Dimensions</h3>
                 <p className="text-gray-600">
-                  Full-size basketball court with proper FIBA-standard dimensions and markings.
+                  Full-size basketball court with basic dimensions and markings. We have plans to upgrade to FIBA-standard dimensions in the future.
                 </p>
               </div>
               <div className="bg-white p-6 rounded-xl shadow-sm">

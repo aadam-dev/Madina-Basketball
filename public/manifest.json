@@ -1,0 +1,44 @@
+{
+  "name": "Madina Basketball Scorekeeper",
+  "short_name": "MBB Score",
+  "description": "Track basketball games offline - scoreboard, stats, and game management",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#ff6b35",
+  "orientation": "any",
+  "scope": "/",
+  "icons": [
+    {
+      "src": "/icon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["sports", "utilities"],
+  "shortcuts": [
+    {
+      "name": "Basic Scoreboard",
+      "short_name": "Basic",
+      "description": "Start a basic game scoreboard",
+      "url": "/game/basic",
+      "icons": [{ "src": "/icon.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Player Stats",
+      "short_name": "Stats",
+      "description": "Track player statistics",
+      "url": "/game/stats",
+      "icons": [{ "src": "/icon.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Stats Sheet",
+      "short_name": "Sheet",
+      "description": "Generate blank stats sheet",
+      "url": "/statssheet",
+      "icons": [{ "src": "/icon.png", "sizes": "192x192" }]
+    }
+  ]
+}
+

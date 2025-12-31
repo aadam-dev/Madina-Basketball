@@ -23,10 +23,13 @@ export default function About() {
             <h2 className="text-3xl sm:text-4xl font-bold mb-8">What We Do</h2>
             <div className="prose prose-lg max-w-none">
               <p className="text-gray-700 text-lg leading-relaxed mb-6">
-                The Madina Basketball court is more than just a place to play—it's a thriving community hub where players of all ages and skill levels come together. We host daily pick-up games, structured training sessions, competitive tournaments, and community events that bring the neighborhood together.
+                The Madina Basketball court is more than just a place to play—it's a thriving community hub where players of all ages and skill levels come together. We host daily pick-up games, <strong>structured training sessions that are now in full action</strong>, competitive tournaments, and community events that bring the neighborhood together.
+              </p>
+              <p className="text-gray-700 text-lg leading-relaxed mb-6">
+                Home to teams like Zurak Basketball and Madina Old Gees, the court serves as the foundation for youth development, competitive play, and community building. <strong>Our training programs are active and growing</strong>, with regular sessions that develop skills, character, and community bonds.
               </p>
               <p className="text-gray-700 text-lg leading-relaxed">
-                Home to teams like Zurak Basketball and Madina Old Gees, the court serves as the foundation for youth development, competitive play, and community building. The upcoming Madina CITI Foundation will expand this work, combining basketball with broader social impact initiatives across Madina.
+                Madina Basketball continues to expand this work, combining basketball with broader social impact initiatives across Madina. Every problem we identified has been addressed, and every commitment we made has been fulfilled.
               </p>
             </div>
           </div>

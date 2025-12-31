@@ -1,6 +1,10 @@
 # Deployment Guide - Madina Basketball Website
 
-This guide will walk you through deploying the Madina Basketball website to Vercel and setting up Supabase.
+**Version:** 2.0  
+**Last Updated:** January 2025  
+**Target Audience:** Beginners to Intermediate
+
+This comprehensive guide will walk you through deploying the Madina Basketball website to Vercel and setting up Supabase. It's designed to be beginner-friendly with step-by-step instructions.
 
 ## Prerequisites
 
@@ -323,4 +327,131 @@ You can now:
 - ✅ All changes are saved to Supabase
 
 **Congratulations! Your website is live! 🎉**
+
+---
+
+## Part 6: Post-Deployment Configuration
+
+### 6.1 Seed Initial Data
+
+After deployment, seed your database with initial content:
+
+```bash
+# Seed team members
+npm run seed:team
+
+# Seed content sections (if needed)
+npm run seed
+```
+
+### 6.2 Configure Storage Buckets
+
+1. Go to Supabase Dashboard → Storage
+2. Create buckets: `events` and `team` (both Public: Yes)
+3. Set up storage policies (see `DATABASE_SETUP_GUIDE.md`)
+
+### 6.3 Set Up Custom Domain (Optional)
+
+1. Go to Vercel → Settings → Domains
+2. Add your domain
+3. Configure DNS (CNAME to `cname.vercel-dns.com`)
+
+---
+
+## Part 7: Maintenance and Updates
+
+### Making Updates
+
+**Automatic (Recommended):**
+1. Make changes locally
+2. `git add . && git commit -m "Update" && git push`
+3. Vercel auto-deploys
+
+**Manual Redeploy:**
+- Vercel Dashboard → Deployments → Redeploy
+
+### Updating Environment Variables
+
+1. Vercel → Settings → Environment Variables
+2. Add/edit variables
+3. **Redeploy after changes**
+
+---
+
+## Part 8: Common Issues and Solutions
+
+### Build Fails
+- Check build logs
+- Fix TypeScript errors
+- Verify environment variables
+
+### Images Not Loading
+- Check paths start with `/`
+- Verify Supabase storage policies
+- Check image URLs in database
+
+### Admin Login Not Working
+- Verify environment variables in Vercel
+- Check password hashing
+- Clear browser cache
+
+### Database Connection Errors
+- Verify Supabase URL and keys
+- Check RLS policies
+- Verify API rate limits
+
+---
+
+## Part 9: Security Checklist
+
+- [ ] All environment variables set in Vercel
+- [ ] `.env.local` in `.gitignore`
+- [ ] Strong admin passwords
+- [ ] Supabase RLS policies configured
+- [ ] Service role key only server-side
+- [ ] HTTPS enabled (automatic on Vercel)
+
+---
+
+## Part 10: Performance Optimization
+
+### Image Optimization
+- Compress before upload
+- Use Next.js `Image` component
+- Specify dimensions
+
+### Code Optimization
+- Remove unused dependencies
+- Use dynamic imports
+- Implement code splitting
+
+---
+
+## Quick Reference
+
+### Essential Commands
+```bash
+npm run dev          # Local development
+npm run build        # Build for production
+npm start            # Test production build
+npm run seed:team    # Seed database
+npm audit            # Security check
+```
+
+### Important URLs
+- Vercel Dashboard: https://vercel.com/dashboard
+- Supabase Dashboard: https://app.supabase.com
+
+### Support Resources
+- Vercel Docs: https://vercel.com/docs
+- Supabase Docs: https://supabase.com/docs
+- Next.js Docs: https://nextjs.org/docs
+- Project Docs: `/docs` folder
+
+---
+
+**For detailed technical information, refer to:**
+- `docs/BUILD_COURSE.md` - Complete build guide
+- `docs/TOOLS_AND_TECHNICAL_INSIGHTS.md` - Technical details
+- `DATABASE_SETUP_GUIDE.md` - Database configuration
 

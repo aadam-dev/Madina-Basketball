@@ -1,9 +1,8 @@
-import { Heart, Handshake, Users, Trophy } from "lucide-react";
+import { Heart, Handshake, Users, Trophy, ArrowRight } from "lucide-react";
 
 export default function Partners() {
   // Donor list - 18 total donors (16 named + 2 Anonymous) from payment tracker
-  // Update this array with the exact 18 names from your payment tracker
-  const donors = [
+  const namedDonors = [
     "Abdul Ashraf",
     "Abena Ampomah",
     "Ahmed Rufahi",
@@ -20,29 +19,9 @@ export default function Partners() {
     "Kodjokuma",
     "Nana Kofi Quakyi",
     "Rashid Musah",
-    "Richard Enyo",
-    "Richard Nunekpelu",
-    "Saaka",
-    "Yaotse",
-    "Yusufu",
-    "Anonymous",
-    "Anonymous",
-  ]
-    .filter((name, index, self) => {
-      // Keep only unique names, but allow 2 Anonymous entries
-      if (name === "Anonymous") {
-        const anonymousCount = self.filter(n => n === "Anonymous").length;
-        return anonymousCount <= 2;
-      }
-      return self.indexOf(name) === index;
-    })
-    .sort((a, b) => {
-      // Sort alphabetically, Anonymous at the end
-      if (a === "Anonymous" && b !== "Anonymous") return 1;
-      if (b === "Anonymous" && a !== "Anonymous") return -1;
-      return a.localeCompare(b);
-    })
-    .slice(0, 18); // Exactly 18 entries - UPDATE THIS LIST with exact names from your tracker
+  ].sort((a, b) => a.localeCompare(b));
+  
+  const donors = [...namedDonors, "Two Anonymous Donors"];
 
   return (
     <div className="min-h-screen bg-white">
@@ -129,55 +108,95 @@ export default function Partners() {
                 </div>
               </div>
               
-              <div className="mt-8 text-center">
+              <div className="mt-8 text-center space-y-4">
                 <p className="text-sm text-gray-500 italic">
                   Donors are listed alphabetically. Every contribution, regardless of amount, is equally valued and appreciated.
                 </p>
+                <div>
+                  <a
+                    href="/transparency"
+                    className="inline-flex items-center space-x-2 text-primary font-semibold hover:underline"
+                  >
+                    <span>View Full Transparency Report</span>
+                    <ArrowRight className="w-4 h-4" />
+                  </a>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Sponsors */}
-      <section id="sponsors" className="py-20">
+      {/* Sponsors - Open to Sponsorship */}
+      <section id="sponsors" className="py-20 bg-muted">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-12">
               <div className="inline-flex items-center justify-center w-16 h-16 bg-primary rounded-lg mb-4">
                 <Handshake className="w-8 h-8 text-white" />
               </div>
-              <h2 className="text-4xl sm:text-5xl font-bold mb-4 uppercase tracking-tight">Our Sponsors</h2>
+              <h2 className="text-4xl sm:text-5xl font-bold mb-4 uppercase tracking-tight">Partnership Opportunities</h2>
               <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-                Businesses and organizations that provided financial support, materials, or services to make this project possible.
+                We're actively seeking sponsors and partners to support our growing programs and community impact.
               </p>
             </div>
-            <div className="bg-muted rounded-xl p-8">
-              <p className="text-gray-700 text-lg mb-8 text-center">
-                We are grateful to our sponsors who supported the renovation through financial contributions, 
-                discounted materials, or professional services. Your partnership made a significant difference.
-              </p>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                {[1, 2, 3].map((i) => (
-                  <div key={i} className="bg-white rounded-lg p-6 shadow-sm text-center min-h-[150px] flex items-center justify-center">
-                    <div className="text-gray-400">
-                      <Handshake className="w-12 h-12 mx-auto mb-3" />
-                      <p className="text-sm font-medium">Sponsor {i}</p>
-                      <p className="text-xs text-gray-500 mt-1">Logo/Name</p>
+            <div className="bg-white rounded-xl p-8 md:p-12 shadow-lg">
+              <div className="text-center mb-8">
+                <p className="text-gray-700 text-lg leading-relaxed mb-6">
+                  While we successfully completed the court renovation through community fundraising, we're now looking 
+                  to partner with businesses and organizations to expand our programs and impact. Your sponsorship 
+                  will help us:
+                </p>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+                  <div className="bg-muted rounded-lg p-4 text-left">
+                    <h3 className="font-semibold text-primary mb-2">✓ Training Programs</h3>
+                    <p className="text-sm text-gray-600">Support our active youth training programs</p>
+                  </div>
+                  <div className="bg-muted rounded-lg p-4 text-left">
+                    <h3 className="font-semibold text-primary mb-2">✓ Equipment & Maintenance</h3>
+                    <p className="text-sm text-gray-600">Help maintain court quality and equipment</p>
+                  </div>
+                  <div className="bg-muted rounded-lg p-4 text-left">
+                    <h3 className="font-semibold text-primary mb-2">✓ Community Events</h3>
+                    <p className="text-sm text-gray-600">Sponsor tournaments and community gatherings</p>
+                  </div>
+                  <div className="bg-muted rounded-lg p-4 text-left">
+                    <h3 className="font-semibold text-primary mb-2">✓ Youth Development</h3>
+                    <p className="text-sm text-gray-600">Invest in the next generation of players</p>
+                  </div>
+                </div>
+              </div>
+              <div className="border-t border-gray-200 pt-8">
+                <div className="text-center">
+                  <h3 className="text-2xl font-bold mb-4">Why Partner With Us?</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                    <div>
+                      <div className="text-3xl font-bold text-primary mb-2">100%</div>
+                      <div className="text-gray-600 text-sm">Transparency</div>
+                      <div className="text-xs text-gray-500 mt-1">Complete financial openness</div>
+                    </div>
+                    <div>
+                      <div className="text-3xl font-bold text-primary mb-2">Active</div>
+                      <div className="text-gray-600 text-sm">Programs</div>
+                      <div className="text-xs text-gray-500 mt-1">Training in full action</div>
+                    </div>
+                    <div>
+                      <div className="text-3xl font-bold text-primary mb-2">150+</div>
+                      <div className="text-gray-600 text-sm">Players</div>
+                      <div className="text-xs text-gray-500 mt-1">Registered community</div>
                     </div>
                   </div>
-                ))}
-              </div>
-              <div className="mt-8 text-center">
-                <p className="text-sm text-gray-500 italic mb-4">
-                  Interested in becoming a sponsor? Contact us to discuss partnership opportunities.
-                </p>
-                <a
-                  href="/contact"
-                  className="inline-block px-6 py-3 bg-primary text-white font-semibold rounded-lg hover:bg-primary-dark transition-all"
-                >
-                  Become a Sponsor
-                </a>
+                  <p className="text-gray-700 mb-6">
+                    We've proven our ability to deliver results. The court renovation was completed on time and on budget, 
+                    and our training programs are now in full action. Partner with a proven, transparent, and active organization.
+                  </p>
+                  <a
+                    href="/contact"
+                    className="inline-block px-8 py-4 bg-primary text-white font-semibold rounded-lg hover:bg-primary-dark transition-all transform hover:scale-105 shadow-md"
+                  >
+                    Become a Sponsor
+                  </a>
+                </div>
               </div>
             </div>
           </div>

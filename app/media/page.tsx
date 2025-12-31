@@ -1,4 +1,7 @@
 import { Camera, Video, Image as ImageIcon, Share2 } from "lucide-react";
+import YouTubeEmbed from "@/components/YouTubeEmbed";
+import { getVideo, getVideosByCategory } from "@/lib/videos";
+import Image from "next/image";
 
 export default function Media() {
   return (
@@ -110,17 +113,38 @@ export default function Media() {
               Watch highlights from launch day, training sessions, and community events.
             </p>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {[1, 2].map((i) => (
-                <div key={i} className="bg-muted rounded-xl overflow-hidden aspect-video">
-                  <div className="w-full h-full flex items-center justify-center">
-                    <div className="text-center p-8">
-                      <Video className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-                      <p className="text-gray-500 text-sm">Video {i}</p>
-                      <p className="text-gray-400 text-xs mt-2">(Embed YouTube/Vimeo video here)</p>
+              {getVideosByCategory('launch-day').length > 0 ? (
+                getVideosByCategory('launch-day').slice(0, 2).map((video, i) => (
+                  video.videoId ? (
+                    <YouTubeEmbed 
+                      key={i}
+                      videoId={video.videoId}
+                      title={video.title}
+                      className="rounded-xl"
+                    />
+                  ) : (
+                    <div key={i} className="bg-muted rounded-xl overflow-hidden aspect-video flex items-center justify-center">
+                      <div className="text-center p-8">
+                        <Video className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+                        <p className="text-gray-500 text-sm">{video.title}</p>
+                        <p className="text-gray-400 text-xs mt-2">(Add YouTube video ID)</p>
+                      </div>
+                    </div>
+                  )
+                ))
+              ) : (
+                [1, 2].map((i) => (
+                  <div key={i} className="bg-muted rounded-xl overflow-hidden aspect-video">
+                    <div className="w-full h-full flex items-center justify-center">
+                      <div className="text-center p-8">
+                        <Video className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+                        <p className="text-gray-500 text-sm">Video {i}</p>
+                        <p className="text-gray-400 text-xs mt-2">(Upload to YouTube and add video ID)</p>
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
+                ))
+              )}
             </div>
           </div>
         </div>
@@ -135,16 +159,37 @@ export default function Media() {
               Flyers, announcements, and promotional materials from the project.
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {[1, 2, 3, 4].map((i) => (
-                <div key={i} className="bg-white rounded-xl overflow-hidden shadow-sm">
-                  <div className="aspect-[3/4] bg-muted flex items-center justify-center">
-                    <div className="text-center p-4">
-                      <ImageIcon className="w-12 h-12 text-gray-400 mx-auto mb-2" />
-                      <p className="text-gray-500 text-xs">Flyer {i}</p>
-                    </div>
-                  </div>
+              <div className="bg-white rounded-xl overflow-hidden shadow-sm">
+                <div className="aspect-[3/4] bg-muted flex items-center justify-center relative">
+                  <Image
+                    src="/images/events/posters/ogs-vs-youngings.png"
+                    alt="OGs vs Youngings Poster"
+                    fill
+                    className="object-cover"
+                  />
                 </div>
-              ))}
+              </div>
+              <div className="bg-white rounded-xl overflow-hidden shadow-sm">
+                <div className="aspect-[3/4] bg-muted flex items-center justify-center relative">
+                  <Image
+                    src="/images/events/posters/madina-vs-nima-match.png"
+                    alt="Madina vs Nima Match Poster"
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+              </div>
+              <div className="bg-white rounded-xl overflow-hidden shadow-sm">
+                <div className="aspect-[3/4] bg-muted flex items-center justify-center relative">
+                  <Image
+                    src="/images/events/posters/donor-appreciation.jpg"
+                    alt="Donor Appreciation Poster"
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+                <div className="p-2 text-center text-xs text-gray-600">Donor Appreciation</div>
+              </div>
             </div>
           </div>
         </div>

@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import { Plus, Trash2, Download, FileText, Info } from "lucide-react";
+import Link from "next/link";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 import TeamSelector from "@/components/TeamSelector";
@@ -219,6 +220,21 @@ export default function StatsSheetGenerator() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      {/* Breadcrumb Navigation */}
+      <div className="mb-6">
+        <nav className="flex items-center space-x-2 text-sm text-gray-600">
+          <Link href="/" className="hover:text-primary transition-colors">
+            Home
+          </Link>
+          <span>/</span>
+          <Link href="/tools" className="hover:text-primary transition-colors">
+            Tools
+          </Link>
+          <span>/</span>
+          <span className="text-gray-900 font-medium">Stats Sheet Generator</span>
+        </nav>
+      </div>
+
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-gray-900 mb-2">
           Blank Stats Sheet Generator

@@ -1,7 +1,7 @@
 import { redirect } from 'next/navigation';
 import { getSession } from '@/lib/auth';
 import Link from 'next/link';
-import { LogOut, Calendar, FileText, Users, Home, LayoutDashboard, UserCog, Trophy } from 'lucide-react';
+import { LogOut, Calendar, FileText, Users, Home, LayoutDashboard, UserCog, Trophy, Image as ImageIcon } from 'lucide-react';
 import LogoutButton from '@/components/admin/LogoutButton';
 import NotificationBell from '@/components/admin/NotificationBell';
 
@@ -89,6 +89,13 @@ export default async function AdminLayout({
                 >
                   <Trophy className="w-4 h-4" />
                   <span>Games</span>
+                </Link>
+                <Link
+                  href="/admin/media"
+                  className="flex items-center space-x-3 px-4 py-2.5 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors text-sm"
+                >
+                  <ImageIcon className="w-4 h-4" />
+                  <span>Media</span>
                 </Link>
               </div>
             </div>

@@ -1,6 +1,6 @@
 import { Users, Camera, Wrench, Trophy, Building2, Mail, Shield } from "lucide-react";
 import Link from "next/link";
-import Image from "next/image";
+import SafeImage from "@/components/SafeImage";
 import { supabase } from "@/lib/supabase";
 
 // Revalidate every 60 seconds to ensure fresh data
@@ -45,6 +45,26 @@ export default async function Team() {
   const keyStakeholders = allMembers.filter(m => m.section === 'stakeholder');
   const mediaTeam = allMembers.filter(m => m.section === 'media');
 
+  // Custom ordering for executive: Shafic and Adam centered, then Hisham, Kwame, Titus, Mustafa
+  const executiveOrder = ['Shafic', 'Adam', 'Hisham', 'Kwame', 'Titus', 'Mustafa'];
+  const sortedExecutive = [...executiveBody].sort((a, b) => {
+    const aIndex = executiveOrder.findIndex(name => a.name.includes(name) || a.name === name);
+    const bIndex = executiveOrder.findIndex(name => b.name.includes(name) || b.name === name);
+    if (aIndex === -1) return 1;
+    if (bIndex === -1) return -1;
+    return aIndex - bIndex;
+  });
+
+  // Custom ordering for coaches: Kwame, Hisham, Lord, Jesse
+  const coachOrder = ['Kwame', 'Hisham', 'Lord', 'Jesse'];
+  const sortedCoaches = [...coaches].sort((a, b) => {
+    const aIndex = coachOrder.findIndex(name => a.name.includes(name) || a.name === name);
+    const bIndex = coachOrder.findIndex(name => b.name.includes(name) || b.name === name);
+    if (aIndex === -1) return 1;
+    if (bIndex === -1) return -1;
+    return aIndex - bIndex;
+  });
+
   const getSectionIcon = (section: string) => {
     switch (section) {
       case 'executive':
@@ -62,11 +82,79 @@ export default async function Team() {
     }
   };
 
-  const renderTeamSection = (title: string, members: TeamMember[], icon: any, iconColor: string) => {
+  const renderTeamSection = (title: string, members: TeamMember[], icon: any, iconColor: string, isExecutive: boolean = false) => {
     if (members.length === 0) return null;
 
     const Icon = icon;
 
+    // Special layout for executive: Shafic and Adam centered on first row
+    if (isExecutive && members.length >= 2) {
+      const firstTwo = members.slice(0, 2);
+      const rest = members.slice(2);
+
+      return (
+        <section className="py-16">
+          <div className="flex items-center space-x-3 mb-12">
+            <Icon className={`w-8 h-8 ${iconColor}`} />
+            <h2 className="text-3xl font-bold text-gray-900">{title}</h2>
+          </div>
+          
+          {/* First row: Shafic and Adam centered */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8 max-w-4xl mx-auto">
+            {firstTwo.map((member) => (
+              <div
+                key={member.id}
+                className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all transform hover:-translate-y-1"
+              >
+                <div className="relative h-64 bg-gradient-to-br from-primary/10 to-secondary/10">
+                  <SafeImage
+                    src={member.image_url}
+                    alt={member.name}
+                    fill
+                    className="object-cover"
+                    placeholderSize="lg"
+                  />
+                </div>
+                <div className="p-6">
+                  <h3 className="text-xl font-bold text-gray-900 mb-2">{member.name}</h3>
+                  <p className="text-primary font-semibold mb-3">{member.role}</p>
+                  <p className="text-gray-600 text-sm leading-relaxed">{member.description || member.bio || ''}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Rest of executive members */}
+          {rest.length > 0 && (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+              {rest.map((member) => (
+                <div
+                  key={member.id}
+                  className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all transform hover:-translate-y-1"
+                >
+                  <div className="relative h-64 bg-gradient-to-br from-primary/10 to-secondary/10">
+                    <SafeImage
+                      src={member.image_url}
+                      alt={member.name}
+                      fill
+                      className="object-cover"
+                      placeholderSize="lg"
+                    />
+                  </div>
+                  <div className="p-6">
+                    <h3 className="text-xl font-bold text-gray-900 mb-2">{member.name}</h3>
+                    <p className="text-primary font-semibold mb-3">{member.role}</p>
+                    <p className="text-gray-600 text-sm leading-relaxed">{member.description || member.bio || ''}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </section>
+      );
+    }
+
+    // Standard layout for other sections
     return (
       <section className="py-16">
         <div className="flex items-center space-x-3 mb-12">
@@ -80,23 +168,18 @@ export default async function Team() {
               className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all transform hover:-translate-y-1"
             >
               <div className="relative h-64 bg-gradient-to-br from-primary/10 to-secondary/10">
-                {member.image_url ? (
-                  <Image
+                <SafeImage
                     src={member.image_url}
                     alt={member.name}
                     fill
                     className="object-cover"
+                  placeholderSize="lg"
                   />
-                ) : (
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <Users className="w-24 h-24 text-gray-300" />
-                  </div>
-                )}
               </div>
               <div className="p-6">
                 <h3 className="text-xl font-bold text-gray-900 mb-2">{member.name}</h3>
                 <p className="text-primary font-semibold mb-3">{member.role}</p>
-                <p className="text-gray-600 text-sm leading-relaxed">{member.description}</p>
+                <p className="text-gray-600 text-sm leading-relaxed">{member.description || member.bio || ''}</p>
               </div>
             </div>
           ))}
@@ -125,8 +208,8 @@ export default async function Team() {
 
       {/* Team Sections */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {renderTeamSection("Executive Leadership", executiveBody, Shield, "text-primary")}
-        {renderTeamSection("Coaching Staff", coaches, Trophy, "text-yellow-600")}
+        {renderTeamSection("Executive Leadership", sortedExecutive, Shield, "text-primary", true)}
+        {renderTeamSection("Coaching Staff", sortedCoaches, Trophy, "text-yellow-600")}
         {renderTeamSection("Maintenance & Oversight", maintenanceTeam, Wrench, "text-green-600")}
         {renderTeamSection("Key Stakeholders", keyStakeholders, Building2, "text-blue-600")}
         {renderTeamSection("Media & Communications", mediaTeam, Camera, "text-purple-600")}

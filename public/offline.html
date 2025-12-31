@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Offline - Madina Basketball</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      margin: 0;
+      background: linear-gradient(135deg, #ff6b35 0%, #004e89 100%);
+      color: white;
+      text-align: center;
+      padding: 20px;
+    }
+    .container {
+      max-width: 500px;
+    }
+    h1 {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+    }
+    p {
+      font-size: 1.2rem;
+      margin-bottom: 2rem;
+      opacity: 0.9;
+    }
+    .icon {
+      font-size: 5rem;
+      margin-bottom: 1rem;
+    }
+    button {
+      background: white;
+      color: #ff6b35;
+      border: none;
+      padding: 1rem 2rem;
+      font-size: 1rem;
+      font-weight: bold;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+    button:hover {
+      transform: scale(1.05);
+    }
+    .features {
+      margin-top: 2rem;
+      text-align: left;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 1.5rem;
+      border-radius: 8px;
+    }
+    .features li {
+      margin: 0.5rem 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="icon">📴</div>
+    <h1>You're Offline</h1>
+    <p>No internet connection, but you can still track games!</p>
+    
+    <div class="features">
+      <h3>Available Offline:</h3>
+      <ul>
+        <li>✓ Basic Scoreboard</li>
+        <li>✓ Player Stats Tracking</li>
+        <li>✓ Stats Sheet Generator</li>
+        <li>✓ Previously loaded games</li>
+      </ul>
+      <p style="font-size: 0.9rem; opacity: 0.8; margin-top: 1rem;">
+        All changes will be saved locally and synced when you're back online.
+      </p>
+    </div>
+    
+    <button onclick="window.location.href='/'">Go to Home</button>
+  </div>
+</body>
+</html>
+

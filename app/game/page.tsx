@@ -33,6 +33,21 @@ export default function GameModePage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary/10 via-white to-secondary/10 py-12 px-4">
       <div className="max-w-4xl mx-auto">
+        {/* Breadcrumb Navigation */}
+        <div className="mb-6">
+          <nav className="flex items-center space-x-2 text-sm text-gray-600">
+            <Link href="/" className="hover:text-primary transition-colors">
+              Home
+            </Link>
+            <span>/</span>
+            <Link href="/tools" className="hover:text-primary transition-colors">
+              Tools
+            </Link>
+            <span>/</span>
+            <span className="text-gray-900 font-medium">Game Modes</span>
+          </nav>
+        </div>
+
         <div className="text-center mb-12">
           <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
             Choose Game Mode
@@ -181,10 +196,10 @@ export default function GameModePage() {
 
         <div className="mt-8 text-center">
           <Link
-            href="/"
+            href="/tools"
             className="text-gray-600 hover:text-primary transition-colors underline"
           >
-            ← Back to Home
+            ← Back to Tools
           </Link>
         </div>
       </div>

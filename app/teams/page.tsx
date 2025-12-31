@@ -1,5 +1,6 @@
 import { Users, Trophy, Calendar, Target, Building2, ArrowRight } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 
 export default function Teams() {
   return (
@@ -8,7 +9,7 @@ export default function Teams() {
       <section className="bg-gradient-to-br from-secondary to-primary text-white py-20">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl mx-auto text-center">
-            <h1 className="text-4xl sm:text-5xl font-bold mb-6 uppercase tracking-tight">Teams & Foundation</h1>
+            <h1 className="text-4xl sm:text-5xl font-bold mb-6 uppercase tracking-tight">Teams</h1>
             <p className="text-xl text-white/90">
               Building a basketball community through teams, programs, and social impact
             </p>
@@ -16,24 +17,28 @@ export default function Teams() {
         </div>
       </section>
 
-      {/* Madina CITI Foundation */}
+      {/* Madina Basketball */}
       <section className="py-20 bg-muted">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto">
             <div className="bg-white rounded-xl p-8 md:p-12 shadow-lg">
               <div className="flex items-center space-x-4 mb-6">
                 <div className="w-16 h-16 bg-primary rounded-lg flex items-center justify-center">
-                  <Building2 className="w-8 h-8 text-white" />
+                  <Image 
+                    src="/images/logo/madinabasketball-logo.png"
+                    alt="Madina Basketball Logo"
+                    width={64}
+                    height={64}
+                    className="object-contain"
+                  />
                 </div>
                 <div>
-                  <div className="text-sm font-semibold text-primary mb-1 uppercase tracking-wide">Umbrella Organization</div>
-                  <h2 className="text-3xl sm:text-4xl font-bold uppercase tracking-tight">Madina CITI Foundation</h2>
+                  <div className="text-sm font-semibold text-primary mb-1 uppercase tracking-wide">Community Hub</div>
+                  <h2 className="text-3xl sm:text-4xl font-bold uppercase tracking-tight">Madina Basketball</h2>
                 </div>
               </div>
               <p className="text-lg text-gray-700 leading-relaxed mb-6">
-                The Madina CITI Foundation is in the works to serve as the umbrella organization for all 
-                basketball and social/impact-related initiatives in Madina. This foundation will coordinate 
-                and support:
+                Madina Basketball serves as the hub for all basketball and social/impact-related initiatives in Madina. We coordinate and support:
               </p>
               <ul className="space-y-3 text-gray-700 mb-8">
                 <li className="flex items-start">
@@ -57,9 +62,6 @@ export default function Teams() {
                   <span>Court management and maintenance</span>
                 </li>
               </ul>
-              <p className="text-gray-600 italic">
-                More details about the foundation will be announced as development progresses.
-              </p>
             </div>
           </div>
         </div>
@@ -111,8 +113,8 @@ export default function Teams() {
                   </div>
                 </div>
                 <p className="text-gray-700 leading-relaxed mb-4">
-                  The Madina Old Gees Basketball Team is a community team that will operate under the 
-                  Madina CITI Foundation umbrella. The team brings together experienced players and 
+                  The Madina Old Gees Basketball Team is a community team that operates under the 
+                  Madina Basketball umbrella. The team brings together experienced players and 
                   community members who share a passion for basketball.
                 </p>
                 <p className="text-gray-600">

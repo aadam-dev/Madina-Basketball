@@ -17,7 +17,7 @@ const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 const supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
 
 if (!supabaseUrl || !supabaseServiceRoleKey) {
-  console.error('❌ Missing Supabase environment variables');
+  console.error('Error: Missing Supabase environment variables');
   process.exit(1);
 }
 
@@ -120,7 +120,7 @@ const contentSections = [
   {
     page: 'contact',
     section_key: 'whatsapp',
-    content: '233XXXXXXXXX',
+    content: '233559602056',
   },
   {
     page: 'contact',
@@ -168,22 +168,22 @@ async function seedContent() {
         .select();
 
       if (error) {
-        console.error(`❌ Error seeding ${section.page}.${section.section_key}:`, error.message);
+        console.error(`Error seeding ${section.page}.${section.section_key}:`, error.message);
         errorCount++;
       } else {
-        console.log(`✅ Seeded: ${section.page}.${section.section_key}`);
+        console.log(`Seeded: ${section.page}.${section.section_key}`);
         successCount++;
       }
     } catch (err) {
-      console.error(`❌ Exception seeding ${section.page}.${section.section_key}:`, err);
+      console.error(`Exception seeding ${section.page}.${section.section_key}:`, err);
       errorCount++;
     }
   }
 
-  console.log(`\n🎉 Seeding complete!`);
+  console.log(`\nSeeding complete!`);
   console.log(`   Success: ${successCount}`);
   console.log(`   Errors: ${errorCount}`);
-  console.log(`\n💡 You can now manage all content through the admin portal at /admin/content`);
+  console.log(`\nYou can now manage all content through the admin portal at /admin/content`);
 }
 
 // Run the seeding

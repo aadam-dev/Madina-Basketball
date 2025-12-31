@@ -1,8 +1,46 @@
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight, Calendar, Users, Trophy, CheckCircle, MapPin } from "lucide-react";
+import { ArrowRight, Calendar, Users, Trophy, CheckCircle, MapPin, Clock } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 import EventCard from "@/components/EventCard";
+import HeroBackground from "@/components/HeroBackground";
+
+async function getFeaturedEvent() {
+  try {
+    const { data, error } = await supabase
+      .from("events")
+      .select("*")
+      .eq("featured", true)
+      .eq("status", "upcoming")
+      .order("date", { ascending: true })
+      .limit(1)
+      .single();
+
+    if (error) {
+      // No featured event found, that's okay
+      return null;
+    }
+
+    // Check if event has passed
+    const eventDate = new Date(data.date);
+    const eventDateTime = new Date(`${data.date}T${data.time || '00:00'}`);
+    const now = new Date();
+    
+    if (eventDateTime < now) {
+      // Event has passed, update status to completed
+      await supabase
+        .from("events")
+        .update({ status: "completed", featured: false })
+        .eq("id", data.id);
+      return null;
+    }
+
+    return data;
+  } catch (error) {
+    console.error("Error fetching featured event:", error);
+    return null;
+  }
+}
 
 async function getUpcomingEvents() {
   try {
@@ -10,6 +48,7 @@ async function getUpcomingEvents() {
       .from("events")
       .select("*")
       .eq("status", "upcoming")
+      .eq("featured", false) // Exclude featured events from regular list
       .order("date", { ascending: true })
       .limit(3);
 
@@ -18,7 +57,24 @@ async function getUpcomingEvents() {
       return [];
     }
 
-    return data || [];
+    // Filter out past events and update their status
+    const now = new Date();
+    const validEvents = [];
+    
+    for (const event of data || []) {
+      const eventDateTime = new Date(`${event.date}T${event.time || '00:00'}`);
+      if (eventDateTime < now) {
+        // Update status to completed
+        await supabase
+          .from("events")
+          .update({ status: "completed" })
+          .eq("id", event.id);
+      } else {
+        validEvents.push(event);
+      }
+    }
+
+    return validEvents;
   } catch (error) {
     console.error("Error fetching events:", error);
     return [];
@@ -26,14 +82,20 @@ async function getUpcomingEvents() {
 }
 
 export default async function Home() {
+  const featuredEvent = await getFeaturedEvent();
   const upcomingEvents = await getUpcomingEvents();
   return (
     <div className="min-h-screen">
       {/* Hero Section - Improved Design */}
       <section className="relative min-h-[90vh] flex items-center overflow-hidden">
-        {/* Background Image - Replace with actual court image */}
-        <div className="absolute inset-0 bg-gradient-to-br from-secondary via-secondary/90 to-primary">
-          <div className="absolute inset-0 bg-black/40"></div>
+        {/* Background Image/Video */}
+        <div className="absolute inset-0">
+          {/* Background image - will show if available, otherwise gradient */}
+          <div className="absolute inset-0 bg-gradient-to-br from-secondary via-secondary/90 to-primary">
+            {/* Background video/image overlay - Hero section */}
+            <HeroBackground />
+            <div className="absolute inset-0 bg-black/40"></div>
+          </div>
         </div>
         
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10 py-20">
@@ -107,6 +169,91 @@ export default async function Home() {
         </div>
       </section>
 
+      {/* Featured Event Section */}
+      {featuredEvent && (
+        <section className="py-20 bg-gradient-to-br from-primary to-secondary text-white">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="max-w-6xl mx-auto">
+              <div className="text-center mb-8">
+                <div className="inline-flex items-center justify-center w-16 h-16 bg-white/20 backdrop-blur-sm rounded-lg mb-4">
+                  <Trophy className="w-8 h-8 text-white" />
+                </div>
+                <h2 className="text-4xl sm:text-5xl font-bold mb-4 uppercase tracking-tight">Featured Event</h2>
+                <p className="text-xl text-white/90 max-w-2xl mx-auto">
+                  Don't miss tonight's game!
+                </p>
+              </div>
+              <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 md:p-12 shadow-2xl border border-white/20">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                  {featuredEvent.image_url && (
+                    <div className="relative aspect-video rounded-xl overflow-hidden">
+                      <Image
+                        src={featuredEvent.image_url}
+                        alt={featuredEvent.title}
+                        fill
+                        className="object-cover"
+                      />
+                    </div>
+                  )}
+                  <div>
+                    <div className="flex items-center space-x-2 mb-4">
+                      <span className="px-4 py-2 bg-white/20 backdrop-blur-sm text-white text-sm font-semibold rounded-full uppercase">
+                        {featuredEvent.type}
+                      </span>
+                      <span className="px-4 py-2 bg-green-500 text-white text-sm font-semibold rounded-full">
+                        Tonight
+                      </span>
+                    </div>
+                    <h3 className="text-3xl sm:text-4xl font-bold mb-4">{featuredEvent.title}</h3>
+                    {featuredEvent.description && (
+                      <p className="text-white/90 text-lg mb-6">{featuredEvent.description}</p>
+                    )}
+                    <div className="space-y-3 mb-6">
+                      <div className="flex items-center space-x-3">
+                        <Calendar className="w-5 h-5 text-white/80" />
+                        <span className="text-white/90">
+                          {new Date(featuredEvent.date).toLocaleDateString("en-US", {
+                            weekday: "long",
+                            month: "long",
+                            day: "numeric",
+                            year: "numeric",
+                          })}
+                        </span>
+                      </div>
+                      {featuredEvent.time && (
+                        <div className="flex items-center space-x-3">
+                          <Clock className="w-5 h-5 text-white/80" />
+                          <span className="text-white/90">{featuredEvent.time}</span>
+                        </div>
+                      )}
+                      {featuredEvent.location && (
+                        <div className="flex items-center space-x-3">
+                          <MapPin className="w-5 h-5 text-white/80" />
+                          <span className="text-white/90">{featuredEvent.location}</span>
+                        </div>
+                      )}
+                      {featuredEvent.teams && (
+                        <div className="flex items-center space-x-3">
+                          <Users className="w-5 h-5 text-white/80" />
+                          <span className="text-white/90 font-semibold">{featuredEvent.teams}</span>
+                        </div>
+                      )}
+                    </div>
+                    <Link
+                      href={`/events/${featuredEvent.id}`}
+                      className="inline-flex items-center space-x-2 px-6 py-3 bg-white text-primary font-semibold rounded-lg hover:bg-white/90 transition-all transform hover:scale-105 shadow-lg"
+                    >
+                      <span>View Details</span>
+                      <ArrowRight className="w-5 h-5" />
+                    </Link>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* Upcoming Events Section */}
       {upcomingEvents.length > 0 && (
         <section className="py-20 bg-muted">
@@ -145,7 +292,7 @@ export default async function Home() {
                   The Madina Basketball court is a thriving hub for players of all levels. From daily pick-up games to structured training sessions, from youth development programs to competitive tournaments—this is where the community comes to play.
                 </p>
                 <p className="text-lg text-gray-700 leading-relaxed mb-6">
-                  Home to teams like Zurak Basketball and Madina Old Gees, the court hosts regular events and serves as the foundation for the upcoming Madina CITI Foundation's basketball and social impact initiatives.
+                  Home to teams like Zurak Basketball and Madina Old Gees, the court hosts regular events and serves as the foundation for Madina Basketball's ongoing basketball and social impact initiatives.
                 </p>
                 <Link
                   href="/about"
@@ -160,12 +307,15 @@ export default async function Home() {
                   <div className="text-6xl font-bold text-primary mb-2">2025</div>
                   <div className="text-2xl font-semibold text-gray-800">Active & Growing</div>
                 </div>
-                {/* Placeholder for court image */}
-                <div className="mt-6 aspect-video bg-gray-200 rounded-xl flex items-center justify-center">
-                  <div className="text-center text-gray-400">
-                    <Trophy className="w-16 h-16 mx-auto mb-2" />
-                    <p className="text-sm">Court Image</p>
-                  </div>
+                {/* Court image */}
+                <div className="mt-6 aspect-[4/3] bg-gray-200 rounded-xl overflow-hidden relative">
+                  <Image
+                    src="/images/journey/after/court-painting.jpg"
+                    alt="Madina Basketball Court - Court Painting"
+                    fill
+                    className="object-cover"
+                    unoptimized
+                  />
                 </div>
               </div>
             </div>
