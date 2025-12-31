@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Plus, Trash2, Download, FileText } from "lucide-react";
+import { Plus, Trash2, Download, FileText, Image as ImageIcon } from "lucide-react";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 import TeamSelector from "@/components/TeamSelector";
@@ -122,6 +122,54 @@ export default function TeamSheetGenerator() {
     setPlayers(
       players.map((p) => (p.id === id ? { ...p, [field]: value } : p))
     );
+  };
+
+  /**
+   * Export team sheet as PNG image (for social media)
+   */
+  const exportAsImage = async () => {
+    const useDualMode = mode === "dual" && homeTeam && awayTeam;
+    const teamNameForPNG = useDualMode ? `${homeTeam}_vs_${awayTeam}` : teamName;
+    
+    if (!teamNameForPNG) {
+      alert("Please enter a team name");
+      return;
+    }
+
+    const filledHomePlayers = homePlayers.filter(
+      (p) => p.name.trim() !== "" || p.jerseyNumber.trim() !== ""
+    );
+    const filledAwayPlayers = awayPlayers.filter(
+      (p) => p.name.trim() !== "" || p.jerseyNumber.trim() !== ""
+    );
+    
+    if (useDualMode && (filledHomePlayers.length === 0 || filledAwayPlayers.length === 0)) {
+      alert("Please add players to both teams");
+      return;
+    }
+
+    setGenerating(true);
+    try {
+      const element = document.getElementById("team-sheet-preview");
+      if (!element) return;
+      
+      const canvas = await html2canvas(element, {
+        scale: 3,
+        backgroundColor: "#ffffff",
+        logging: false,
+        useCORS: true,
+      });
+      
+      const link = document.createElement('a');
+      link.download = `${teamNameForPNG}_Team_Sheet.png`;
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+    } catch (error) {
+      console.error("Error generating image:", error);
+      alert("Failed to generate image. Please try again.");
+    } finally {
+      setGenerating(false);
+    }
   };
 
   const generatePDF = async () => {
@@ -452,7 +500,24 @@ export default function TeamSheetGenerator() {
             </Link>
 
             {/* Secondary Actions */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <button
+                onClick={exportAsImage}
+                disabled={generating || !homeTeam || filledHomePlayers.length === 0}
+                className="flex items-center justify-center space-x-2 px-6 py-3 bg-primary hover:bg-primary-dark text-white rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-semibold"
+              >
+                {generating ? (
+                  <>
+                    <div className="animate-spin w-4 h-4 border-2 border-white border-t-transparent rounded-full" />
+                    <span>Generating...</span>
+                  </>
+                ) : (
+                  <>
+                    <ImageIcon className="w-5 h-5" />
+                    <span>Download Image</span>
+                  </>
+                )}
+              </button>
               <button
                 onClick={generatePDF}
                 disabled={generating || !homeTeam || filledHomePlayers.length === 0}

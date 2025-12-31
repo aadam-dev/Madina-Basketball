@@ -17,11 +17,17 @@
 
 import { Suspense, useState, useEffect, useRef } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
-import { ArrowLeft, RotateCcw, Save, Download, Play, Pause, Clock } from "lucide-react";
+import { ArrowLeft, RotateCcw, Save, Download, Play, Pause, Clock, PlusCircle, Image as ImageIcon, ArrowDown } from "lucide-react";
 import Link from "next/link";
 import TeamSelector from "@/components/TeamSelector";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
+import { 
+  saveGameState, 
+  getCurrentGameState, 
+  hasRecoverableGame,
+  clearCurrentGame 
+} from "@/lib/offline-storage";
 
 /**
  * Quarter score data structure
@@ -37,27 +43,30 @@ function BasicScoreboardContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
 
-  // Team configuration
+  // Use mounted state to prevent hydration mismatch
+  const [mounted, setMounted] = useState(false);
+
+  // Team configuration - initialize empty, will be set after mount
   const [homeTeam, setHomeTeam] = useState("");
   const [awayTeam, setAwayTeam] = useState("");
   
   // Game state
-  const [currentQuarter, setCurrentQuarter] = useState(1); // Current quarter (1-4, then 5+ for OT)
-  const [overtime, setOvertime] = useState(0); // Number of overtime periods
-  const [gameStarted, setGameStarted] = useState(false); // Whether game has started
-  const [gameEnded, setGameEnded] = useState(false); // Whether game has ended
-  const [saving, setSaving] = useState(false); // Save operation in progress
+  const [currentQuarter, setCurrentQuarter] = useState(1);
+  const [overtime, setOvertime] = useState(0);
+  const [gameStarted, setGameStarted] = useState(false);
+  const [gameEnded, setGameEnded] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [showFinalScoreCard, setShowFinalScoreCard] = useState(false);
+  const [showScrollIndicator, setShowScrollIndicator] = useState(false);
   
   // Score tracking
-  // Current quarter scores (reset to 0 at start of each quarter)
   const [currentQuarterHomeScore, setCurrentQuarterHomeScore] = useState(0);
   const [currentQuarterAwayScore, setCurrentQuarterAwayScore] = useState(0);
-  // Historical quarter scores (stored when quarter ends)
   const [quarterScores, setQuarterScores] = useState<QuarterScore[]>([]);
 
   // Timer state
-  const [timerDuration, setTimerDuration] = useState(600); // Default: 10 minutes (600 seconds)
-  const [timeRemaining, setTimeRemaining] = useState(600); // Current time remaining in seconds
+  const [timerDuration, setTimerDuration] = useState(600);
+  const [timeRemaining, setTimeRemaining] = useState(600);
   const [isTimerRunning, setIsTimerRunning] = useState(false);
   const [isTimerPaused, setIsTimerPaused] = useState(false);
   const timerIntervalRef = useRef<NodeJS.Timeout | null>(null);
@@ -74,6 +83,69 @@ function BasicScoreboardContent() {
     const team = searchParams.get("team");
     if (team) setHomeTeam(team);
   }, [searchParams]);
+
+  // Recover game state after mount (client-side only) - prevents hydration error
+  useEffect(() => {
+    setMounted(true);
+    
+    if (hasRecoverableGame()) {
+      const saved = getCurrentGameState();
+      if (!saved || saved.gameMode !== 'basic') return;
+      
+      const hoursSinceLastUpdate = (Date.now() - (saved.timestamp || 0)) / (1000 * 60 * 60);
+      const isRecent = hoursSinceLastUpdate < 1;
+      
+      if (isRecent) {
+        // Auto-recover recent games
+        setHomeTeam(saved.homeTeam || "");
+        setAwayTeam(saved.awayTeam || "");
+        setCurrentQuarter(saved.quarter || 1);
+        setOvertime(saved.overtime || 0);
+        setGameStarted(saved.gameStarted || false);
+        setGameEnded(saved.gameEnded || false);
+        if (saved.quarterScores) setQuarterScores(saved.quarterScores);
+        if (saved.timeRemaining !== undefined) setTimeRemaining(saved.timeRemaining);
+        if (saved.timerDuration !== undefined) setTimerDuration(saved.timerDuration);
+        if (saved.homeFouls !== undefined) setHomeFouls(saved.homeFouls);
+        if (saved.awayFouls !== undefined) setAwayFouls(saved.awayFouls);
+        
+        const savedHomeTotal = saved.homeScore || 0;
+        const savedAwayTotal = saved.awayScore || 0;
+        const completedHomeTotal = (saved.quarterScores || []).reduce((sum: number, qs: any) => sum + qs.homeScore, 0);
+        const completedAwayTotal = (saved.quarterScores || []).reduce((sum: number, qs: any) => sum + qs.awayScore, 0);
+        setCurrentQuarterHomeScore(savedHomeTotal - completedHomeTotal);
+        setCurrentQuarterAwayScore(savedAwayTotal - completedAwayTotal);
+      } else {
+        // Prompt for older games
+        const shouldRecover = confirm(
+          'Recover previous game from ' + new Date(saved.timestamp || 0).toLocaleString() + '?\n\nClick OK to continue, Cancel to start fresh.'
+        );
+        
+        if (shouldRecover) {
+          setHomeTeam(saved.homeTeam || "");
+          setAwayTeam(saved.awayTeam || "");
+          setCurrentQuarter(saved.quarter || 1);
+          setOvertime(saved.overtime || 0);
+          setGameStarted(saved.gameStarted || false);
+          setGameEnded(saved.gameEnded || false);
+          if (saved.quarterScores) setQuarterScores(saved.quarterScores);
+          if (saved.timeRemaining !== undefined) setTimeRemaining(saved.timeRemaining);
+          if (saved.timerDuration !== undefined) setTimerDuration(saved.timerDuration);
+          if (saved.homeFouls !== undefined) setHomeFouls(saved.homeFouls);
+          if (saved.awayFouls !== undefined) setAwayFouls(saved.awayFouls);
+          
+          const savedHomeTotal = saved.homeScore || 0;
+          const savedAwayTotal = saved.awayScore || 0;
+          const completedHomeTotal = (saved.quarterScores || []).reduce((sum: number, qs: any) => sum + qs.homeScore, 0);
+          const completedAwayTotal = (saved.quarterScores || []).reduce((sum: number, qs: any) => sum + qs.awayScore, 0);
+          setCurrentQuarterHomeScore(savedHomeTotal - completedHomeTotal);
+          setCurrentQuarterAwayScore(savedAwayTotal - completedAwayTotal);
+        } else {
+          clearCurrentGame();
+        }
+      }
+    }
+  }, []); // Only run once on mount
 
   /**
    * Timer effect - handles countdown
@@ -114,6 +186,39 @@ function BasicScoreboardContent() {
     setHomeFouls(0);
     setAwayFouls(0);
   }, [currentQuarter, timerDuration]);
+
+
+  /**
+   * Auto-save game state to localStorage every 2 seconds
+   * Includes all game state: scores, timer, fouls, quarters
+   */
+  useEffect(() => {
+    if (!gameStarted || gameEnded) return;
+    
+    const interval = setInterval(() => {
+      saveGameState({
+        id: `basic_${Date.now()}`,
+        homeTeam,
+        awayTeam,
+        homeScore: getTotalScore("home"),
+        awayScore: getTotalScore("away"),
+        quarter: currentQuarter,
+        overtime,
+        gameStarted,
+        gameEnded,
+        gameMode: 'basic',
+        quarterScores,
+        timeRemaining,
+        timerDuration,
+        homeFouls,
+        awayFouls,
+        timestamp: Date.now(),
+        synced: false,
+      });
+    }, 2000); // Auto-save every 2 seconds
+    
+    return () => clearInterval(interval);
+  }, [homeTeam, awayTeam, currentQuarter, overtime, gameStarted, gameEnded, quarterScores, currentQuarterHomeScore, currentQuarterAwayScore, timeRemaining, timerDuration, homeFouls, awayFouls]);
 
   /**
    * Calculate total score for a team
@@ -274,6 +379,18 @@ function BasicScoreboardContent() {
       awayScore: currentQuarterAwayScore,
     }]);
     setGameEnded(true);
+    setShowFinalScoreCard(true); // Show clean final score card for social media
+    
+    // Show scroll indicator on mobile and auto-scroll after brief delay
+    if (typeof window !== 'undefined' && window.innerWidth < 768) {
+      setShowScrollIndicator(true);
+      setTimeout(() => {
+        const finalCard = document.getElementById("final-score-card");
+        if (finalCard) {
+          finalCard.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      }, 1000);
+    }
   };
 
   /**
@@ -281,8 +398,31 @@ function BasicScoreboardContent() {
    * Clears all scores, teams, and game state
    * Requires user confirmation before resetting
    */
+  /**
+   * Reset game - Clear scores but keep teams (quick restart)
+   */
   const resetGame = () => {
-    if (confirm("Are you sure you want to reset the game? All progress will be lost.")) {
+    if (confirm("🔄 Reset Game?\n\nThis will clear all scores and stats but keep the teams.\n\nUse 'New Game' to change teams.")) {
+      setCurrentQuarter(1);
+      setOvertime(0);
+      setGameStarted(false);
+      setGameEnded(false);
+      setCurrentQuarterHomeScore(0);
+      setCurrentQuarterAwayScore(0);
+      setQuarterScores([]);
+      resetTimer();
+      setHomeFouls(0);
+      setAwayFouls(0);
+      clearCurrentGame(); // Clear localStorage
+    }
+  };
+
+  /**
+   * New Game - Go back to team selection
+   */
+  const newGame = () => {
+    if (confirm("🆕 Start New Game?\n\nThis will clear everything and return to team selection.")) {
+      clearCurrentGame(); // Clear localStorage
       setHomeTeam("");
       setAwayTeam("");
       setCurrentQuarter(1);
@@ -355,6 +495,9 @@ function BasicScoreboardContent() {
         });
       }
 
+      // Clear localStorage after successful database save
+      clearCurrentGame();
+      
       alert("Game saved successfully!");
       
       // Redirect to game detail page if game is completed
@@ -364,6 +507,86 @@ function BasicScoreboardContent() {
     } catch (error) {
       console.error("Error saving game:", error);
       alert("Failed to save game. Please try again.");
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  /**
+   * Export final score card as PNG image (for social media)
+   */
+  const exportAsImage = async () => {
+    setSaving(true);
+    try {
+      const element = document.getElementById("final-score-card");
+      if (!element) return;
+      
+      const canvas = await html2canvas(element, {
+        scale: 3, // High quality for social media
+        backgroundColor: null,
+        logging: false,
+        useCORS: true,
+        allowTaint: true,
+        windowWidth: element.scrollWidth,
+        windowHeight: element.scrollHeight,
+        width: element.scrollWidth,
+        height: element.scrollHeight,
+      });
+      
+      // Download as PNG
+      const link = document.createElement('a');
+      link.download = `${homeTeam}_vs_${awayTeam}_Final_Score.png`;
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+    } catch (error) {
+      console.error("Error generating image:", error);
+      alert("Failed to generate image. Please try again.");
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  /**
+   * Export final score card as PDF
+   */
+  const exportAsPDF = async () => {
+    setSaving(true);
+    try {
+      const element = document.getElementById("final-score-card");
+      if (!element) return;
+      
+      const canvas = await html2canvas(element, {
+        scale: 2,
+        backgroundColor: "#000000",
+        logging: false,
+        useCORS: true,
+        allowTaint: true,
+        windowWidth: element.scrollWidth,
+        windowHeight: element.scrollHeight,
+        width: element.scrollWidth,
+        height: element.scrollHeight,
+      });
+      
+      const imgData = canvas.toDataURL("image/png");
+      
+      const imgWidth = 297; // A4 landscape width in mm
+      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+      
+      const pdf = new jsPDF({
+        orientation: imgHeight > imgWidth ? "portrait" : "landscape",
+        unit: "mm",
+        format: imgHeight > 210 ? [imgWidth, imgHeight] : "a4",
+      });
+      
+      const margin = 5;
+      const pdfWidth = pdf.internal.pageSize.getWidth() - (margin * 2);
+      const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+      
+      pdf.addImage(imgData, "PNG", margin, margin, pdfWidth, pdfHeight);
+      pdf.save(`${homeTeam}_vs_${awayTeam}_Final_Score.pdf`);
+    } catch (error) {
+      console.error("Error generating PDF:", error);
+      alert("Failed to generate PDF. Please try again.");
     } finally {
       setSaving(false);
     }
@@ -383,10 +606,16 @@ function BasicScoreboardContent() {
             <span>Back</span>
           </Link>
           <h1 className="text-white text-xl font-bold">LIVE SCOREBOARD</h1>
-          <button onClick={resetGame} className="text-gray-400 hover:text-white flex items-center space-x-2">
-            <RotateCcw className="w-5 h-5" />
-            <span>Reset</span>
-          </button>
+          <div className="flex items-center space-x-3">
+            <button onClick={resetGame} className="text-gray-400 hover:text-white flex items-center space-x-1" title="Clear scores, keep teams">
+              <RotateCcw className="w-5 h-5" />
+              <span>Reset</span>
+            </button>
+            <button onClick={newGame} className="text-gray-400 hover:text-white flex items-center space-x-1" title="Start fresh with new teams">
+              <PlusCircle className="w-5 h-5" />
+              <span>New Game</span>
+            </button>
+          </div>
         </div>
 
         {/* Team Setup (Before Game Starts) */}
@@ -540,7 +769,7 @@ function BasicScoreboardContent() {
                     </div>
                   </div>
                   {/* Compact Score Buttons */}
-                  <div className="grid grid-cols-4 gap-1 w-full">
+                  <div className="grid grid-cols-4 gap-1 w-full no-print">
                     <button 
                       onClick={() => addScore("home", 1)} 
                       className="score-btn-micro score-btn-home"
@@ -590,7 +819,7 @@ function BasicScoreboardContent() {
                     </div>
                   </div>
                   {/* Compact Score Buttons */}
-                  <div className="grid grid-cols-4 gap-1 w-full">
+                  <div className="grid grid-cols-4 gap-1 w-full no-print">
                     <button 
                       onClick={() => addScore("away", 1)} 
                       className="score-btn-micro score-btn-away"
@@ -635,7 +864,7 @@ function BasicScoreboardContent() {
                   <button
                     onClick={() => removeFoul("home")}
                     disabled={homeFouls === 0 || gameEnded}
-                    className="foul-btn-micro foul-btn-remove disabled:opacity-30"
+                    className="foul-btn-micro foul-btn-remove disabled:opacity-30 no-print"
                     title="Remove Foul"
                   >
                     -
@@ -646,7 +875,7 @@ function BasicScoreboardContent() {
                   <button
                     onClick={() => addFoul("home")}
                     disabled={homeFouls >= 5 || gameEnded}
-                    className="foul-btn-micro foul-btn-add-home disabled:opacity-30"
+                    className="foul-btn-micro foul-btn-add-home disabled:opacity-30 no-print"
                     title="Add Foul"
                   >
                     +
@@ -663,7 +892,7 @@ function BasicScoreboardContent() {
                   <button
                     onClick={() => removeFoul("away")}
                     disabled={awayFouls === 0 || gameEnded}
-                    className="foul-btn-micro foul-btn-remove disabled:opacity-30"
+                    className="foul-btn-micro foul-btn-remove disabled:opacity-30 no-print"
                     title="Remove Foul"
                   >
                     -
@@ -674,7 +903,7 @@ function BasicScoreboardContent() {
                   <button
                     onClick={() => addFoul("away")}
                     disabled={awayFouls >= 5 || gameEnded}
-                    className="foul-btn-micro foul-btn-add-away disabled:opacity-30"
+                    className="foul-btn-micro foul-btn-add-away disabled:opacity-30 no-print"
                     title="Add Foul"
                   >
                     +
@@ -701,10 +930,13 @@ function BasicScoreboardContent() {
                 )}
                 {/* Game Status - Centered */}
                 <div className="flex justify-center">
-                  <div className={`px-3 sm:px-4 py-1 sm:py-2 rounded-full text-xs sm:text-sm font-bold whitespace-nowrap ${
+                  <div className={`px-3 sm:px-4 py-1 sm:py-2 rounded-full text-xs sm:text-sm font-bold whitespace-nowrap no-print flex items-center gap-2 ${
                     gameEnded ? 'bg-red-900 text-red-300' : 'bg-green-900 text-green-300'
                   }`}>
-                    {gameEnded ? '🏁 FINAL' : '🔴 LIVE'}
+                    {!gameEnded && (
+                      <span className="w-2 h-2 bg-red-500 rounded-full animate-pulse"></span>
+                    )}
+                    {gameEnded ? 'FINAL' : 'LIVE'}
                   </div>
                 </div>
               </div>
@@ -712,7 +944,7 @@ function BasicScoreboardContent() {
 
             {/* Game Progress Button */}
             {!gameEnded && (
-              <div className="mt-3 text-center">
+              <div className="mt-3 text-center no-print">
                 <button
                   onClick={nextQuarter}
                   className="px-4 sm:px-6 py-2 sm:py-3 bg-yellow-500 hover:bg-yellow-600 text-black font-bold rounded-lg text-sm sm:text-base w-full transition-colors"
@@ -723,43 +955,215 @@ function BasicScoreboardContent() {
             )}
 
             {/* Action Buttons */}
-            <div className="mt-6 flex flex-wrap justify-center gap-4">
+            {!showFinalScoreCard ? (
+              <div className="mt-6 flex flex-wrap justify-center gap-4 no-print">
+                <button
+                  onClick={saveGame}
+                  disabled={saving}
+                  className="flex items-center space-x-2 px-6 py-3 bg-green-600 hover:bg-green-700 text-white font-bold rounded-lg disabled:opacity-50"
+                >
+                  <Save className="w-5 h-5" />
+                  <span>{saving ? "Saving..." : "Save to Database"}</span>
+                </button>
+                <button
+                  onClick={async () => {
+                    setSaving(true);
+                    try {
+                      const element = document.getElementById("scoreboard-print");
+                      if (!element) return;
+                      
+                      // Hide interactive elements before capture
+                      const hideElements = element.querySelectorAll('.no-print');
+                      hideElements.forEach(el => {
+                        (el as HTMLElement).style.display = 'none';
+                      });
+                      
+                      // Capture with full dimensions to prevent cutoff
+                      const canvas = await html2canvas(element, { 
+                        scale: 2,
+                        backgroundColor: "#000000",
+                        logging: false,
+                        useCORS: true,
+                        allowTaint: true,
+                        scrollX: 0,
+                        scrollY: 0,
+                        width: element.scrollWidth,
+                        height: element.scrollHeight,
+                        windowWidth: element.scrollWidth,
+                      });
+                      
+                      // Restore hidden elements
+                      hideElements.forEach(el => {
+                        (el as HTMLElement).style.display = '';
+                      });
+                      
+                      const imgData = canvas.toDataURL("image/png");
+                      
+                      // Create PDF with proper dimensions
+                      const imgWidth = 297; // A4 landscape width in mm
+                      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+                      
+                      const pdf = new jsPDF({
+                        orientation: imgHeight > imgWidth ? "portrait" : "landscape",
+                        unit: "mm",
+                        format: imgHeight > 210 ? [imgWidth, imgHeight] : "a4",
+                      });
+                      
+                      // Add 5mm margin on all sides to prevent edge cutoff
+                      const margin = 5;
+                      const pdfWidth = pdf.internal.pageSize.getWidth() - (margin * 2);
+                      const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+                      
+                      pdf.addImage(imgData, "PNG", margin, margin, pdfWidth, pdfHeight);
+                      pdf.save(`${homeTeam}_vs_${awayTeam}_Scoreboard.pdf`);
+                    } catch (error) {
+                      console.error("Error generating PDF:", error);
+                    } finally {
+                      setSaving(false);
+                    }
+                  }}
+                  disabled={saving}
+                  className="flex items-center space-x-2 px-6 py-3 bg-primary hover:bg-primary-dark text-white font-bold rounded-lg disabled:opacity-50"
+                >
+                  <Download className="w-5 h-5" />
+                  <span>Download PDF</span>
+                </button>
+              </div>
+            ) : (
+              <div className="mt-6 flex flex-wrap justify-center gap-4 no-print">
+                <button
+                  onClick={saveGame}
+                  disabled={saving}
+                  className="flex items-center space-x-2 px-6 py-3 bg-green-600 hover:bg-green-700 text-white font-bold rounded-lg disabled:opacity-50"
+                >
+                  <Save className="w-5 h-5" />
+                  <span>{saving ? "Saving..." : "Save to Database"}</span>
+                </button>
+                <div className="flex items-center gap-2 px-4 py-2 bg-gray-800 rounded-lg border border-gray-700">
+                  <Download className="w-4 h-4 text-gray-400" />
+                  <span className="text-sm text-gray-300">Scroll down for export options</span>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Scroll Indicator Banner - Mobile Only */}
+        {showFinalScoreCard && showScrollIndicator && (
+          <div className="md:hidden fixed top-0 left-0 right-0 bg-primary text-white px-4 py-3 z-50 shadow-lg">
+            <div className="flex items-center justify-between max-w-md mx-auto">
+              <div className="flex items-center gap-2">
+                <Download className="w-5 h-5" />
+                <span className="text-sm font-semibold">Export options available below</span>
+              </div>
+              <button
+                onClick={() => {
+                  const finalCard = document.getElementById("final-score-card");
+                  if (finalCard) {
+                    finalCard.scrollIntoView({ behavior: "smooth", block: "start" });
+                    setShowScrollIndicator(false);
+                  }
+                }}
+                className="text-white hover:text-gray-200"
+                aria-label="Scroll to export options"
+              >
+                <ArrowDown className="w-5 h-5" />
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* Clean Final Score Card */}
+        {showFinalScoreCard && (
+          <div className="mt-8">
+            <div id="final-score-card" className="bg-gradient-to-br from-gray-900 via-black to-gray-900 rounded-2xl p-8 max-w-3xl mx-auto shadow-2xl border-2 border-primary/30">
+              {/* FINAL Indicator */}
+              <div className="text-center mb-8">
+                <div className="inline-block bg-red-600 text-white px-6 py-2 rounded-full text-lg font-bold shadow-lg tracking-wide">
+                  FINAL SCORE
+                </div>
+              </div>
+              
+              {/* Teams and Scores */}
+              <div className="grid grid-cols-3 gap-6 items-end mb-10">
+                {/* Home Team */}
+                <div className="text-center flex flex-col items-center">
+                  <div className="text-primary text-xl md:text-2xl font-bold mb-3 break-words leading-tight">{homeTeam}</div>
+                  <div className="text-7xl md:text-8xl font-extrabold text-primary led-glow-primary-final leading-none" style={{ fontVariantNumeric: 'tabular-nums', lineHeight: '1' }}>
+                    {totalHomeScore}
+                  </div>
+                </div>
+                
+                {/* VS */}
+                <div className="text-center mb-4 flex items-center justify-center">
+                  <div className="text-gray-500 text-2xl md:text-3xl font-bold">VS</div>
+                </div>
+                
+                {/* Away Team */}
+                <div className="text-center flex flex-col items-center">
+                  <div className="text-secondary text-xl md:text-2xl font-bold mb-3 break-words leading-tight">{awayTeam}</div>
+                  <div className="text-7xl md:text-8xl font-extrabold text-secondary led-glow-secondary-final leading-none" style={{ fontVariantNumeric: 'tabular-nums', lineHeight: '1' }}>
+                    {totalAwayScore}
+                  </div>
+                </div>
+              </div>
+              
+              {/* Quarter Breakdown */}
+              <div className="bg-gray-800/50 rounded-xl p-6 mb-8 border border-gray-700">
+                <h3 className="text-gray-400 text-sm uppercase tracking-wider text-center mb-4 font-semibold">Quarter Breakdown</h3>
+                <div className="grid grid-cols-4 gap-4">
+                  {quarterScores.map((qs) => (
+                    <div key={qs.quarter} className="text-center bg-gray-900 rounded-lg p-4 border border-gray-700">
+                      <div className="text-yellow-400 text-xs font-bold mb-2">
+                        {qs.quarter <= 4 ? `Q${qs.quarter}` : `OT${qs.quarter - 4}`}
+                      </div>
+                      <div className="text-white font-bold text-lg" style={{ fontVariantNumeric: 'tabular-nums' }}>
+                        {qs.homeScore}-{qs.awayScore}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              
+              {/* Branding Footer */}
+              <div className="text-center border-t border-gray-700 pt-4">
+                <div className="text-primary text-base font-semibold mb-1">
+                  Madina Basketball
+                </div>
+                <div className="text-gray-500 text-xs">
+                  Your Game. Your Stats. Your Community.
+                </div>
+                <div className="text-gray-600 text-xs mt-1 font-mono">
+                  madinabball.vercel.app/tools
+                </div>
+              </div>
+            </div>
+
+            {/* Export Buttons */}
+            <div className="flex flex-wrap gap-4 justify-center mt-8 max-w-3xl mx-auto">
+              <button
+                onClick={exportAsImage}
+                disabled={saving}
+                className="flex items-center space-x-2 px-6 py-3 bg-primary hover:bg-primary-dark text-white font-bold rounded-lg disabled:opacity-50 shadow-lg transition-all"
+              >
+                <ImageIcon className="w-5 h-5" />
+                <span>{saving ? "Generating..." : "Download Image"}</span>
+              </button>
+              <button
+                onClick={exportAsPDF}
+                disabled={saving}
+                className="flex items-center space-x-2 px-6 py-3 bg-secondary hover:bg-secondary-dark text-white font-bold rounded-lg disabled:opacity-50 shadow-lg transition-all"
+              >
+                <Download className="w-5 h-5" />
+                <span>{saving ? "Generating..." : "Download PDF"}</span>
+              </button>
               <button
                 onClick={saveGame}
                 disabled={saving}
-                className="flex items-center space-x-2 px-6 py-3 bg-green-600 hover:bg-green-700 text-white font-bold rounded-lg disabled:opacity-50"
+                className="flex items-center space-x-2 px-6 py-3 bg-green-600 hover:bg-green-700 text-white font-bold rounded-lg disabled:opacity-50 shadow-lg transition-all"
               >
                 <Save className="w-5 h-5" />
-                <span>{saving ? "Saving..." : "Save Game"}</span>
-              </button>
-              <button
-                onClick={async () => {
-                  setSaving(true);
-                  try {
-                    const element = document.getElementById("scoreboard-print");
-                    if (!element) return;
-                    const canvas = await html2canvas(element, { scale: 2, backgroundColor: "#000000" });
-                    const imgData = canvas.toDataURL("image/png");
-                    const pdf = new jsPDF({
-                      orientation: "landscape",
-                      unit: "mm",
-                      format: "a4",
-                    });
-                    const pdfWidth = pdf.internal.pageSize.getWidth();
-                    const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
-                    pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
-                    pdf.save(`${homeTeam}_vs_${awayTeam}_Scoreboard.pdf`);
-                  } catch (error) {
-                    console.error("Error generating PDF:", error);
-                  } finally {
-                    setSaving(false);
-                  }
-                }}
-                disabled={saving}
-                className="flex items-center space-x-2 px-6 py-3 bg-purple-600 hover:bg-purple-700 text-white font-bold rounded-lg disabled:opacity-50"
-              >
-                <Download className="w-5 h-5" />
-                <span>Download PDF</span>
+                <span>{saving ? "Saving..." : "Save to Database"}</span>
               </button>
             </div>
           </div>
@@ -912,6 +1316,22 @@ function BasicScoreboardContent() {
         }
         .led-glow-secondary {
           text-shadow: 0 0 20px currentColor, 0 0 40px currentColor, 0 0 60px currentColor;
+        }
+        .led-glow-primary-final {
+          text-shadow: 
+            0 0 8px rgba(249, 115, 22, 0.9),
+            0 0 16px rgba(249, 115, 22, 0.7),
+            0 0 24px rgba(249, 115, 22, 0.5),
+            0 0 32px rgba(249, 115, 22, 0.3);
+          filter: drop-shadow(0 0 4px rgba(249, 115, 22, 0.6));
+        }
+        .led-glow-secondary-final {
+          text-shadow: 
+            0 0 8px rgba(0, 78, 137, 0.9),
+            0 0 16px rgba(0, 78, 137, 0.7),
+            0 0 24px rgba(0, 78, 137, 0.5),
+            0 0 32px rgba(0, 78, 137, 0.3);
+          filter: drop-shadow(0 0 4px rgba(0, 78, 137, 0.6));
         }
       `}</style>
     </div>

@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { Trophy, Plus, Edit, Trash2, Eye, Filter, Calendar } from "lucide-react";
+import { Trophy, Plus, Edit, Trash2, Eye, Filter, Calendar, Printer } from "lucide-react";
 
 interface Game {
   id: string;
@@ -71,6 +71,179 @@ export default function AdminGamesPage() {
       console.error("Error deleting game:", error);
       alert("Failed to delete game");
     }
+  };
+
+  const handlePrint = (game: Game) => {
+    // Create a printable view of the game
+    const printWindow = window.open('', '_blank');
+    if (!printWindow) return;
+
+    const winner =
+      game.home_score > game.away_score
+        ? game.home_team
+        : game.away_score > game.home_score
+        ? game.away_team
+        : "Tie Game";
+
+    printWindow.document.write(`
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <title>${game.home_team} vs ${game.away_team} - Game Report</title>
+          <style>
+            body {
+              font-family: Arial, sans-serif;
+              max-width: 800px;
+              margin: 40px auto;
+              padding: 20px;
+            }
+            .header {
+              text-align: center;
+              border-bottom: 3px solid #ff6b35;
+              padding-bottom: 20px;
+              margin-bottom: 30px;
+            }
+            .header h1 {
+              margin: 0;
+              color: #1a1a1a;
+              font-size: 32px;
+            }
+            .header p {
+              margin: 5px 0;
+              color: #666;
+            }
+            .scoreboard {
+              display: flex;
+              justify-content: space-around;
+              align-items: center;
+              background: #f5f5f5;
+              padding: 30px;
+              border-radius: 10px;
+              margin: 30px 0;
+            }
+            .team {
+              text-align: center;
+            }
+            .team-name {
+              font-size: 24px;
+              font-weight: bold;
+              margin-bottom: 10px;
+            }
+            .score {
+              font-size: 48px;
+              font-weight: bold;
+              color: #ff6b35;
+            }
+            .vs {
+              font-size: 20px;
+              color: #999;
+            }
+            .winner {
+              text-align: center;
+              font-size: 24px;
+              font-weight: bold;
+              color: #4caf50;
+              margin: 20px 0;
+            }
+            .details {
+              margin-top: 30px;
+              padding: 20px;
+              background: #fafafa;
+              border-radius: 8px;
+            }
+            .detail-row {
+              display: flex;
+              justify-content: space-between;
+              padding: 10px 0;
+              border-bottom: 1px solid #e0e0e0;
+            }
+            .detail-row:last-child {
+              border-bottom: none;
+            }
+            .label {
+              font-weight: bold;
+              color: #666;
+            }
+            .value {
+              color: #1a1a1a;
+            }
+            .footer {
+              margin-top: 40px;
+              text-align: center;
+              color: #999;
+              font-size: 12px;
+              border-top: 1px solid #e0e0e0;
+              padding-top: 20px;
+            }
+            @media print {
+              body {
+                margin: 0;
+                padding: 20px;
+              }
+            }
+          </style>
+        </head>
+        <body>
+          <div class="header">
+            <h1>Madina Basketball</h1>
+            <p>Official Game Report</p>
+          </div>
+
+          <div class="scoreboard">
+            <div class="team">
+              <div class="team-name">${game.home_team}</div>
+              <div class="score">${game.home_score}</div>
+            </div>
+            <div class="vs">VS</div>
+            <div class="team">
+              <div class="team-name">${game.away_team}</div>
+              <div class="score">${game.away_score}</div>
+            </div>
+          </div>
+
+          ${winner !== "Tie Game" ? `<div class="winner">🏆 Winner: ${winner}</div>` : '<div class="winner">Final: Tie Game</div>'}
+
+          <div class="details">
+            <div class="detail-row">
+              <span class="label">Status:</span>
+              <span class="value">${game.status.toUpperCase()}</span>
+            </div>
+            <div class="detail-row">
+              <span class="label">Game Mode:</span>
+              <span class="value">${game.game_mode.charAt(0).toUpperCase() + game.game_mode.slice(1)}</span>
+            </div>
+            <div class="detail-row">
+              <span class="label">Quarter/Period:</span>
+              <span class="value">${game.overtime > 0 ? `OT ${game.overtime}` : `Quarter ${game.quarter}`}</span>
+            </div>
+            <div class="detail-row">
+              <span class="label">Date:</span>
+              <span class="value">${new Date(game.game_date).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</span>
+            </div>
+            <div class="detail-row">
+              <span class="label">Location:</span>
+              <span class="value">${game.location}</span>
+            </div>
+            <div class="detail-row">
+              <span class="label">Game ID:</span>
+              <span class="value">${game.id}</span>
+            </div>
+          </div>
+
+          <div class="footer">
+            <p>Generated on ${new Date().toLocaleString()}</p>
+            <p>Madina Basketball - Libya Quarters, Madina, Accra, Ghana</p>
+          </div>
+
+          <script>
+            window.onload = function() {
+              window.print();
+            }
+          </script>
+        </body>
+      </html>
+    `);
+    printWindow.document.close();
   };
 
   const getStatusColor = (status: string) => {
@@ -257,6 +430,13 @@ export default function AdminGamesPage() {
                     >
                       <Eye className="w-4 h-4" />
                     </Link>
+                    <button
+                      onClick={() => handlePrint(game)}
+                      className="p-2 text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded"
+                      title="Print game report"
+                    >
+                      <Printer className="w-4 h-4" />
+                    </button>
                     <button
                       onClick={() =>
                         handleDelete(

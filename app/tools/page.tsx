@@ -8,7 +8,7 @@
  */
 
 import Link from "next/link";
-import { Trophy, BarChart3, FileText, Clock, Users, ArrowRight, PlayCircle, Download, Clipboard } from "lucide-react";
+import { Trophy, BarChart3, FileText, Clock, Users, ArrowRight, PlayCircle, Download, Clipboard, Smartphone, WifiOff } from "lucide-react";
 
 export default function ToolsPage() {
   const tools = [
@@ -181,6 +181,144 @@ export default function ToolsPage() {
         </div>
       </section>
 
+      {/* PWA Installation Section */}
+      <section className="py-16 bg-gradient-to-br from-blue-50 to-purple-50">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-4xl mx-auto">
+            <div className="text-center mb-12">
+              <div className="inline-flex items-center justify-center w-16 h-16 bg-primary/10 rounded-full mb-4">
+                <Smartphone className="w-8 h-8 text-primary" />
+              </div>
+              <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
+                Works Offline - Install as App
+              </h2>
+              <p className="text-lg text-gray-600">
+                Install these tools on your device for offline use and faster access
+              </p>
+            </div>
+            
+            {/* Installation Instructions */}
+            <div className="grid md:grid-cols-2 gap-8 mb-8">
+              {/* iPhone/iPad */}
+              <div className="bg-white rounded-lg shadow p-6 border border-gray-200">
+                <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center">
+                  <Smartphone className="w-6 h-6 text-primary mr-2" />
+                  iPhone & iPad
+                </h3>
+                <ol className="space-y-3 text-gray-700">
+                  <li className="flex items-start">
+                    <span className="font-bold text-primary mr-2">1.</span>
+                    <span>Open this site in <strong>Safari</strong> browser</span>
+                  </li>
+                  <li className="flex items-start">
+                    <span className="font-bold text-primary mr-2">2.</span>
+                    <span>Tap the <strong>Share</strong> button (square with arrow)</span>
+                  </li>
+                  <li className="flex items-start">
+                    <span className="font-bold text-primary mr-2">3.</span>
+                    <span>Scroll down and tap <strong>"Add to Home Screen"</strong></span>
+                  </li>
+                  <li className="flex items-start">
+                    <span className="font-bold text-primary mr-2">4.</span>
+                    <span>Tap <strong>"Add"</strong> to complete</span>
+                  </li>
+                </ol>
+              </div>
+              
+              {/* Android */}
+              <div className="bg-white rounded-lg shadow p-6 border border-gray-200">
+                <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center">
+                  <Smartphone className="w-6 h-6 text-secondary mr-2" />
+                  Android
+                </h3>
+                <ol className="space-y-3 text-gray-700">
+                  <li className="flex items-start">
+                    <span className="font-bold text-secondary mr-2">1.</span>
+                    <span>Open this site in <strong>Chrome</strong> browser</span>
+                  </li>
+                  <li className="flex items-start">
+                    <span className="font-bold text-secondary mr-2">2.</span>
+                    <span>Tap the menu <strong>(⋮)</strong> or wait for install prompt</span>
+                  </li>
+                  <li className="flex items-start">
+                    <span className="font-bold text-secondary mr-2">3.</span>
+                    <span>Select <strong>"Install app"</strong> or <strong>"Add to Home Screen"</strong></span>
+                  </li>
+                  <li className="flex items-start">
+                    <span className="font-bold text-secondary mr-2">4.</span>
+                    <span>Tap <strong>"Install"</strong> to complete</span>
+                  </li>
+                </ol>
+              </div>
+            </div>
+            
+            {/* Benefits */}
+            <div className="bg-white rounded-lg shadow p-6 border border-gray-200">
+              <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center">
+                <WifiOff className="w-6 h-6 text-primary mr-2" />
+                Why Install as an App?
+              </h3>
+              <div className="grid sm:grid-cols-2 gap-4">
+                <div className="flex items-start">
+                  <div className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center mr-3 flex-shrink-0">
+                    <div className="w-2 h-2 rounded-full bg-primary"></div>
+                  </div>
+                  <div>
+                    <strong className="text-gray-900">Works Without Internet</strong>
+                    <p className="text-sm text-gray-600">Track games offline, syncs when back online</p>
+                  </div>
+                </div>
+                <div className="flex items-start">
+                  <div className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center mr-3 flex-shrink-0">
+                    <div className="w-2 h-2 rounded-full bg-primary"></div>
+                  </div>
+                  <div>
+                    <strong className="text-gray-900">Faster Loading</strong>
+                    <p className="text-sm text-gray-600">Opens instantly like a native app</p>
+                  </div>
+                </div>
+                <div className="flex items-start">
+                  <div className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center mr-3 flex-shrink-0">
+                    <div className="w-2 h-2 rounded-full bg-primary"></div>
+                  </div>
+                  <div>
+                    <strong className="text-gray-900">Home Screen Icon</strong>
+                    <p className="text-sm text-gray-600">Easy access, no browser needed</p>
+                  </div>
+                </div>
+                <div className="flex items-start">
+                  <div className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center mr-3 flex-shrink-0">
+                    <div className="w-2 h-2 rounded-full bg-primary"></div>
+                  </div>
+                  <div>
+                    <strong className="text-gray-900">Full-Screen Experience</strong>
+                    <p className="text-sm text-gray-600">No browser bars, more space for game</p>
+                  </div>
+                </div>
+                <div className="flex items-start">
+                  <div className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center mr-3 flex-shrink-0">
+                    <div className="w-2 h-2 rounded-full bg-primary"></div>
+                  </div>
+                  <div>
+                    <strong className="text-gray-900">Auto-Saves Games</strong>
+                    <p className="text-sm text-gray-600">Never lose game data, even if device dies</p>
+                  </div>
+                </div>
+                <div className="flex items-start">
+                  <div className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center mr-3 flex-shrink-0">
+                    <div className="w-2 h-2 rounded-full bg-primary"></div>
+                  </div>
+                  <div>
+                    <strong className="text-gray-900">No App Store Needed</strong>
+                    <p className="text-sm text-gray-600">Install directly from website</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Workflow Section */}
       <section className="py-16 bg-gray-50">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -198,7 +336,7 @@ export default function ToolsPage() {
               {workflows.map((workflow, index) => (
                 <div
                   key={index}
-                  className="bg-white rounded-xl shadow-lg p-6 sm:p-8 border-l-4 border-primary"
+                  className="bg-white rounded-lg shadow p-6 sm:p-8 border border-gray-200"
                 >
                   <div className="mb-6">
                     <h3 className="text-2xl font-bold text-gray-900 mb-2">
@@ -206,23 +344,23 @@ export default function ToolsPage() {
                     </h3>
                     <p className="text-gray-600">{workflow.description}</p>
                   </div>
-                  <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+                  <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 overflow-x-auto pb-2">
                     {workflow.steps.map((step, stepIndex) => {
                       const StepIcon = step.icon;
                       const isPrimary = workflow.color === "primary";
                       return (
-                        <div key={stepIndex} className="flex items-center gap-3 flex-1">
+                        <div key={stepIndex} className="flex items-center gap-3 flex-shrink-0 sm:flex-1">
                           {stepIndex > 0 && (
-                            <ArrowRight className="w-5 h-5 text-gray-400 hidden sm:block" />
+                            <ArrowRight className="w-5 h-5 text-gray-400 hidden sm:block flex-shrink-0" />
                           )}
-                          <div className="flex items-center gap-3 flex-1">
+                          <div className="flex items-center gap-3 flex-1 min-w-0">
                             <div className={`w-12 h-12 rounded-lg flex items-center justify-center flex-shrink-0 ${
                               isPrimary ? 'bg-primary/10' : 'bg-secondary/10'
                             }`}>
                               <StepIcon className={`w-6 h-6 ${isPrimary ? 'text-primary' : 'text-secondary'}`} />
                             </div>
                             <div className="flex-1 min-w-0">
-                              <div className="text-sm font-semibold text-gray-900">
+                              <div className="text-sm font-semibold text-gray-900 whitespace-nowrap">
                                 {step.tool}
                               </div>
                               <div className="text-xs text-gray-600">
@@ -255,7 +393,7 @@ export default function ToolsPage() {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="bg-white rounded-lg shadow p-6 border-l-4 border-primary">
+              <div className="bg-white rounded-lg shadow p-6 border border-gray-200">
                 <h3 className="text-xl font-bold text-gray-900 mb-3">
                   Quick Pickup Game
                 </h3>
@@ -274,7 +412,7 @@ export default function ToolsPage() {
                 </ul>
               </div>
 
-              <div className="bg-white rounded-lg shadow p-6 border-l-4 border-secondary">
+              <div className="bg-white rounded-lg shadow p-6 border border-gray-200">
                 <h3 className="text-xl font-bold text-gray-900 mb-3">
                   Organized Game with Stats
                 </h3>
@@ -297,7 +435,7 @@ export default function ToolsPage() {
                 </ul>
               </div>
 
-              <div className="bg-white rounded-lg shadow p-6 border-l-4 border-primary">
+              <div className="bg-white rounded-lg shadow p-6 border border-gray-200">
                 <h3 className="text-xl font-bold text-gray-900 mb-3">
                   Manual Stat Tracking
                 </h3>
@@ -320,7 +458,7 @@ export default function ToolsPage() {
                 </ul>
               </div>
 
-              <div className="bg-white rounded-lg shadow p-6 border-l-4 border-secondary">
+              <div className="bg-white rounded-lg shadow p-6 border border-gray-200">
                 <h3 className="text-xl font-bold text-gray-900 mb-3">
                   Tournament or League
                 </h3>
@@ -342,6 +480,208 @@ export default function ToolsPage() {
                   </li>
                 </ul>
               </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* User Manual Section */}
+      <section className="py-16">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-5xl mx-auto">
+            <div className="text-center mb-12">
+              <div className="inline-flex items-center justify-center w-16 h-16 bg-secondary/10 rounded-full mb-4">
+                <FileText className="w-8 h-8 text-secondary" />
+              </div>
+              <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
+                Scorekeeping Best Practices
+              </h2>
+              <p className="text-lg text-gray-600">
+                Essential tips for professional game tracking
+              </p>
+            </div>
+            
+            {/* Manual Topics */}
+            <div className="space-y-4">
+              {/* Basic Scoreboard */}
+              <details className="bg-white rounded-xl shadow-lg overflow-hidden group">
+                <summary className="cursor-pointer p-6 hover:bg-gray-50 transition-colors">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center">
+                      <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center mr-4">
+                        <Trophy className="w-5 h-5 text-primary" />
+                      </div>
+                      <div>
+                        <h3 className="text-xl font-bold text-gray-900">Basic Scoreboard - Quick Guide</h3>
+                        <p className="text-sm text-gray-600">Simple score tracking for casual games</p>
+                      </div>
+                    </div>
+                    <ArrowRight className="w-5 h-5 text-gray-400 group-open:rotate-90 transition-transform" />
+                  </div>
+                </summary>
+                <div className="px-6 pb-6 border-t border-gray-100">
+                  <ul className="space-y-3 mt-4 text-gray-700">
+                    <li className="flex items-start">
+                      <span className="text-primary font-bold mr-2">•</span>
+                      <span><strong>Set timer duration</strong> before starting (5-30 minutes)</span>
+                    </li>
+                    <li className="flex items-start">
+                      <span className="text-primary font-bold mr-2">•</span>
+                      <span><strong>Use +1, +2, +3 buttons</strong> for scoring each team</span>
+                    </li>
+                    <li className="flex items-start">
+                      <span className="text-primary font-bold mr-2">•</span>
+                      <span><strong>-1 button</strong> for immediate corrections (current quarter only)</span>
+                    </li>
+                    <li className="flex items-start">
+                      <span className="text-primary font-bold mr-2">•</span>
+                      <span><strong>Track team fouls</strong> each quarter (resets per quarter)</span>
+                    </li>
+                    <li className="flex items-start">
+                      <span className="text-primary font-bold mr-2">•</span>
+                      <span><strong>Advance quarters</strong> when period ends</span>
+                    </li>
+                    <li className="flex items-start">
+                      <span className="text-primary font-bold mr-2">•</span>
+                      <span><strong>Save or download PDF</strong> when game complete</span>
+                    </li>
+                  </ul>
+                </div>
+              </details>
+              
+              {/* Stats Scoreboard */}
+              <details className="bg-white rounded-xl shadow-lg overflow-hidden group">
+                <summary className="cursor-pointer p-6 hover:bg-gray-50 transition-colors">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center">
+                      <div className="w-10 h-10 bg-secondary/10 rounded-lg flex items-center justify-center mr-4">
+                        <BarChart3 className="w-5 h-5 text-secondary" />
+                      </div>
+                      <div>
+                        <h3 className="text-xl font-bold text-gray-900">Player Stats Mode - Professional Tracking</h3>
+                        <p className="text-sm text-gray-600">Detailed player performance tracking</p>
+                      </div>
+                    </div>
+                    <ArrowRight className="w-5 h-5 text-gray-400 group-open:rotate-90 transition-transform" />
+                  </div>
+                </summary>
+                <div className="px-6 pb-6 border-t border-gray-100">
+                  <ul className="space-y-3 mt-4 text-gray-700">
+                    <li className="flex items-start">
+                      <span className="text-secondary font-bold mr-2">•</span>
+                      <span><strong>Create team rosters BEFORE</strong> starting game (cannot add players mid-game)</span>
+                    </li>
+                    <li className="flex items-start">
+                      <span className="text-secondary font-bold mr-2">•</span>
+                      <span><strong>Select player</strong> after each basket for attribution</span>
+                    </li>
+                    <li className="flex items-start">
+                      <span className="text-secondary font-bold mr-2">•</span>
+                      <span><strong>Use "Undo" button</strong> for mistakes (current quarter only)</span>
+                    </li>
+                    <li className="flex items-start">
+                      <span className="text-secondary font-bold mr-2">•</span>
+                      <span><strong>Shot clock auto-resets</strong> on scores and defensive rebounds</span>
+                    </li>
+                    <li className="flex items-start">
+                      <span className="text-secondary font-bold mr-2">•</span>
+                      <span><strong>View real-time stats</strong> for each player below scoreboard</span>
+                    </li>
+                    <li className="flex items-start">
+                      <span className="text-secondary font-bold mr-2">•</span>
+                      <span><strong>Print or save</strong> complete game stats when done</span>
+                    </li>
+                  </ul>
+                </div>
+              </details>
+              
+              {/* Professional Standards */}
+              <details className="bg-white rounded-xl shadow-lg overflow-hidden group">
+                <summary className="cursor-pointer p-6 hover:bg-gray-50 transition-colors">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center">
+                      <div className="w-10 h-10 bg-yellow-100 rounded-lg flex items-center justify-center mr-4">
+                        <Clock className="w-5 h-5 text-yellow-600" />
+                      </div>
+                      <div>
+                        <h3 className="text-xl font-bold text-gray-900">Professional Scorekeeping Standards</h3>
+                        <p className="text-sm text-gray-600">FIBA/NBA official practices</p>
+                      </div>
+                    </div>
+                    <ArrowRight className="w-5 h-5 text-gray-400 group-open:rotate-90 transition-transform" />
+                  </div>
+                </summary>
+                <div className="px-6 pb-6 border-t border-gray-100">
+                  <ul className="space-y-3 mt-4 text-gray-700">
+                    <li className="flex items-start">
+                      <span className="text-yellow-600 font-bold mr-2">•</span>
+                      <span><strong>Completed quarters are locked</strong> - cannot be modified (maintains integrity)</span>
+                    </li>
+                    <li className="flex items-start">
+                      <span className="text-yellow-600 font-bold mr-2">•</span>
+                      <span><strong>Only undo events from current quarter</strong> - past quarters are official</span>
+                    </li>
+                    <li className="flex items-start">
+                      <span className="text-yellow-600 font-bold mr-2">•</span>
+                      <span><strong>Note corrections separately</strong> if errors discovered in past quarters</span>
+                    </li>
+                    <li className="flex items-start">
+                      <span className="text-yellow-600 font-bold mr-2">•</span>
+                      <span><strong>Follows FIBA/NBA standards</strong> for official record keeping</span>
+                    </li>
+                    <li className="flex items-start">
+                      <span className="text-yellow-600 font-bold mr-2">•</span>
+                      <span><strong>Prevents silent retroactive changes</strong> - audit trail maintained</span>
+                    </li>
+                  </ul>
+                </div>
+              </details>
+              
+              {/* Offline Mode */}
+              <details className="bg-white rounded-xl shadow-lg overflow-hidden group">
+                <summary className="cursor-pointer p-6 hover:bg-gray-50 transition-colors">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center">
+                      <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center mr-4">
+                        <WifiOff className="w-5 h-5 text-green-600" />
+                      </div>
+                      <div>
+                        <h3 className="text-xl font-bold text-gray-900">Offline Mode - Data Safety</h3>
+                        <p className="text-sm text-gray-600">How your data is protected</p>
+                      </div>
+                    </div>
+                    <ArrowRight className="w-5 h-5 text-gray-400 group-open:rotate-90 transition-transform" />
+                  </div>
+                </summary>
+                <div className="px-6 pb-6 border-t border-gray-100">
+                  <ul className="space-y-3 mt-4 text-gray-700">
+                    <li className="flex items-start">
+                      <span className="text-green-600 font-bold mr-2">•</span>
+                      <span><strong>Auto-saves every 2 seconds</strong> to your device storage</span>
+                    </li>
+                    <li className="flex items-start">
+                      <span className="text-green-600 font-bold mr-2">•</span>
+                      <span><strong>Works completely without internet</strong> after first installation</span>
+                    </li>
+                    <li className="flex items-start">
+                      <span className="text-green-600 font-bold mr-2">•</span>
+                      <span><strong>Data syncs automatically</strong> when back online</span>
+                    </li>
+                    <li className="flex items-start">
+                      <span className="text-green-600 font-bold mr-2">•</span>
+                      <span><strong>Install as app</strong> for best offline experience</span>
+                    </li>
+                    <li className="flex items-start">
+                      <span className="text-green-600 font-bold mr-2">•</span>
+                      <span><strong>Recovery system</strong> restores games if app closes unexpectedly</span>
+                    </li>
+                    <li className="flex items-start">
+                      <span className="text-green-600 font-bold mr-2">•</span>
+                      <span><strong>Offline indicator</strong> shows connection status in bottom-right corner</span>
+                    </li>
+                  </ul>
+                </div>
+              </details>
             </div>
           </div>
         </div>

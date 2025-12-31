@@ -20,6 +20,12 @@ export interface GameState {
   awayPlayers?: any[];
   gameEvents?: any[];
   quarterScores?: any[];
+  timeRemaining?: number;
+  timerDuration?: number;
+  homeFouls?: number;
+  awayFouls?: number;
+  shotClock?: number;
+  shotClockRunning?: boolean;
   timestamp: number;
   synced: boolean;
 }

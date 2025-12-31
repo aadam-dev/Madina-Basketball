@@ -2,7 +2,7 @@
 
 import { Suspense, useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
-import { Plus, Trash2, Download, FileText, Info } from "lucide-react";
+import { Plus, Trash2, Download, FileText, Info, Image as ImageIcon } from "lucide-react";
 import Link from "next/link";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
@@ -163,6 +163,46 @@ function StatsSheetGeneratorContent() {
         0
       ),
     };
+  };
+
+  /**
+   * Export stats sheet as PNG image (for social media)
+   */
+  const exportAsImage = async () => {
+    if (!teamName) {
+      alert("Please enter a team name");
+      return;
+    }
+
+    const filledPlayers = players.filter((p) => p.name.trim() !== "");
+    if (filledPlayers.length === 0) {
+      alert("Please add at least one player");
+      return;
+    }
+
+    setGenerating(true);
+
+    try {
+      const element = document.getElementById("statssheet-preview");
+      if (!element) return;
+      
+      const canvas = await html2canvas(element, {
+        scale: 3,
+        backgroundColor: "#ffffff",
+        logging: false,
+        useCORS: true,
+      });
+      
+      const link = document.createElement('a');
+      link.download = `${teamName}_Stats_Sheet.png`;
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+    } catch (error) {
+      console.error("Error generating image:", error);
+      alert("Failed to generate image. Please try again.");
+    } finally {
+      setGenerating(false);
+    }
   };
 
   const generatePDF = async () => {
@@ -373,23 +413,42 @@ function StatsSheetGeneratorContent() {
             </div>
           </div>
 
-          <button
-            onClick={generatePDF}
-            disabled={generating || !teamName || filledPlayers.length === 0}
-            className="w-full flex items-center justify-center space-x-2 px-6 py-4 bg-primary text-white rounded-lg hover:bg-primary-dark disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-semibold text-lg"
-          >
-            {generating ? (
-              <>
-                <div className="animate-spin w-5 h-5 border-2 border-white border-t-transparent rounded-full" />
-                <span>Generating PDF...</span>
-              </>
-            ) : (
-              <>
-                <Download className="w-5 h-5" />
-                <span>Download Stats Sheet (PDF)</span>
-              </>
-            )}
-          </button>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <button
+              onClick={exportAsImage}
+              disabled={generating || !teamName || filledPlayers.length === 0}
+              className="flex items-center justify-center space-x-2 px-6 py-4 bg-primary hover:bg-primary-dark text-white rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-semibold text-lg"
+            >
+              {generating ? (
+                <>
+                  <div className="animate-spin w-5 h-5 border-2 border-white border-t-transparent rounded-full" />
+                  <span>Generating...</span>
+                </>
+              ) : (
+                <>
+                  <ImageIcon className="w-5 h-5" />
+                  <span>Download Image</span>
+                </>
+              )}
+            </button>
+            <button
+              onClick={generatePDF}
+              disabled={generating || !teamName || filledPlayers.length === 0}
+              className="flex items-center justify-center space-x-2 px-6 py-4 bg-primary text-white rounded-lg hover:bg-primary-dark disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-semibold text-lg"
+            >
+              {generating ? (
+                <>
+                  <div className="animate-spin w-5 h-5 border-2 border-white border-t-transparent rounded-full" />
+                  <span>Generating PDF...</span>
+                </>
+              ) : (
+                <>
+                  <Download className="w-5 h-5" />
+                  <span>Download PDF</span>
+                </>
+              )}
+            </button>
+          </div>
         </div>
 
         {/* Preview Section */}
