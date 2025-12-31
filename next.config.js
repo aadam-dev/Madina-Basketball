@@ -76,13 +76,6 @@ const nextConfig = {
     ],
   },
   
-  /**
-   * Experimental features
-   * Enable performance optimizations
-   */
-  experimental: {
-    optimizeCss: true, // Optimize CSS output
-  },
 }
 
 module.exports = nextConfig

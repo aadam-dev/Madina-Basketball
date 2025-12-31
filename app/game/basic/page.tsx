@@ -15,7 +15,7 @@
 
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { Suspense, useState, useEffect, useRef } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { ArrowLeft, RotateCcw, Save, Download, Play, Pause, Clock } from "lucide-react";
 import Link from "next/link";
@@ -33,7 +33,7 @@ interface QuarterScore {
   awayScore: number; // Away team score for this quarter
 }
 
-export default function BasicScoreboard() {
+function BasicScoreboardContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
 
@@ -915,5 +915,13 @@ export default function BasicScoreboard() {
         }
       `}</style>
     </div>
+  );
+}
+
+export default function BasicScoreboard() {
+  return (
+    <Suspense fallback={<div className="flex items-center justify-center min-h-screen">Loading...</div>}>
+      <BasicScoreboardContent />
+    </Suspense>
   );
 }

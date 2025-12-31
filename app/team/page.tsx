@@ -118,7 +118,7 @@ export default async function Team() {
                 <div className="p-6">
                   <h3 className="text-xl font-bold text-gray-900 mb-2">{member.name}</h3>
                   <p className="text-primary font-semibold mb-3">{member.role}</p>
-                  <p className="text-gray-600 text-sm leading-relaxed">{member.description || member.bio || ''}</p>
+                  <p className="text-gray-600 text-sm leading-relaxed">{member.description || ''}</p>
                 </div>
               </div>
             ))}
@@ -144,7 +144,7 @@ export default async function Team() {
                   <div className="p-6">
                     <h3 className="text-xl font-bold text-gray-900 mb-2">{member.name}</h3>
                     <p className="text-primary font-semibold mb-3">{member.role}</p>
-                    <p className="text-gray-600 text-sm leading-relaxed">{member.description || member.bio || ''}</p>
+                    <p className="text-gray-600 text-sm leading-relaxed">{member.description || ''}</p>
                   </div>
                 </div>
               ))}
@@ -179,7 +179,7 @@ export default async function Team() {
               <div className="p-6">
                 <h3 className="text-xl font-bold text-gray-900 mb-2">{member.name}</h3>
                 <p className="text-primary font-semibold mb-3">{member.role}</p>
-                <p className="text-gray-600 text-sm leading-relaxed">{member.description || member.bio || ''}</p>
+                <p className="text-gray-600 text-sm leading-relaxed">{member.description || ''}</p>
               </div>
             </div>
           ))}

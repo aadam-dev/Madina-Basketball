@@ -36,6 +36,7 @@ export default function EventForm({ eventId, initialData }: EventFormProps) {
         title: initialData.title || "",
         description: initialData.description || "",
         date: initialData.date || "",
+        end_date: initialData.end_date || "",
         time: initialData.time || "",
         location: initialData.location || "",
         type: initialData.type || "game",

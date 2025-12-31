@@ -1,11 +1,11 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { Suspense, useState, useEffect } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { Trophy, BarChart3, Clipboard } from "lucide-react";
 import Link from "next/link";
 
-export default function GameModePage() {
+function GameModePageContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const [teamData, setTeamData] = useState<any>(null);
@@ -204,6 +204,14 @@ export default function GameModePage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function GameModePage() {
+  return (
+    <Suspense fallback={<div className="flex items-center justify-center min-h-screen">Loading...</div>}>
+      <GameModePageContent />
+    </Suspense>
   );
 }
 

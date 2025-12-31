@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { Suspense, useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import { Plus, Trash2, Download, FileText, Info } from "lucide-react";
 import Link from "next/link";
@@ -33,7 +33,7 @@ const BASKETBALL_POSITIONS = [
   "Utility",
 ];
 
-export default function StatsSheetGenerator() {
+function StatsSheetGeneratorContent() {
   const searchParams = useSearchParams();
   const [teamName, setTeamName] = useState("");
   const [gameDate, setGameDate] = useState("");
@@ -562,6 +562,14 @@ export default function StatsSheetGenerator() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function StatsSheetGenerator() {
+  return (
+    <Suspense fallback={<div className="flex items-center justify-center min-h-screen">Loading...</div>}>
+      <StatsSheetGeneratorContent />
+    </Suspense>
   );
 }
 

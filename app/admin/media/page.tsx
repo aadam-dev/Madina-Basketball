@@ -109,6 +109,13 @@ const MEDIA_LOCATIONS = {
   },
 };
 
+// Helper function to extract YouTube video ID from URL
+function extractYoutubeId(url: string): string {
+  const regex = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/;
+  const match = url.match(regex);
+  return match ? match[1] : '';
+}
+
 export default function MediaPage() {
   const [selectedLocation, setSelectedLocation] = useState<string | null>(null);
   const [mediaType, setMediaType] = useState<'image' | 'video' | 'youtube'>('image');
@@ -152,13 +159,7 @@ export default function MediaPage() {
     }
   };
 
-  const extractYoutubeId = (url: string) => {
-    const regex = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/;
-    const match = url.match(regex);
-    return match ? match[1] : '';
-  };
-
-  const handleYoutubeUrlChange = (url: string) => {
+  const handleYoutubeUrlChange = (url: string): void => {
     setUrl(url);
     const id = extractYoutubeId(url);
     if (id) {
@@ -192,7 +193,7 @@ export default function MediaPage() {
               <p className="font-semibold">💡 Tips:</p>
               <ul className="list-disc list-inside space-y-1 ml-2">
                 <li>For YouTube: Paste the full URL (e.g., https://youtube.com/watch?v=...) and we'll extract the ID</li>
-                <li>For images: Use optimized files (<500KB recommended)</li>
+                <li>For images: Use optimized files (under 500KB recommended)</li>
                 <li>For videos: Upload to YouTube first, then embed here for best performance</li>
                 <li>File paths: Images go in <code className="bg-blue-100 px-1 rounded">public/images/</code>, videos in <code className="bg-blue-100 px-1 rounded">public/videos/</code></li>
               </ul>

@@ -13,7 +13,7 @@
 
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { Suspense, useState, useEffect, useRef } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { BarChart3, Plus, Download, Save, ArrowLeft, X, Play, Pause, Clock, RotateCcw } from "lucide-react";
 import Link from "next/link";
@@ -47,7 +47,7 @@ interface GameEvent {
   details?: any;
 }
 
-export default function StatsScoreboard() {
+function StatsScoreboardContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
 
@@ -1498,6 +1498,14 @@ export default function StatsScoreboard() {
         }
       `}</style>
     </div>
+  );
+}
+
+export default function StatsScoreboard() {
+  return (
+    <Suspense fallback={<div className="flex items-center justify-center min-h-screen">Loading...</div>}>
+      <StatsScoreboardContent />
+    </Suspense>
   );
 }
 
