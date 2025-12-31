@@ -1255,3 +1255,176 @@ This comprehensive update transforms Madina Basketball's scoreboards from simple
 **Implementation Date:** December 30, 2024  
 **Version:** 3.3 - Offline & Professional Features  
 **Status:** ✅ Complete and Tested
+
+---
+
+## Entry 8: Production Readiness & Announcements System
+**Date:** December 31, 2024  
+**Time:** Final production preparation
+
+### Production Readiness Review
+
+**Implemented:**
+1. ✅ Error boundary (`app/error.tsx`) - Global error handling
+2. ✅ Health check endpoint (`/api/health`) - Monitoring support
+3. ✅ Logger utility (`lib/utils/logger.ts`) - Centralized logging
+4. ✅ Environment template (`.env.example`) - Setup guide
+
+**Google Forms Integration:**
+- Booking form: https://forms.gle/HxjNbrQAoo7uEEPZA
+- Contact form: https://forms.gle/MXoQwakyH3Axozh8A
+- Both forms properly linked from pages
+
+### Announcements System
+
+**Overview:**
+Implemented simple announcement system for quick site updates without code changes.
+
+**Database:**
+```sql
+CREATE TABLE announcements (
+  id UUID PRIMARY KEY,
+  title TEXT NOT NULL,
+  message TEXT NOT NULL,
+  type TEXT CHECK (type IN ('info', 'warning', 'success', 'event')),
+  status TEXT CHECK (status IN ('active', 'archived')),
+  expires_at TIMESTAMPTZ,
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+```
+
+**Files Created:**
+- `scripts/create-announcements-table.sql` - Database schema
+- `app/api/announcements/route.ts` - List and create API
+- `app/api/announcements/[id]/route.ts` - Update and delete API
+- `app/admin/announcements/page.tsx` - Admin interface
+- Updated `app/admin/layout.tsx` - Added to navigation
+- Updated `app/page.tsx` - Display on homepage
+
+**Features:**
+- Four announcement types with color coding:
+  - Info (blue) - General information
+  - Event (orange) - Upcoming activities
+  - Success (green) - Achievements/good news
+  - Warning (yellow) - Alerts/important notices
+- Optional expiry dates
+- Archive/activate functionality
+- Homepage display (shows active, non-expired only)
+- Full CRUD in admin portal
+
+**Use Case:**
+"Madina Old Gees vs Youngins Every Saturday" - recurring event announcement
+
+### Repository Cleanup
+
+**Updated `.gitignore`:**
+- Track only `README.md` for documentation
+- Exclude all personal planning files:
+  - `plans/` folder (strategic planning)
+  - `docs/` folder (internal technical docs)
+  - All `*.md` files except README
+
+**Rationale:** Personal planning and internal docs shouldn't be in public repo or deployed.
+
+### Files Modified
+
+**Pages:**
+- `app/book/page.tsx` - Added real booking form link
+- `app/contact/page.tsx` - Added real contact form link
+- `app/page.tsx` - Added announcements display section
+
+**Admin:**
+- `app/admin/layout.tsx` - Added announcements to navigation
+- `app/admin/announcements/page.tsx` - New admin page
+
+**API Routes:**
+- `app/api/announcements/route.ts` - New
+- `app/api/announcements/[id]/route.ts` - New
+- `app/api/health/route.ts` - New
+
+**Utils:**
+- `lib/utils/logger.ts` - New
+- `.env.example` - New
+- `app/error.tsx` - New
+
+### Final Feature Set
+
+**Public Website:**
+1. Homepage with stats, featured events, announcements
+2. Journey (court renovation story)
+3. About, Court, Training pages
+4. Teams & Events showcase
+5. Register, Book, Contact (with Google Forms)
+6. Media gallery
+7. Partners & transparency
+8. Terms & privacy
+
+**Admin Portal (`/admin`):**
+1. Dashboard - Stats overview
+2. Events management - CRUD events/tournaments
+3. Games management - Live scoreboard integration
+4. Content editor - Edit homepage text
+5. Media manager - Upload/organize photos
+6. Announcements - Quick updates (NEW!)
+7. Players management - Roster
+8. Staff management - Team structure
+
+**Game Tools:**
+1. Basic scoreboard - Simple score tracking
+2. Stats mode - Player statistics
+3. Team sheets - Roster generation
+4. Stats sheets - Game statistics
+
+**Security & Infrastructure:**
+1. Cookie-based auth with 2 admin accounts
+2. Input validation and sanitization
+3. Error handling with custom error classes
+4. Rate limiting on login
+5. Secure headers (HSTS, XSS protection, etc.)
+6. Environment variable validation
+7. Health check endpoint (NEW!)
+8. Centralized logging (NEW!)
+
+### What We Decided NOT to Build
+
+Based on practical assessment:
+- ❌ Blog system (use social media)
+- ❌ Training guides library (YouTube exists)
+- ❌ Complex booking calendar (WhatsApp works)
+- ❌ Player profiles with stats (not a pro league)
+- ❌ Newsletter system (WhatsApp/social better)
+- ❌ Testimonials CMS (static is fine)
+- ❌ League management (too complex)
+- ❌ Game flyer generator (Canva is simple)
+- ❌ Foundation page (on hold)
+
+### Deployment Checklist
+
+**Before Deployment:**
+1. ✅ Set up Supabase project
+2. ✅ Run all SQL scripts (including announcements table)
+3. ✅ Configure environment variables
+4. ✅ Test admin login
+5. ⏳ Create first announcement
+
+**After Deployment:**
+1. Test health endpoint: `/api/health`
+2. Verify Google Forms links work
+3. Test announcement display on homepage
+4. Check admin portal functionality
+5. Verify error boundary works
+
+---
+
+## Latest Status (December 31, 2024)
+
+✅ **Website:** Fully functional, production-ready  
+✅ **Admin Portal:** Complete with announcements, events, games, team, media  
+✅ **Game Tools:** Basic scoreboard, stats tracking, team/stats sheets  
+✅ **Security:** Error handling, validation, logging, health checks  
+✅ **Forms:** Google Forms integrated for booking and contact  
+✅ **Announcements:** Simple CMS for quick updates  
+✅ **Documentation:** Comprehensive guides for setup and deployment
+
+**Ready to deploy!** 🚀
+

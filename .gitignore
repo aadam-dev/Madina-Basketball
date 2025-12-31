@@ -18,6 +18,8 @@
 # misc
 .DS_Store
 *.pem
+*.HEIC
+*.heic
 
 # debug
 npm-debug.log*
@@ -35,6 +37,12 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# documentation (keep only README.md)
+# documentation (track only essential docs)
 *.md
 !README.md
+!DEPLOYMENT.md
+!SUPABASE_SETUP.md
+
+# Personal planning/notes (not for deployment)
+plans/
+docs/

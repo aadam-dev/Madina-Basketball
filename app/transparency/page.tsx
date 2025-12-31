@@ -64,38 +64,18 @@ export default function Transparency() {
               </div>
             </div>
 
-            {/* BOQ Breakdown */}
+            {/* BOQ Summary */}
             <div className="bg-white rounded-xl p-8 shadow-sm">
-              <h3 className="text-xl font-semibold mb-6">BOQ Breakdown</h3>
+              <h3 className="text-xl font-semibold mb-6">Cost Summary</h3>
               <div className="space-y-4">
-                <div className="flex justify-between items-center py-3 border-b border-gray-200">
-                  <span className="text-gray-700">Surface renovation and preparation</span>
-                  <span className="font-semibold">GHS X,XXX</span>
-                </div>
-                <div className="flex justify-between items-center py-3 border-b border-gray-200">
-                  <span className="text-gray-700">Court markings and painting</span>
-                  <span className="font-semibold">GHS X,XXX</span>
-                </div>
-                <div className="flex justify-between items-center py-3 border-b border-gray-200">
-                  <span className="text-gray-700">Basketball rims and installation</span>
-                  <span className="font-semibold">GHS X,XXX</span>
-                </div>
-                <div className="flex justify-between items-center py-3 border-b border-gray-200">
-                  <span className="text-gray-700">Infrastructure and finishing</span>
-                  <span className="font-semibold">GHS X,XXX</span>
-                </div>
-                <div className="flex justify-between items-center py-3 border-b border-gray-200">
-                  <span className="text-gray-700">Labor and contractor fees</span>
-                  <span className="font-semibold">GHS X,XXX</span>
-                </div>
                 <div className="flex justify-between items-center py-3 pt-4 border-t-2 border-primary">
-                  <span className="text-lg font-bold">Total</span>
+                  <span className="text-lg font-bold">Total Project Cost</span>
                   <span className="text-lg font-bold text-primary">GHS 37,250</span>
                 </div>
               </div>
               <p className="text-sm text-gray-600 mt-4">
                 <strong>Note:</strong> The proforma invoice below shows the complete breakdown. 
-                All line items and amounts are documented in the invoice.
+                All line items and amounts are documented in the invoice for full transparency.
               </p>
             </div>
           </div>
@@ -203,42 +183,6 @@ export default function Transparency() {
                 <strong>Note:</strong> Sensitive information (contractor details, account numbers)
                 may be redacted for privacy, but payment amounts and dates are fully documented.
               </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Statement from Project Lead */}
-      <section className="py-20">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-4xl mx-auto">
-            <h2 className="text-3xl sm:text-4xl font-bold mb-8 text-center">Statement from Project Lead</h2>
-            <div className="bg-muted rounded-xl p-8">
-              <div className="bg-white rounded-lg p-8 shadow-sm">
-                <p className="text-gray-700 text-lg leading-relaxed mb-6 italic">
-                  "From the very beginning, we committed to complete transparency. This project
-                  belongs to the community, and the community has the right to know exactly how
-                  every cedi was raised and spent. We have nothing to hide, and everything to
-                  be proud of."
-                </p>
-                <p className="text-gray-700 text-lg leading-relaxed mb-6">
-                  The renovation of the Madina Basketball court was a testament to what a community
-                  can achieve when it comes together with a shared vision and transparent process.
-                  Every decision was made with the community's best interests in mind, and every
-                  expense was carefully documented.
-                </p>
-                <p className="text-gray-700 text-lg leading-relaxed">
-                  We believe that this transparency is what sets our project apart. It builds trust,
-                  ensures accountability, and demonstrates that community-led initiatives can be
-                  professional, structured, and successful.
-                </p>
-                <div className="mt-6 pt-6 border-t border-gray-200">
-                  <p className="text-gray-600">
-                    <strong>Project Lead</strong><br />
-                    Madina Basketball Community Initiative
-                  </p>
-                </div>
-              </div>
             </div>
           </div>
         </div>

@@ -38,7 +38,7 @@ const teamMembers = [
   {
     name: "Shafic",
     role: "Executive & Renovation Lead",
-    description: "Led stakeholder engagements with community leaders, led fundraising efforts, and sourced support from his network. Instrumental in bringing the vision to life.",
+    description: "Leads stakeholder engagement, fundraising, and community relations for Madina Basketball. Instrumental in securing GHS 44,750 from 18 donors during the court renovation. Manages sponsor relationships and represents the organization in external meetings. Chairs the Finance & Communications Committee.",
     image_url: "/images/team/shafic.jpg",
     section: "executive",
     order_index: 1,
@@ -46,7 +46,7 @@ const teamMembers = [
   {
     name: "Adam",
     role: "Executive & Renovation Lead",
-    description: "Sourced contractors, designed dashboards, and tracked the entire renovation project. Co-led the renovation with focus on operations and transparency.",
+    description: "Oversees operations, technology infrastructure, and financial transparency systems. Designed and manages the website, online forms, and all digital systems. Sourced contractors and tracked the entire renovation project. Chairs the Operations Committee with focus on strategic oversight and systems.",
     image_url: "/images/team/adam.jpg",
     section: "executive",
     order_index: 2,
@@ -54,7 +54,7 @@ const teamMembers = [
   {
     name: "Hisham",
     role: "Executive & Coach",
-    description: "Member of the executive body driving strategic developments. Also serves as a coach developing players.",
+    description: "Serves dual role as executive board member and active coach. Focuses on programs, player development, and strategic growth initiatives. Leads training sessions while contributing to organizational strategy and long-term planning.",
     image_url: "/images/team/hisham.jpg",
     section: "executive",
     order_index: 3,
@@ -62,7 +62,7 @@ const teamMembers = [
   {
     name: "Kwame Focus",
     role: "Executive",
-    description: "Member of the executive body driving strategic developments for Madina Basketball.",
+    description: "Leads daily court operations, maintenance oversight, and event coordination. Serves as primary coach while managing day-to-day facility activities. Bridges executive strategy with on-ground implementation, ensuring smooth court operations.",
     image_url: "/images/team/kwame-focus.jpg",
     section: "executive",
     order_index: 4,
@@ -70,7 +70,7 @@ const teamMembers = [
   {
     name: "Titus",
     role: "Executive",
-    description: "Member of the executive body driving strategic developments for Madina Basketball.",
+    description: "Focuses on strategic development and sponsorship initiatives. Works on long-term organizational growth, partnership development, and expanding Madina Basketball's reach and impact in the community.",
     image_url: "/images/team/titus.jpg",
     section: "executive",
     order_index: 5,
@@ -78,7 +78,7 @@ const teamMembers = [
   {
     name: "Mustafa",
     role: "Executive",
-    description: "Member of the executive body driving strategic developments for Madina Basketball.",
+    description: "Oversees community engagement and team coordination. Manages relationships with local basketball teams including Zurak Basketball and Madina Old Gees. Ensures strong connections between the court and the broader Madina community.",
     image_url: "/images/team/mustafa.jpg",
     section: "executive",
     order_index: 6,
@@ -89,7 +89,7 @@ const teamMembers = [
   {
     name: "Kwame Focus",
     role: "Coach",
-    description: "Developing players and building skills across all levels through training sessions.",
+    description: "Head coach leading overall coaching strategy and training curriculum. Oversees all training sessions, mentors junior coaches, and coordinates with team captains. Brings extensive experience in player development and program management.",
     image_url: "/images/team/kwame-focus.jpg",
     section: "coach",
     order_index: 1,
@@ -97,7 +97,7 @@ const teamMembers = [
   {
     name: "Hisham",
     role: "Coach",
-    description: "Developing players and building skills across all levels through training sessions.",
+    description: "Senior coach with dual executive and coaching responsibilities. Leads training sessions while contributing to strategic program development. Focuses on creating comprehensive player development pathways and coaching excellence.",
     image_url: "/images/team/hisham.jpg",
     section: "coach",
     order_index: 2,
@@ -105,7 +105,7 @@ const teamMembers = [
   {
     name: "Lord",
     role: "Coach",
-    description: "Leading training sessions and developing players' skills and character.",
+    description: "Active basketball player who brings valuable player perspective to coaching. Volunteers to lead training sessions, implementing the coaching curriculum while maintaining strong connection to the player experience. Focuses on skill development and mentorship.",
     image_url: "/images/team/lord.jpg",
     section: "coach",
     order_index: 3,
@@ -113,7 +113,7 @@ const teamMembers = [
   {
     name: "Jesse",
     role: "Coach",
-    description: "Dedicated to player development and skill building in the community.",
+    description: "Experienced coach with professional background including coaching the UPSA team. Both a player and coach, bringing dual perspective to training sessions. Senior coach responsible for implementing training curriculum and mentoring junior coaches.",
     image_url: "/images/team/jesse.jpg",
     section: "coach",
     order_index: 4,
@@ -123,7 +123,7 @@ const teamMembers = [
   {
     name: "Kwame Focus",
     role: "Court Maintenance & Oversight",
-    description: "Ensuring the court remains in excellent condition and overseeing maintenance operations.",
+    description: "Leads maintenance coordination, scheduling, and equipment management. Primary point person for ensuring the court remains in excellent condition through systematic oversight and proactive facility care.",
     image_url: "/images/team/kwame-focus.jpg",
     section: "maintenance",
     order_index: 1,
@@ -131,15 +131,15 @@ const teamMembers = [
   {
     name: "Baba",
     role: "Court Maintenance & Oversight",
-    description: "Maintaining the court facility and ensuring it remains in top condition for the community.",
+    description: "Provides critical 'eyes on court' oversight, managing day-to-day court activities and user interactions. Also serves as referee for games and supports maintenance operations. Ensures the court remains welcoming and well-maintained for all community members.",
     image_url: "/images/team/baba.jpg",
     section: "maintenance",
     order_index: 2,
   },
   {
     name: "Moh",
-    role: "Treasurer & Court Maintenance",
-    description: "Serving as treasurer managing finances, and also contributing to court maintenance and oversight.",
+    role: "Treasurer & Court Oversight",
+    description: "Serves as treasurer managing financial operations and record-keeping. Provides ground-level court oversight and historical financial context from the early days of the project. Maintains important institutional knowledge and financial accountability role.",
     image_url: "/images/team/moh.jpg",
     section: "maintenance",
     order_index: 3,
@@ -147,7 +147,7 @@ const teamMembers = [
   {
     name: "Adam",
     role: "Court Oversight",
-    description: "Overseeing court operations and maintenance as part of his role in the renovation project.",
+    description: "Provides strategic oversight of court operations and maintenance systems. Manages technology infrastructure for booking, tracking, and facility management. Ensures operational efficiency through systematic coordination and data-driven decision making.",
     image_url: "/images/team/adam.jpg",
     section: "maintenance",
     order_index: 4,
@@ -175,7 +175,7 @@ const teamMembers = [
   {
     name: "Adam",
     role: "Media Team",
-    description: "Documenting games, events, and community moments to share the Madina Basketball story.",
+    description: "Manages all digital media platforms and website content. Documents key moments, designs graphics, and maintains the online presence of Madina Basketball. Creates visual narratives that showcase the community impact and court activities.",
     image_url: "/images/team/adam.jpg",
     section: "media",
     order_index: 1,
@@ -183,7 +183,7 @@ const teamMembers = [
   {
     name: "Jamal",
     role: "Media Team",
-    description: "Capturing and sharing the story of Madina Basketball through photos, videos, and content.",
+    description: "Active player who captures authentic court moments from a participant's perspective. Creates photo and video content that tells the real story of Madina Basketball's community, combining playing experience with media creation.",
     image_url: "/images/team/jamal.jpg",
     section: "media",
     order_index: 2,
@@ -191,7 +191,7 @@ const teamMembers = [
   {
     name: "Mcdwin",
     role: "Media Team",
-    description: "Creating and managing visual content to showcase the community and basketball activities.",
+    description: "Player-turned-media creator who documents games and training sessions. Brings insider perspective to content creation, capturing the energy and authenticity of the basketball community through photos and videos.",
     image_url: "/images/team/mcdwin.jpg",
     section: "media",
     order_index: 3,
@@ -199,7 +199,7 @@ const teamMembers = [
   {
     name: "Shvdy Photography",
     role: "Media Team",
-    description: "Professional photography capturing the essence of Madina Basketball through stunning visuals.",
+    description: "Professional photographer providing high-quality visual documentation of Madina Basketball. Leads the media strategy with stunning imagery that elevates the organization's visual identity. Creates compelling photo stories that capture community spirit and athletic excellence.",
     image_url: "/images/team/shvdy.jpg",
     section: "media",
     order_index: 4,

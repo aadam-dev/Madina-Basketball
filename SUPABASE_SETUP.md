@@ -89,7 +89,41 @@ CREATE INDEX idx_team_members_section ON team_members(section);
 CREATE INDEX idx_team_members_order ON team_members(section, order_index);
 ```
 
-### 4. Enable Row Level Security (RLS)
+### 4. Games Tables (Game Management System)
+
+For live scoreboard and game tracking:
+
+```sql
+-- Run the complete game management setup script
+-- Copy and paste contents from: scripts/create-game-management-tables.sql
+```
+
+This creates three tables:
+- `games` - Store game information (teams, scores, status)
+- `game_events` - Track all game events (scores, fouls, timeouts)
+- `quarter_scores` - Track scores by quarter
+
+**Or use the SQL Editor:** Go to SQL Editor → Open `scripts/create-game-management-tables.sql` in your code editor → Copy all contents → Paste and Run in Supabase.
+
+### 5. Announcements Table
+
+For simple site announcements and updates:
+
+```sql
+-- Run the announcements table script
+-- Copy and paste contents from: scripts/create-announcements-table.sql
+```
+
+This creates the `announcements` table with:
+- Title and message fields
+- Type (info, warning, success, event) with color coding
+- Status (active, archived)
+- Optional expiry dates
+- Public read access via RLS
+
+**Quick Setup:** Go to SQL Editor → Open `scripts/create-announcements-table.sql` → Copy and paste → Run.
+
+### 6. Enable Row Level Security (RLS)
 
 For security, we'll enable RLS but allow public read access:
 
@@ -113,9 +147,29 @@ CREATE POLICY "Team members are viewable by everyone" ON team_members
   FOR SELECT USING (true);
 ```
 
-**Note:** Write operations (INSERT, UPDATE, DELETE) will be handled by API routes using the service role key, which bypasses RLS.
+**Note:** Write operations (INSERT, UPDATE, DELETE) will be handled by API routes using the service role key, which bypasses RLS. The games and announcements tables have their own RLS policies included in their SQL scripts.
 
-## Step 4: Set Up Storage Buckets
+## Step 4: Run Complete Database Setup Script (Recommended)
+
+**Alternative Approach:** Instead of running each table script individually, you can run the complete setup:
+
+1. Go to **SQL Editor** in Supabase dashboard
+2. Open `scripts/COMPLETE_DATABASE_SETUP.sql` in your code editor
+3. Copy ALL the contents
+4. Paste into Supabase SQL Editor
+5. Click **Run**
+
+This single script creates ALL tables at once:
+- ✅ Events
+- ✅ Content sections
+- ✅ Team members
+- ✅ Games, game_events, quarter_scores
+- ✅ Announcements
+- ✅ All RLS policies
+
+**Recommended for first-time setup!**
+
+## Step 5: Set Up Storage Buckets
 
 1. Go to **Storage** in your Supabase dashboard
 2. Click "Create a new bucket"
@@ -202,7 +256,7 @@ CREATE POLICY "Team members are viewable by everyone" ON team_members
    
    **Note:** Since your upload API uses the service role key (which bypasses RLS), the INSERT policies are technically not required, but they're good practice. The SELECT policies are essential for public image access.
 
-## Step 5: Configure Environment Variables
+## Step 6: Configure Environment Variables
 
 1. Copy `.env.local.example` to `.env.local`:
    ```bash
@@ -218,7 +272,7 @@ CREATE POLICY "Team members are viewable by everyone" ON team_members
 
 3. **Important:** Never commit `.env.local` to git! It's already in `.gitignore`.
 
-## Step 6: Test the Connection
+## Step 7: Test the Connection
 
 Run the development server:
 ```bash

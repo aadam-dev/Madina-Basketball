@@ -121,20 +121,27 @@ export default function Contact() {
                 or reach out through any of our contact methods.
               </p>
               
-              {/* Google Form Embed */}
-              <div className="bg-white rounded-lg p-4 shadow-sm">
-                <div className="aspect-[4/3] flex items-center justify-center border-2 border-dashed border-gray-300 rounded-lg">
-                  <div className="text-center p-8">
-                    <Mail className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-                    <p className="text-gray-600 mb-2">Contact form will be embedded here</p>
-                    <p className="text-sm text-gray-500">
-                      Replace this with your Google Form embed code
-                    </p>
-                    <p className="text-sm text-gray-500 mt-2">
-                      Or use: <a href="mailto:themadinacourt@gmail.com" className="text-primary hover:underline">themadinacourt@gmail.com</a>
-                    </p>
-                  </div>
-                </div>
+              {/* Contact Form Link */}
+              <div className="bg-white rounded-lg p-8 shadow-sm text-center">
+                <Mail className="w-16 h-16 text-primary mx-auto mb-4" />
+                <h3 className="text-2xl font-bold mb-4">Send Us a Message</h3>
+                <p className="text-gray-600 mb-6">
+                  Click the button below to access our contact form and get in touch with us.
+                </p>
+                <a
+                  href="https://forms.gle/MXoQwakyH3Axozh8A"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-block px-8 py-4 bg-primary text-white font-semibold rounded-lg hover:bg-primary-dark transition-all transform hover:scale-105"
+                >
+                  Open Contact Form
+                </a>
+                <p className="text-sm text-gray-500 mt-4">
+                  Or visit: <a href="https://forms.gle/MXoQwakyH3Axozh8A" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">forms.gle/MXoQwakyH3Axozh8A</a>
+                </p>
+                <p className="text-sm text-gray-500 mt-2">
+                  Email: <a href="mailto:themadinacourt@gmail.com" className="text-primary hover:underline">themadinacourt@gmail.com</a>
+                </p>
               </div>
             </div>
           </div>

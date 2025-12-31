@@ -1,9 +1,31 @@
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight, Calendar, Users, Trophy, CheckCircle, MapPin, Clock } from "lucide-react";
+import { ArrowRight, Calendar, Users, Trophy, CheckCircle, MapPin, Clock, Info, AlertTriangle, CheckCircle as CheckCircleIcon, Calendar as CalendarIcon } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 import EventCard from "@/components/EventCard";
 import HeroBackground from "@/components/HeroBackground";
+
+async function getAnnouncements() {
+  try {
+    const { data, error } = await supabase
+      .from('announcements')
+      .select('*')
+      .eq('status', 'active')
+      .order('created_at', { ascending: false })
+      .limit(5);
+    
+    if (error) return [];
+    
+    // Filter out expired announcements
+    const now = new Date();
+    return (data || []).filter((announcement: any) => 
+      !announcement.expires_at || new Date(announcement.expires_at) > now
+    );
+  } catch (error) {
+    console.error("Error fetching announcements:", error);
+    return [];
+  }
+}
 
 async function getFeaturedEvent() {
   try {
@@ -82,8 +104,28 @@ async function getUpcomingEvents() {
 }
 
 export default async function Home() {
+  const announcements = await getAnnouncements();
   const featuredEvent = await getFeaturedEvent();
   const upcomingEvents = await getUpcomingEvents();
+
+  const getAnnouncementIcon = (type: string) => {
+    switch(type) {
+      case 'warning': return AlertTriangle;
+      case 'success': return CheckCircleIcon;
+      case 'event': return CalendarIcon;
+      default: return Info;
+    }
+  };
+
+  const getAnnouncementColors = (type: string) => {
+    switch(type) {
+      case 'warning': return 'bg-yellow-50 border-yellow-200 text-yellow-900';
+      case 'success': return 'bg-green-50 border-green-200 text-green-900';
+      case 'event': return 'bg-orange-50 border-orange-200 text-orange-900';
+      default: return 'bg-blue-50 border-blue-200 text-blue-900';
+    }
+  };
+
   return (
     <div className="min-h-screen">
       {/* Hero Section - Improved Design */}
@@ -144,6 +186,33 @@ export default async function Home() {
           </div>
         </div>
       </section>
+
+      {/* Announcements Section */}
+      {announcements.length > 0 && (
+        <section className="py-12 bg-gray-50">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="max-w-4xl mx-auto space-y-4">
+              {announcements.map((announcement: any) => {
+                const Icon = getAnnouncementIcon(announcement.type);
+                return (
+                  <div 
+                    key={announcement.id}
+                    className={`rounded-lg border-2 p-4 shadow-sm ${getAnnouncementColors(announcement.type)}`}
+                  >
+                    <div className="flex items-start space-x-3">
+                      <Icon className="w-5 h-5 mt-0.5 flex-shrink-0" />
+                      <div className="flex-1">
+                        <h3 className="font-bold text-lg mb-1">{announcement.title}</h3>
+                        <p className="text-sm opacity-90">{announcement.message}</p>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* Stats Section - Enhanced */}
       <section className="py-16 bg-white">
@@ -307,7 +376,6 @@ export default async function Home() {
                   <div className="text-6xl font-bold text-primary mb-2">2025</div>
                   <div className="text-2xl font-semibold text-gray-800">Active & Growing</div>
                 </div>
-                {/* Court image */}
                 <div className="mt-6 aspect-[4/3] bg-gray-200 rounded-xl overflow-hidden relative">
                   <Image
                     src="/images/journey/after/court-painting.jpg"

@@ -1,7 +1,7 @@
 import { redirect } from 'next/navigation';
 import { getSession } from '@/lib/auth';
 import Link from 'next/link';
-import { LogOut, Calendar, FileText, Users, Home, LayoutDashboard, UserCog, Trophy, Image as ImageIcon } from 'lucide-react';
+import { LogOut, Calendar, FileText, Users, Home, LayoutDashboard, UserCog, Trophy, Image as ImageIcon, Megaphone } from 'lucide-react';
 import LogoutButton from '@/components/admin/LogoutButton';
 import NotificationBell from '@/components/admin/NotificationBell';
 
@@ -96,6 +96,13 @@ export default async function AdminLayout({
                 >
                   <ImageIcon className="w-4 h-4" />
                   <span>Media</span>
+                </Link>
+                <Link
+                  href="/admin/announcements"
+                  className="flex items-center space-x-3 px-4 py-2.5 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors text-sm"
+                >
+                  <Megaphone className="w-4 h-4" />
+                  <span>Announcements</span>
                 </Link>
               </div>
             </div>

@@ -107,20 +107,24 @@ export default function Book() {
                 and provide payment details.
               </p>
               
-              {/* Google Form Embed */}
-              <div className="bg-white rounded-lg p-4 shadow-sm">
-                <div className="aspect-[4/3] flex items-center justify-center border-2 border-dashed border-gray-300 rounded-lg">
-                  <div className="text-center p-8">
-                    <Calendar className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-                    <p className="text-gray-600 mb-2">Google Form will be embedded here</p>
-                    <p className="text-sm text-gray-500">
-                      Replace this with your Google Form embed code
-                    </p>
-                    <p className="text-sm text-gray-500 mt-2">
-                      Or link to: <a href="#" className="text-primary hover:underline">Booking Form</a>
-                    </p>
-                  </div>
-                </div>
+              {/* Booking Form Link */}
+              <div className="bg-white rounded-lg p-8 shadow-sm text-center">
+                <Calendar className="w-16 h-16 text-primary mx-auto mb-4" />
+                <h3 className="text-2xl font-bold mb-4">Complete Your Booking Request</h3>
+                <p className="text-gray-600 mb-6">
+                  Click the button below to access our booking form and reserve the court.
+                </p>
+                <a
+                  href="https://forms.gle/HxjNbrQAoo7uEEPZA"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-block px-8 py-4 bg-primary text-white font-semibold rounded-lg hover:bg-primary-dark transition-all transform hover:scale-105"
+                >
+                  Open Booking Form
+                </a>
+                <p className="text-sm text-gray-500 mt-4">
+                  Or visit: <a href="https://forms.gle/HxjNbrQAoo7uEEPZA" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">forms.gle/HxjNbrQAoo7uEEPZA</a>
+                </p>
               </div>
 
               <div className="mt-6 text-sm text-gray-600">
