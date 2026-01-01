@@ -811,8 +811,32 @@ function StatsScoreboardContent() {
    * Clears all scores, teams, players, and game state
    * Requires user confirmation before resetting
    */
+  /**
+   * Reset game - Clear scores but keep teams (quick restart)
+   */
   const resetGame = () => {
-    if (confirm("Are you sure you want to reset the game? All progress will be lost.")) {
+    if (confirm("Reset Game?\n\nThis will clear all scores and stats but keep the teams.\n\nUse 'New Game' to change teams.")) {
+      setQuarter(1);
+      setOvertime(0);
+      setGameStarted(false);
+      setGameEnded(false);
+      setHomeScore(0);
+      setAwayScore(0);
+      setGameEvents([]);
+      resetTimer();
+      setHomeFouls(0);
+      setAwayFouls(0);
+      setQuarterScores([]);
+      clearCurrentGame(); // Clear localStorage
+    }
+  };
+
+  /**
+   * New Game - Go back to team selection
+   */
+  const newGame = () => {
+    if (confirm("Start New Game?\n\nThis will clear everything and return to team selection.")) {
+      clearCurrentGame(); // Clear localStorage
       setHomeTeam("");
       setAwayTeam("");
       setQuarter(1);
@@ -1003,16 +1027,24 @@ function StatsScoreboardContent() {
         </div>
 
         {/* Top Controls */}
-        <div className="flex items-center justify-between mb-6">
-          <Link href="/teamsheet" className="text-gray-400 hover:text-white flex items-center space-x-2">
+        <div className="flex items-center justify-between mb-6 flex-wrap gap-2">
+          <Link href="/teamsheet" className="text-gray-400 hover:text-white flex items-center space-x-2 flex-shrink-0">
             <ArrowLeft className="w-5 h-5" />
-            <span>Edit Rosters</span>
+            <span className="hidden sm:inline">Edit Rosters</span>
           </Link>
-          <h1 className="text-white text-xl font-bold">PLAYER STATS SCOREBOARD</h1>
-          <button onClick={resetGame} className="text-gray-400 hover:text-white flex items-center space-x-2">
-            <RotateCcw className="w-5 h-5" />
-            <span>Reset</span>
-          </button>
+          <h1 className="text-white text-lg sm:text-xl font-bold flex-1 text-center">PLAYER STATS SCOREBOARD</h1>
+          {gameStarted && (
+            <div className="flex items-center space-x-2 sm:space-x-3 flex-shrink-0">
+              <button onClick={resetGame} className="text-gray-400 hover:text-white flex items-center space-x-1" title="Clear scores, keep teams">
+                <RotateCcw className="w-4 h-4 sm:w-5 sm:h-5" />
+                <span className="hidden sm:inline text-sm sm:text-base">Reset</span>
+              </button>
+              <button onClick={newGame} className="text-gray-400 hover:text-white flex items-center space-x-1" title="Start fresh with new teams">
+                <PlusCircle className="w-4 h-4 sm:w-5 sm:h-5" />
+                <span className="hidden sm:inline text-sm sm:text-base">New Game</span>
+              </button>
+            </div>
+          )}
         </div>
 
         {/* Team Setup (Before Game Starts) */}

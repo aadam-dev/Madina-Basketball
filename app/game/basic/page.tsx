@@ -600,22 +600,24 @@ function BasicScoreboardContent() {
     <div className="min-h-screen bg-gray-900 py-8 px-4">
       <div className="max-w-6xl mx-auto">
         {/* Top Controls */}
-        <div className="flex items-center justify-between mb-6">
-          <Link href="/game" className="text-gray-400 hover:text-white flex items-center space-x-2">
+        <div className="flex items-center justify-between mb-6 flex-wrap gap-2">
+          <Link href="/game" className="text-gray-400 hover:text-white flex items-center space-x-2 flex-shrink-0">
             <ArrowLeft className="w-5 h-5" />
-            <span>Back</span>
+            <span className="hidden sm:inline">Back</span>
           </Link>
-          <h1 className="text-white text-xl font-bold">LIVE SCOREBOARD</h1>
-          <div className="flex items-center space-x-3">
-            <button onClick={resetGame} className="text-gray-400 hover:text-white flex items-center space-x-1" title="Clear scores, keep teams">
-              <RotateCcw className="w-5 h-5" />
-              <span>Reset</span>
-            </button>
-            <button onClick={newGame} className="text-gray-400 hover:text-white flex items-center space-x-1" title="Start fresh with new teams">
-              <PlusCircle className="w-5 h-5" />
-              <span>New Game</span>
-            </button>
-          </div>
+          <h1 className="text-white text-lg sm:text-xl font-bold flex-1 text-center">LIVE SCOREBOARD</h1>
+          {gameStarted && (
+            <div className="flex items-center space-x-2 sm:space-x-3 flex-shrink-0">
+              <button onClick={resetGame} className="text-gray-400 hover:text-white flex items-center space-x-1" title="Clear scores, keep teams">
+                <RotateCcw className="w-4 h-4 sm:w-5 sm:h-5" />
+                <span className="hidden sm:inline text-sm sm:text-base">Reset</span>
+              </button>
+              <button onClick={newGame} className="text-gray-400 hover:text-white flex items-center space-x-1" title="Start fresh with new teams">
+                <PlusCircle className="w-4 h-4 sm:w-5 sm:h-5" />
+                <span className="hidden sm:inline text-sm sm:text-base">New Game</span>
+              </button>
+            </div>
+          )}
         </div>
 
         {/* Team Setup (Before Game Starts) */}
