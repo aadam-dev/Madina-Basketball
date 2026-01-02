@@ -129,7 +129,7 @@ export default function Footer() {
             <div className="text-gray-400">
               <span className="mr-2">Website by</span>
               <a
-                href="mailto:aadamsays@gmail.com"
+                href="mailto:aadamsays@gmail.com?subject=Madina Basketball Website Inquiry&body=Hi Adam,%0A%0AI'm reaching out regarding the Madina Basketball website.%0A%0A[Your message here]%0A%0ABest regards"
                 className="text-primary hover:text-primary-dark transition-colors font-semibold"
                 rel="author"
               >
