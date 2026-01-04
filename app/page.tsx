@@ -364,7 +364,7 @@ export default async function Home() {
                   Home to teams like Zurak Basketball and Madina Old Gees, the court hosts regular events and serves as the foundation for Madina Basketball's ongoing basketball and social impact initiatives.
                 </p>
                 <Link
-                  href="/about"
+                  href="/journey"
                   className="inline-flex items-center space-x-2 text-primary font-semibold hover:underline"
                 >
                   <span>Read Our Story</span>
@@ -447,7 +447,7 @@ export default async function Home() {
                   Learn how the community came together to create this basketball hub. Full transparency on the journey from vision to reality.
                 </p>
                 <Link
-                  href="/transparency"
+                  href="/journey"
                   className="inline-flex items-center space-x-2 text-primary font-semibold hover:underline"
                 >
                   <span>Our Journey</span>

@@ -1,107 +1,185 @@
 #!/bin/bash
 
-# Video Compression Script for Development
-# This script compresses videos from madpics folder for use during development
-# Usage: ./scripts/compress-videos.sh [input_folder] [output_folder]
-
-set -e
-
-INPUT_DIR="${1:-madpics}"
-OUTPUT_DIR="${2:-public/videos/compressed}"
-
-# Check if ffmpeg is installed
-if ! command -v ffmpeg &> /dev/null; then
-    echo "❌ ffmpeg is not installed. Please install it first:"
-    echo "   macOS: brew install ffmpeg"
-    echo "   Ubuntu: sudo apt-get install ffmpeg"
-    exit 1
-fi
-
-# Create output directory
-mkdir -p "$OUTPUT_DIR"
+# Video Compression Script for Madina Basketball
+# Compresses videos for web use while maintaining quality
 
 echo "🎬 Starting video compression..."
-echo "Input: $INPUT_DIR"
-echo "Output: $OUTPUT_DIR"
-echo ""
 
-# Compression settings
-# -crf 28: Good quality, smaller file size (lower = better quality, 23 is default)
-# -preset slow: Better compression, slower encoding
-# -vf scale=1280:-1: Scale to 1280px width, maintain aspect ratio
-# -movflags +faststart: Enable fast start for web playback
+# Create compressed directory if it doesn't exist
+mkdir -p public/videos/highlights/compressed
 
-compress_video() {
-    local input_file="$1"
-    local output_file="$2"
-    
-    # Get base filename without extension
-    local basename=$(basename "$input_file" | sed 's/\.[^.]*$//')
-    
-    # Skip if output already exists
-    if [ -f "$output_file" ]; then
-        echo "⏭️  Skipping $basename (already exists)"
-        return
-    fi
-    
-    echo "🔄 Compressing: $basename"
-    
-    ffmpeg -i "$input_file" \
-        -vcodec h264 \
-        -acodec aac \
-        -crf 28 \
-        -preset slow \
-        -vf "scale=1280:-1" \
-        -movflags +faststart \
-        -y \
-        "$output_file" 2>&1 | grep -E "(Duration|time=|error)" || true
-    
-    # Get file sizes
-    local input_size=$(du -h "$input_file" | cut -f1)
-    local output_size=$(du -h "$output_file" | cut -f1)
-    
-    echo "   ✅ Done: $input_size → $output_size"
-    echo ""
-}
-
-# Compress specific important videos first
-echo "📋 Compressing priority videos..."
-echo ""
-
-# Before renovation videos
-if [ -f "$INPUT_DIR/videos/before-renovation/before1.MOV" ]; then
-    compress_video \
-        "$INPUT_DIR/videos/before-renovation/before1.MOV" \
-        "$OUTPUT_DIR/before-renovation-1.mp4"
+# Compress Nader's 3-pointer
+if [ -f "public/videos/highlights/nadir-killer-3pointer.mp4" ]; then
+  echo "📹 Compressing Nader's 3-pointer..."
+  ffmpeg -i public/videos/highlights/nadir-killer-3pointer.mp4 \
+    -vcodec libx264 \
+    -crf 28 \
+    -preset slow \
+    -vf "scale=ceil(iw/2)*2:ceil(ih/2)*2" \
+    -movflags +faststart \
+    -an \
+    public/videos/highlights/compressed/nadir-killer-3pointer-compressed.mp4
+  
+  echo "✅ Nader's 3-pointer compressed"
+else
+  echo "⚠️  Nader's 3-pointer not found"
 fi
 
-if [ -f "$INPUT_DIR/videos/before-renovation/before2.MOV" ]; then
-    compress_video \
-        "$INPUT_DIR/videos/before-renovation/before2.MOV" \
-        "$OUTPUT_DIR/before-renovation-2.mp4"
+# Compress Brandon's coast-to-coast
+if [ -f "public/videos/highlights/brandon-coast-to-coast3p.mp4" ]; then
+  echo "📹 Compressing Brandon's coast-to-coast..."
+  ffmpeg -i public/videos/highlights/brandon-coast-to-coast3p.mp4 \
+    -vcodec libx264 \
+    -crf 28 \
+    -preset slow \
+    -vf "scale=ceil(iw/2)*2:ceil(ih/2)*2" \
+    -movflags +faststart \
+    -an \
+    public/videos/highlights/compressed/brandon-coast-to-coast3p-compressed.mp4
+  
+  echo "✅ Brandon's coast-to-coast compressed"
 fi
 
-# Launch day videos (sample a few)
-echo "📋 Compressing launch day videos (sample)..."
-for file in "$INPUT_DIR"/IMG_277[0-9].* "$INPUT_DIR"/IMG_278[0-9].*; do
-    if [ -f "$file" ] && [[ "$file" =~ \.(MOV|mov|MP4|mp4)$ ]]; then
-        basename=$(basename "$file" | sed 's/\.[^.]*$//' | tr '[:upper:]' '[:lower:]')
-        compress_video "$file" "$OUTPUT_DIR/launch-day-${basename}.mp4"
-        # Limit to first 5 for now
-        if [ $(ls -1 "$OUTPUT_DIR"/launch-day-*.mp4 2>/dev/null | wc -l) -ge 5 ]; then
-            break
-        fi
-    fi
-done
+# Compress Hafiz putback (convert MOV to MP4)
+if [ -f "public/videos/highlights/hafiz-putback.mov" ]; then
+  echo "📹 Compressing Hafiz putback..."
+  ffmpeg -i public/videos/highlights/hafiz-putback.mov \
+    -vcodec libx264 \
+    -crf 28 \
+    -preset slow \
+    -vf "scale=ceil(iw/2)*2:ceil(ih/2)*2" \
+    -movflags +faststart \
+    -an \
+    public/videos/highlights/compressed/hafiz-putback-compressed.mp4
+  
+  echo "✅ Hafiz putback compressed"
+fi
+
+# Compress Night of Legends highlights
+if [ -f "public/videos/highlights/night-of-legends-highlights.mp4" ]; then
+  echo "📹 Compressing Night of Legends highlights..."
+  ffmpeg -i public/videos/highlights/night-of-legends-highlights.mp4 \
+    -vcodec libx264 \
+    -crf 28 \
+    -preset slow \
+    -vf "scale=ceil(iw/2)*2:ceil(ih/2)*2" \
+    -movflags +faststart \
+    -an \
+    public/videos/highlights/compressed/night-of-legends-highlights-compressed.mp4
+  
+  echo "✅ Night of Legends highlights compressed"
+fi
+
+# Compress Pickup Games highlights
+if [ -f "public/videos/highlights/pickup-games-highlights.mp4" ]; then
+  echo "📹 Compressing Pickup Games highlights..."
+  ffmpeg -i public/videos/highlights/pickup-games-highlights.mp4 \
+    -vcodec libx264 \
+    -crf 28 \
+    -preset slow \
+    -vf "scale=ceil(iw/2)*2:ceil(ih/2)*2" \
+    -movflags +faststart \
+    -an \
+    public/videos/highlights/compressed/pickup-games-highlights-compressed.mp4
+  
+  echo "✅ Pickup Games highlights compressed"
+fi
+
+# Compress Training Sessions highlights
+if [ -f "public/videos/highlights/training-sessions-highlights.mp4" ]; then
+  echo "📹 Compressing Training Sessions highlights..."
+  ffmpeg -i public/videos/highlights/training-sessions-highlights.mp4 \
+    -vcodec libx264 \
+    -crf 28 \
+    -preset slow \
+    -vf "scale=ceil(iw/2)*2:ceil(ih/2)*2" \
+    -movflags +faststart \
+    -an \
+    public/videos/highlights/compressed/training-sessions-highlights-compressed.mp4
+  
+  echo "✅ Training Sessions highlights compressed"
+fi
+
+# Compress Launch Game highlights
+if [ -f "public/videos/highlights/launch-game-highlights.mp4" ]; then
+  echo "📹 Compressing Launch Game highlights..."
+  ffmpeg -i public/videos/highlights/launch-game-highlights.mp4 \
+    -vcodec libx264 \
+    -crf 28 \
+    -preset slow \
+    -vf "scale=ceil(iw/2)*2:ceil(ih/2)*2" \
+    -movflags +faststart \
+    -an \
+    public/videos/highlights/compressed/launch-game-highlights-compressed.mp4
+  
+  echo "✅ Launch Game highlights compressed"
+fi
+
+# Compress Launch Aerial View (convert MOV to MP4)
+if [ -f "public/videos/highlights/launch-aerial-view.mov" ]; then
+  echo "📹 Compressing Launch Aerial View..."
+  ffmpeg -i public/videos/highlights/launch-aerial-view.mov \
+    -vcodec libx264 \
+    -crf 28 \
+    -preset slow \
+    -vf "scale=ceil(iw/2)*2:ceil(ih/2)*2" \
+    -movflags +faststart \
+    -an \
+    public/videos/highlights/compressed/launch-aerial-view-compressed.mp4
+  
+  echo "✅ Launch Aerial View compressed"
+fi
+
+# Compress T's Three-Pointer
+if [ -f "public/videos/highlights/t-shoots-3-pointer.mp4" ]; then
+  echo "📹 Compressing T's Three-Pointer..."
+  ffmpeg -i public/videos/highlights/t-shoots-3-pointer.mp4 \
+    -vcodec libx264 \
+    -crf 28 \
+    -preset slow \
+    -vf "scale=ceil(iw/2)*2:ceil(ih/2)*2" \
+    -movflags +faststart \
+    -an \
+    public/videos/highlights/compressed/t-shoots-3-pointer-compressed.mp4
+  
+  echo "✅ T's Three-Pointer compressed"
+fi
+
+# Compress Mustafa Drive
+if [ -f "public/videos/highlights/mustafa-drive.mp4" ]; then
+  echo "📹 Compressing Mustafa Drive..."
+  ffmpeg -i public/videos/highlights/mustafa-drive.mp4 \
+    -vcodec libx264 \
+    -crf 28 \
+    -preset slow \
+    -vf "scale=ceil(iw/2)*2:ceil(ih/2)*2" \
+    -movflags +faststart \
+    -an \
+    public/videos/highlights/compressed/mustafa-drive-compressed.mp4
+  
+  echo "✅ Mustafa Drive compressed"
+fi
+
+# Compress Night of Legends Warmup
+if [ -f "public/videos/highlights/night-of-legends-warmup.mp4" ]; then
+  echo "📹 Compressing Night of Legends Warmup..."
+  ffmpeg -i public/videos/highlights/night-of-legends-warmup.mp4 \
+    -vcodec libx264 \
+    -crf 28 \
+    -preset slow \
+    -vf "scale=ceil(iw/2)*2:ceil(ih/2)*2" \
+    -movflags +faststart \
+    -an \
+    public/videos/highlights/compressed/night-of-legends-warmup-compressed.mp4
+  
+  echo "✅ Night of Legends Warmup compressed"
+fi
 
 echo ""
 echo "✅ Compression complete!"
+echo "📁 Compressed videos saved to: public/videos/highlights/compressed/"
 echo ""
 echo "💡 Next steps:"
-echo "   1. Review compressed videos in $OUTPUT_DIR"
-echo "   2. Upload important videos to YouTube for production"
-echo "   3. Update website to use YouTube embeds or compressed videos"
-echo ""
-echo "📊 To compress all videos (this will take a while):"
-echo "   find $INPUT_DIR -type f \\( -name '*.MOV' -o -name '*.MP4' -o -name '*.mov' -o -name '*.mp4' \\) -exec ./scripts/compress-videos.sh {} $OUTPUT_DIR \\;"
-
+echo "   1. Review compressed videos"
+echo "   2. Replace originals if satisfied"
+echo "   3. Update page.tsx to use compressed versions"

@@ -30,6 +30,11 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
+                <Link href="/media" prefetch={true} className="hover:text-primary transition-colors">
+                  Media & Gallery
+                </Link>
+              </li>
+              <li>
                 <Link href="/transparency" prefetch={true} className="hover:text-primary transition-colors">
                   Transparency
                 </Link>

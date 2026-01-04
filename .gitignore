@@ -46,3 +46,12 @@ next-env.d.ts
 # Personal planning/notes (not for deployment)
 plans/
 docs/
+
+# Source media folder (not for deployment)
+madinabasketballmedia/
+
+# Original uncompressed video files (keep compressed versions only)
+public/videos/highlights/*.mp4
+public/videos/highlights/*.mov
+public/videos/highlights/*.MOV
+!public/videos/highlights/compressed/

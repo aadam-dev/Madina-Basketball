@@ -47,10 +47,10 @@ export default function Error({
           </p>
         </div>
 
-        {/* Show error details only in development */}
-        {process.env.NODE_ENV === 'development' && (
+        {/* Show error details only in development with an extra check */}
+        {process.env.NODE_ENV === 'development' && typeof window !== 'undefined' && window.location.hostname === 'localhost' && (
           <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg text-left">
-            <p className="text-sm font-semibold text-red-900 mb-2">Error Details (Dev Only):</p>
+            <p className="text-sm font-semibold text-red-900 mb-2">Error Details (Local Dev):</p>
             <p className="text-xs text-red-700 font-mono break-all">
               {error.message}
             </p>

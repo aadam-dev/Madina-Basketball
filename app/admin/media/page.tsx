@@ -79,32 +79,46 @@ const MEDIA_LOCATIONS = {
     types: ['image'],
     current: null as MediaItem | null,
   },
-  'media-poster-1': {
-    label: 'Media: Event Poster #1',
-    description: 'First event poster in promotional materials',
+  'media-launch-video-1': {
+    label: 'Media: Launch Day Video #1',
+    description: 'First YouTube video in Launch Day section',
     path: '/media',
-    types: ['image', 'video'],
+    types: ['youtube'],
     current: null as MediaItem | null,
   },
-  'media-poster-2': {
-    label: 'Media: Event Poster #2',
-    description: 'Second event poster in promotional materials',
+  'media-launch-video-2': {
+    label: 'Media: Launch Day Video #2',
+    description: 'Second YouTube video in Launch Day section',
     path: '/media',
-    types: ['image', 'video'],
+    types: ['youtube'],
     current: null as MediaItem | null,
   },
-  'media-poster-3': {
-    label: 'Media: Event Poster #3',
-    description: 'Third event poster in promotional materials',
+  'media-pickup-video-1': {
+    label: 'Media: Pickup Games Video',
+    description: 'YouTube video for Pickup Games section',
     path: '/media',
-    types: ['image', 'video'],
+    types: ['youtube'],
     current: null as MediaItem | null,
   },
-  'media-poster-4': {
-    label: 'Media: Event Poster #4',
-    description: 'Fourth event poster in promotional materials',
+  'media-training-video-1': {
+    label: 'Media: Training Sessions Video',
+    description: 'YouTube video for Training Sessions section',
     path: '/media',
-    types: ['image', 'video'],
+    types: ['youtube'],
+    current: null as MediaItem | null,
+  },
+  'media-event-oldgees-video-1': {
+    label: 'Media: Old Gees vs Youngins Highlight',
+    description: 'Full compilation reel for Old Gees vs Youngins',
+    path: '/media',
+    types: ['youtube'],
+    current: null as MediaItem | null,
+  },
+  'media-event-night-of-legends-video-1': {
+    label: 'Media: Night of Legends Highlight',
+    description: 'Highlight video for Night of Legends',
+    path: '/media',
+    types: ['youtube'],
     current: null as MediaItem | null,
   },
 };

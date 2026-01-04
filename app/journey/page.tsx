@@ -114,9 +114,6 @@ export default function Journey() {
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 {/* Before #1 - Abandoned Court */}
                 <div className="relative">
-                  <div className="absolute top-2 left-2 bg-gray-800 text-white px-3 py-1 rounded-lg font-bold text-sm z-10 uppercase">
-                    Before #1
-                  </div>
                   <div className="aspect-video bg-gray-200 rounded-xl flex items-center justify-center overflow-hidden relative min-h-[200px]">
                     <Image
                       src="/images/journey/before/abandoned-court.jpg"
@@ -129,9 +126,6 @@ export default function Journey() {
                 </div>
                 {/* Before #2 - Engineers at Work */}
                 <div className="relative">
-                  <div className="absolute top-2 left-2 bg-gray-800 text-white px-3 py-1 rounded-lg font-bold text-sm z-10 uppercase">
-                    Before #2
-                  </div>
                   <div className="aspect-video bg-gray-200 rounded-xl overflow-hidden relative min-h-[200px]">
                     <video 
                       src="/videos/compressed/engineers-at-work.mp4"
@@ -143,9 +137,6 @@ export default function Journey() {
                 </div>
                 {/* Before #3 - Court View From Afar */}
                 <div className="relative">
-                  <div className="absolute top-2 left-2 bg-gray-800 text-white px-3 py-1 rounded-lg font-bold text-sm z-10 uppercase">
-                    Before #3
-                  </div>
                   <div className="aspect-video bg-gray-200 rounded-xl overflow-hidden relative min-h-[200px]">
                     <video 
                       src="/videos/compressed/before-from-afar.MOV"
@@ -164,9 +155,6 @@ export default function Journey() {
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 {/* After #1 - B4 Launch Video */}
                 <div className="relative">
-                  <div className="absolute top-2 left-2 bg-green-600 text-white px-3 py-1 rounded-lg font-bold text-sm z-10 uppercase">
-                    After #1
-                  </div>
                   <div className="aspect-video bg-gray-200 rounded-xl overflow-hidden relative min-h-[200px]">
                     <video 
                       src="/videos/compressed/b4launch.MOV"
@@ -178,9 +166,6 @@ export default function Journey() {
                 </div>
                 {/* After #2 */}
                 <div className="relative">
-                  <div className="absolute top-2 left-2 bg-green-600 text-white px-3 py-1 rounded-lg font-bold text-sm z-10 uppercase">
-                    After #2
-                  </div>
                   <div className="aspect-video bg-gray-200 rounded-xl flex items-center justify-center overflow-hidden relative min-h-[200px]">
                     <Image
                       src="/images/journey/after/after-2.jpg"
@@ -193,9 +178,6 @@ export default function Journey() {
                 </div>
                 {/* After #3 */}
                 <div className="relative">
-                  <div className="absolute top-2 left-2 bg-green-600 text-white px-3 py-1 rounded-lg font-bold text-sm z-10 uppercase">
-                    After #3
-                  </div>
                   <div className="aspect-video bg-gray-200 rounded-xl overflow-hidden relative min-h-[200px]">
                     <video 
                       src="/videos/compressed/afternumber3.MOV"
@@ -308,20 +290,22 @@ export default function Journey() {
                     <ArrowRight className="w-5 h-5" />
                   </Link>
                 </div>
-                <div className="aspect-video bg-gray-200 rounded-lg flex items-center justify-center overflow-hidden">
-                  {getVideo('launch-day-game')?.videoId ? (
-                    <YouTubeEmbed 
-                      videoId={getVideo('launch-day-game')!.videoId}
-                      title={getVideo('launch-day-game')!.title}
-                      className="rounded-lg"
-                    />
-                  ) : (
-                    <div className="text-center text-gray-400 p-8">
-                      <Trophy className="w-16 h-16 mx-auto mb-4" />
-                      <p className="text-sm">Opening Game Photos</p>
-                      <p className="text-xs mt-2">(Add YouTube video ID or photos here)</p>
-                    </div>
-                  )}
+                <div className="aspect-video bg-gray-200 rounded-lg overflow-hidden shadow-lg relative group">
+                  <Image
+                    src="/images/events/launch-day/event-poster.jpg"
+                    alt="Madina vs Kawukudi Launch Game"
+                    fill
+                    className="object-cover group-hover:scale-105 transition-transform duration-300"
+                    unoptimized
+                  />
+                  <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors flex items-center justify-center">
+                    <Link 
+                      href="/media#launch-day"
+                      className="px-6 py-3 bg-white text-primary font-bold rounded-lg hover:bg-gray-100 transition-all shadow-xl"
+                    >
+                      View Gallery
+                    </Link>
+                  </div>
                 </div>
               </div>
             </div>
