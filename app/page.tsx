@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight, Calendar, Users, Trophy, CheckCircle, MapPin, Clock, Info, AlertTriangle, CheckCircle as CheckCircleIcon, Calendar as CalendarIcon } from "lucide-react";
+import { ArrowRight, Calendar, Users, Trophy, CheckCircle, MapPin, Clock, Info, AlertTriangle, CheckCircle as CheckCircleIcon, Calendar as CalendarIcon, Sun, Zap, Leaf } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 import EventCard from "@/components/EventCard";
 import HeroBackground from "@/components/HeroBackground";
@@ -142,10 +142,16 @@ export default async function Home() {
         
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10 py-20">
           <div className="max-w-4xl mx-auto text-center text-white">
-            {/* Status Badge */}
-            <div className="inline-flex items-center mb-6 px-4 py-2 bg-green-500/90 backdrop-blur-sm rounded-full text-sm font-medium">
-              <CheckCircle className="w-4 h-4 mr-2" />
-              Court Now Active
+            {/* Status Badges */}
+            <div className="flex flex-wrap items-center justify-center gap-3 mb-6">
+              <div className="inline-flex items-center px-4 py-2 bg-green-500/90 backdrop-blur-sm rounded-full text-sm font-medium">
+                <CheckCircle className="w-4 h-4 mr-2" />
+                Court Now Active
+              </div>
+              <div className="inline-flex items-center px-4 py-2 bg-accent/90 backdrop-blur-sm rounded-full text-sm font-bold text-gray-900">
+                <Sun className="w-4 h-4 mr-2" />
+                Solar-Powered
+              </div>
             </div>
             
             {/* Main Title - Uppercase for Impact */}
@@ -233,6 +239,114 @@ export default async function Home() {
             <div className="text-center p-6 bg-muted rounded-xl">
               <div className="text-3xl sm:text-4xl font-bold text-primary mb-2">12+</div>
               <div className="text-gray-600 font-medium text-sm">Events Hosted</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Solar Lighting Feature Section */}
+      <section className="py-20 bg-gradient-to-br from-accent/20 via-primary/10 to-secondary/20 relative overflow-hidden">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-accent/10 via-transparent to-transparent opacity-50" />
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="max-w-6xl mx-auto">
+            <div className="text-center mb-12">
+              <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-accent to-primary rounded-lg mb-4 shadow-lg">
+                <Sun className="w-8 h-8 text-white" />
+              </div>
+              <div className="inline-flex items-center mb-4 px-4 py-2 bg-accent/90 backdrop-blur-sm rounded-full text-sm font-bold uppercase tracking-widest text-gray-900">
+                <Zap className="w-4 h-4 mr-2" />
+                Pioneering Innovation
+              </div>
+              <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-4 uppercase tracking-tight">
+                Solar-Powered<br />Basketball Court
+              </h2>
+              <p className="text-xl text-gray-700 max-w-3xl mx-auto font-medium">
+                Madina Basketball is proud to be among the first basketball courts in Ghana with a complete solar lighting system, enabling night play and sustainable operations.
+              </p>
+            </div>
+            
+            <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-8 md:p-12 shadow-2xl border border-white/50">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div>
+                  <div className="flex items-center space-x-2 mb-6">
+                    <span className="px-4 py-2 bg-primary/10 text-primary text-sm font-bold rounded-full uppercase tracking-widest">
+                      Sustainable
+                    </span>
+                    <span className="px-4 py-2 bg-green-500/10 text-green-700 text-sm font-bold rounded-full uppercase tracking-widest">
+                      100% Solar
+                    </span>
+                  </div>
+                  <h3 className="text-3xl sm:text-4xl font-bold mb-6 uppercase tracking-tight">
+                    Play Under the Stars
+                  </h3>
+                  <p className="text-lg text-gray-700 leading-relaxed mb-6">
+                    Our state-of-the-art solar lighting system ensures the court is fully illuminated for evening games and training sessions. This sustainable solution extends playing hours while reducing environmental impact.
+                  </p>
+                  <div className="space-y-4 mb-8">
+                    <div className="flex items-start space-x-4">
+                      <div className="w-10 h-10 bg-accent/20 rounded-lg flex items-center justify-center flex-shrink-0 mt-1">
+                        <Sun className="w-5 h-5 text-primary" />
+                      </div>
+                      <div>
+                        <h4 className="font-bold text-gray-900 mb-1 uppercase tracking-wide">Extended Play Hours</h4>
+                        <p className="text-gray-600 text-sm">Games can continue well into the evening with reliable, bright lighting powered entirely by solar energy.</p>
+                      </div>
+                    </div>
+                    <div className="flex items-start space-x-4">
+                      <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center flex-shrink-0 mt-1">
+                        <Leaf className="w-5 h-5 text-green-600" />
+                      </div>
+                      <div>
+                        <h4 className="font-bold text-gray-900 mb-1 uppercase tracking-wide">Eco-Friendly</h4>
+                        <p className="text-gray-600 text-sm">Zero carbon footprint. Our solar system reduces reliance on grid electricity and contributes to a cleaner environment.</p>
+                      </div>
+                    </div>
+                    <div className="flex items-start space-x-4">
+                      <div className="w-10 h-10 bg-secondary/10 rounded-lg flex items-center justify-center flex-shrink-0 mt-1">
+                        <Zap className="w-5 h-5 text-secondary" />
+                      </div>
+                      <div>
+                        <h4 className="font-bold text-gray-900 mb-1 uppercase tracking-wide">Cost-Effective</h4>
+                        <p className="text-gray-600 text-sm">Solar power eliminates ongoing electricity costs, ensuring the court remains sustainable for years to come.</p>
+                      </div>
+                    </div>
+                  </div>
+                  <Link
+                    href="/journey"
+                    className="inline-flex items-center space-x-2 px-6 py-3 bg-primary text-white font-semibold rounded-lg hover:bg-primary-dark transition-all transform hover:scale-105 shadow-lg"
+                  >
+                    <span>Learn More</span>
+                    <ArrowRight className="w-5 h-5" />
+                  </Link>
+                </div>
+                <div className="relative">
+                  <div className="aspect-[4/3] bg-gradient-to-br from-accent/30 to-primary/30 rounded-2xl overflow-hidden shadow-2xl relative group">
+                    {/* Placeholder for solar panel image - you can replace this with actual image */}
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="text-center p-8">
+                        <Sun className="w-24 h-24 text-white/40 mx-auto mb-4" />
+                        <p className="text-white/60 font-bold uppercase tracking-widest text-sm">Solar Lighting System</p>
+                        <p className="text-white/40 text-xs mt-2">Image Coming Soon</p>
+                      </div>
+                    </div>
+                    {/* Uncomment and update when you have the image:
+                    <Image
+                      src="/images/solar-lighting-system.jpg"
+                      alt="Solar Lighting System at Madina Basketball Court"
+                      fill
+                      className="object-cover group-hover:scale-105 transition-transform duration-500"
+                      unoptimized
+                    />
+                    */}
+                  </div>
+                  <div className="absolute -bottom-4 -right-4 bg-accent rounded-xl p-4 shadow-xl border-4 border-white">
+                    <div className="text-center">
+                      <div className="text-2xl font-black text-gray-900">FIRST</div>
+                      <div className="text-xs font-bold uppercase tracking-widest text-gray-700">In Ghana</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
