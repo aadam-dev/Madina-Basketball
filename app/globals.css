@@ -2,80 +2,177 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ─── Design tokens ──────────────────────────────────────────────────────── */
 :root {
-  --background: #ffffff;
-  --foreground: #1a1a1a;
-  --primary: #ff6b35;
+  --primary:      #ff6b35;
   --primary-dark: #e55a2b;
-  --secondary: #004e89;
-  --accent: #ffd23f;
-  --muted: #f5f5f5;
-  --border: #e5e5e5;
+  --secondary:    #004e89;
+  --accent:       #ffd23f;
+  --muted:        #f5f5f5;
+  --border:       #e5e5e5;
+  --court-dark:   #0d0d0d;
+  --court-gray:   #1a1a1a;
 }
 
+/* ─── Base ───────────────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: var(--font-poppins), system-ui, -apple-system, sans-serif;
-  font-weight: 400;
-  letter-spacing: -0.01em;
-  line-height: 1.6;
-}
-
-/* Typography improvements */
-h1, h2, h3, h4, h5, h6 {
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  line-height: 1.2;
-}
-
-h1 {
-  font-weight: 800;
-}
-
-/* Better text rendering */
-* {
+  font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  color: #1a1a1a;
+  background: #ffffff;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Smooth scrolling */
-html {
-  scroll-behavior: smooth;
+/* ─── Typography ─────────────────────────────────────────────────────────── */
+h1 { font-weight: 900; letter-spacing: -0.04em; line-height: 0.95; }
+h2 { font-weight: 800; letter-spacing: -0.03em; line-height: 1.0; }
+h3 { font-weight: 700; letter-spacing: -0.02em; line-height: 1.05; }
+h4 { font-weight: 700; letter-spacing: -0.01em; }
+h5, h6 { font-weight: 600; }
+
+/* ─── Selection ───────────────────────────────────────────────────────────── */
+::selection { background: var(--primary); color: #fff; }
+
+/* ─── Scrollbar ───────────────────────────────────────────────────────────── */
+::-webkit-scrollbar        { width: 5px; height: 5px; }
+::-webkit-scrollbar-track  { background: #111; }
+::-webkit-scrollbar-thumb  { background: var(--primary); border-radius: 3px; }
+
+/* ─── Scrollbar hide ─────────────────────────────────────────────────────── */
+.scrollbar-hide::-webkit-scrollbar { display: none; }
+.scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* ─── Basketball court-line texture ──────────────────────────────────────── */
+.court-lines {
+  background-image:
+    linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+  background-size: 80px 80px;
 }
 
-/* Custom scrollbar */
-::-webkit-scrollbar {
-  width: 8px;
+/* ─── Diagonal section cuts ──────────────────────────────────────────────── */
+.clip-diagonal-down {
+  clip-path: polygon(0 0, 100% 0, 100% 88%, 0 100%);
+  padding-bottom: 8vw;
+}
+.clip-diagonal-up {
+  clip-path: polygon(0 4%, 100% 0, 100% 100%, 0 100%);
+  padding-top: 8vw;
 }
 
-::-webkit-scrollbar-track {
-  background: var(--muted);
+/* ─── Stat display ───────────────────────────────────────────────────────── */
+.stat-number {
+  font-size: clamp(2.8rem, 7vw, 5.5rem);
+  font-weight: 900;
+  letter-spacing: -0.06em;
+  line-height: 1;
 }
 
-::-webkit-scrollbar-thumb {
-  background: var(--primary);
+/* ─── Ghost watermark text ────────────────────────────────────────────────── */
+.watermark {
+  position: absolute;
+  pointer-events: none;
+  user-select: none;
+  font-size: clamp(5rem, 18vw, 16rem);
+  font-weight: 900;
+  letter-spacing: -0.06em;
+  line-height: 0.85;
+  opacity: 0.035;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* ─── Video card ─────────────────────────────────────────────────────────── */
+.video-card {
+  position: relative;
+  background: #111;
+  overflow: hidden;
+}
+.video-card video { width: 100%; height: 100%; object-fit: cover; display: block; }
+.video-label {
+  position: absolute;
+  top: 0.75rem;
+  left: 0.75rem;
+  padding: 3px 10px;
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255,255,255,0.12);
   border-radius: 4px;
+  color: #fff;
+  font-size: 0.6rem;
+  font-weight: 800;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  z-index: 2;
 }
 
-::-webkit-scrollbar-thumb:hover {
-  background: var(--primary-dark);
+/* ─── Photo card ─────────────────────────────────────────────────────────── */
+.photo-card {
+  position: relative;
+  overflow: hidden;
+  background: #111;
+  cursor: zoom-in;
+}
+.photo-card img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  transition: transform 0.55s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  display: block;
+}
+.photo-card:hover img { transform: scale(1.07); }
+.photo-card::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.45) 0%, transparent 55%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.photo-card:hover::after { opacity: 1; }
+
+/* ─── Pill badge ─────────────────────────────────────────────────────────── */
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 14px;
+  border-radius: 999px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
 }
 
-@keyframes scanline {
-  0% { transform: translateY(-100%); }
-  100% { transform: translateY(200%); }
+/* ─── Orange rule ─────────────────────────────────────────────────────────── */
+.orange-rule::after {
+  content: '';
+  display: block;
+  width: 3rem;
+  height: 4px;
+  background: var(--primary);
+  border-radius: 2px;
+  margin-top: 1rem;
 }
 
-.animate-scanline {
-  animation: scanline 3s linear infinite;
+/* ─── Animations ─────────────────────────────────────────────────────────── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
-
 @keyframes pulse-slow {
-  0%, 100% { opacity: 0.3; transform: scale(1); }
-  50% { opacity: 0.5; transform: scale(1.1); }
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.55; }
+}
+@keyframes scanline {
+  0%   { transform: translateY(-100%); }
+  100% { transform: translateY(100vh); }
+}
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
 }
 
-.animate-pulse-slow {
-  animation: pulse-slow 8s ease-in-out infinite;
-}
+.animate-fade-up   { animation: fadeUp 0.55s ease both; }
+.animate-pulse-slow { animation: pulse-slow 3s ease-in-out infinite; }
+.animate-marquee   { animation: marquee 28s linear infinite; }

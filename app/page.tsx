@@ -1,216 +1,179 @@
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight, Calendar, Users, Trophy, CheckCircle, MapPin, Clock, Info, AlertTriangle, CheckCircle as CheckCircleIcon, Calendar as CalendarIcon, Sun, Zap, Leaf } from "lucide-react";
+import {
+  ArrowRight, Calendar, Users, Trophy, CheckCircle,
+  MapPin, Clock, Info, AlertTriangle,
+  CheckCircle as CheckCircleIcon, Calendar as CalendarIcon,
+} from "lucide-react";
 import { supabase } from "@/lib/supabase";
 import EventCard from "@/components/EventCard";
 import HeroBackground from "@/components/HeroBackground";
 
+/* ─── Data fetchers ───────────────────────────────────────────────── */
+
 async function getAnnouncements() {
   try {
     const { data, error } = await supabase
-      .from('announcements')
-      .select('*')
-      .eq('status', 'active')
-      .order('created_at', { ascending: false })
-      .limit(5);
-    
+      .from("announcements").select("*").eq("status", "active")
+      .order("created_at", { ascending: false }).limit(5);
     if (error) return [];
-    
-    // Filter out expired announcements
     const now = new Date();
-    return (data || []).filter((announcement: any) => 
-      !announcement.expires_at || new Date(announcement.expires_at) > now
+    return (data || []).filter(
+      (a: any) => !a.expires_at || new Date(a.expires_at) > now
     );
-  } catch (error) {
-    console.error("Error fetching announcements:", error);
-    return [];
-  }
+  } catch { return []; }
 }
 
 async function getFeaturedEvent() {
   try {
     const { data, error } = await supabase
-      .from("events")
-      .select("*")
-      .eq("featured", true)
-      .eq("status", "upcoming")
-      .order("date", { ascending: true })
-      .limit(1)
-      .single();
-
-    if (error) {
-      // No featured event found, that's okay
+      .from("events").select("*")
+      .eq("featured", true).eq("status", "upcoming")
+      .order("date", { ascending: true }).limit(1).single();
+    if (error) return null;
+    const dt = new Date(`${data.date}T${data.time || "00:00"}`);
+    if (dt < new Date()) {
+      await supabase.from("events")
+        .update({ status: "completed", featured: false }).eq("id", data.id);
       return null;
     }
-
-    // Check if event has passed
-    const eventDate = new Date(data.date);
-    const eventDateTime = new Date(`${data.date}T${data.time || '00:00'}`);
-    const now = new Date();
-    
-    if (eventDateTime < now) {
-      // Event has passed, update status to completed
-      await supabase
-        .from("events")
-        .update({ status: "completed", featured: false })
-        .eq("id", data.id);
-      return null;
-    }
-
     return data;
-  } catch (error) {
-    console.error("Error fetching featured event:", error);
-    return null;
-  }
+  } catch { return null; }
 }
 
 async function getUpcomingEvents() {
   try {
     const { data, error } = await supabase
-      .from("events")
-      .select("*")
-      .eq("status", "upcoming")
-      .eq("featured", false) // Exclude featured events from regular list
-      .order("date", { ascending: true })
-      .limit(3);
-
-    if (error) {
-      console.error("Error fetching events:", error);
-      return [];
-    }
-
-    // Filter out past events and update their status
+      .from("events").select("*")
+      .eq("status", "upcoming").eq("featured", false)
+      .order("date", { ascending: true }).limit(3);
+    if (error) return [];
     const now = new Date();
-    const validEvents = [];
-    
+    const valid: any[] = [];
     for (const event of data || []) {
-      const eventDateTime = new Date(`${event.date}T${event.time || '00:00'}`);
-      if (eventDateTime < now) {
-        // Update status to completed
-        await supabase
-          .from("events")
-          .update({ status: "completed" })
-          .eq("id", event.id);
-      } else {
-        validEvents.push(event);
-      }
+      const dt = new Date(`${event.date}T${event.time || "00:00"}`);
+      if (dt < now) {
+        await supabase.from("events").update({ status: "completed" }).eq("id", event.id);
+      } else { valid.push(event); }
     }
-
-    return validEvents;
-  } catch (error) {
-    console.error("Error fetching events:", error);
-    return [];
-  }
+    return valid;
+  } catch { return []; }
 }
 
+/* ─── Announcement helpers ────────────────────────────────────────── */
+function announcementIcon(type: string) {
+  const map: Record<string, any> = {
+    warning: AlertTriangle, success: CheckCircleIcon, event: CalendarIcon,
+  };
+  return map[type] ?? Info;
+}
+function announcementColors(type: string) {
+  const map: Record<string, string> = {
+    warning: "bg-yellow-900/60 border-yellow-600/50 text-yellow-100",
+    success: "bg-green-900/60 border-green-600/50 text-green-100",
+    event:   "bg-orange-900/60 border-orange-500/50 text-orange-100",
+  };
+  return map[type] ?? "bg-blue-900/60 border-blue-600/50 text-blue-100";
+}
+
+/* ─── Highlight clips for the reel ───────────────────────────────── */
+const CLIPS = [
+  { src: "/videos/highlights/compressed/launch-game-highlights-compressed.mp4",    label: "Launch Game Highlights" },
+  { src: "/videos/highlights/compressed/nadir-killer-3pointer-compressed.mp4",     label: "Nadir's 3-Pointer" },
+  { src: "/videos/highlights/compressed/brandon-coast-to-coast3p-compressed.mp4",  label: "Brandon Coast-to-Coast" },
+  { src: "/videos/highlights/compressed/hafiz-putback-compressed.mp4",             label: "Hafiz Put-Back" },
+  { src: "/videos/highlights/compressed/mustafa-drive-compressed.mp4",             label: "Mustafa's Drive" },
+  { src: "/videos/highlights/compressed/launch-aerial-view-compressed.mp4",        label: "Aerial View" },
+];
+
+/* ─── Page ────────────────────────────────────────────────────────── */
 export default async function Home() {
-  const announcements = await getAnnouncements();
-  const featuredEvent = await getFeaturedEvent();
-  const upcomingEvents = await getUpcomingEvents();
-
-  const getAnnouncementIcon = (type: string) => {
-    switch(type) {
-      case 'warning': return AlertTriangle;
-      case 'success': return CheckCircleIcon;
-      case 'event': return CalendarIcon;
-      default: return Info;
-    }
-  };
-
-  const getAnnouncementColors = (type: string) => {
-    switch(type) {
-      case 'warning': return 'bg-yellow-50 border-yellow-200 text-yellow-900';
-      case 'success': return 'bg-green-50 border-green-200 text-green-900';
-      case 'event': return 'bg-orange-50 border-orange-200 text-orange-900';
-      default: return 'bg-blue-50 border-blue-200 text-blue-900';
-    }
-  };
+  const [announcements, featuredEvent, upcomingEvents] = await Promise.all([
+    getAnnouncements(), getFeaturedEvent(), getUpcomingEvents(),
+  ]);
 
   return (
     <div className="min-h-screen">
-      {/* Hero Section - Improved Design */}
-      <section className="relative min-h-[90vh] flex items-center overflow-hidden">
-        {/* Background Image/Video */}
+
+      {/* ══ HERO ══════════════════════════════════════════════════════ */}
+      <section className="relative min-h-screen flex items-center overflow-hidden bg-[#0a0a0a]">
+        {/* Video + overlay stack */}
         <div className="absolute inset-0">
-          {/* Background image - will show if available, otherwise gradient */}
-          <div className="absolute inset-0 bg-gradient-to-br from-secondary via-secondary/90 to-primary">
-            {/* Background video/image overlay - Hero section */}
-            <HeroBackground />
-            <div className="absolute inset-0 bg-black/40"></div>
-          </div>
+          <HeroBackground />
+          <div className="absolute inset-0 bg-black/55" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-transparent to-[#0a0a0a]/30" />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#0a0a0a]/65 via-transparent to-transparent" />
         </div>
-        
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10 py-20">
-          <div className="max-w-4xl mx-auto text-center text-white">
-            {/* Status Badges */}
-            <div className="flex flex-wrap items-center justify-center gap-3 mb-6">
-              <div className="inline-flex items-center px-4 py-2 bg-green-500/90 backdrop-blur-sm rounded-full text-sm font-medium">
-                <CheckCircle className="w-4 h-4 mr-2" />
-                Court Now Active
-              </div>
-              <div className="inline-flex items-center px-4 py-2 bg-accent/90 backdrop-blur-sm rounded-full text-sm font-bold text-gray-900">
-                <Sun className="w-4 h-4 mr-2" />
-                Solar-Powered
-              </div>
+        {/* Court texture */}
+        <div className="absolute inset-0 court-lines opacity-50 pointer-events-none" />
+        {/* Orange left-edge accent */}
+        <div className="absolute left-0 top-0 h-full w-1 bg-gradient-to-b from-transparent via-[#ff6b35] to-transparent" />
+
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10 py-28">
+          <div className="max-w-5xl">
+            {/* Badges */}
+            <div className="flex flex-wrap gap-3 mb-8">
+              <span className="pill bg-green-500/20 border border-green-500/40 text-green-300">
+                <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse-slow" />
+                Court Active
+              </span>
+              <span className="pill bg-white/10 border border-white/20 text-white/70">Est. June 2025</span>
+              <span className="pill bg-[#ff6b35]/20 border border-[#ff6b35]/40 text-[#ff6b35]">Libya Quarters, Madina</span>
             </div>
-            
-            {/* Main Title - Uppercase for Impact */}
-            <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold mb-6 leading-tight tracking-tight">
-              MADINA<br />BASKETBALL
-          </h1>
-            
-            <p className="text-xl sm:text-2xl lg:text-3xl mb-4 font-light">
-              A Community-Built Court, Now Active
+
+            {/* Headline */}
+            <h1 className="text-[clamp(3.5rem,11vw,9rem)] font-black text-white uppercase tracking-[-0.04em] leading-[0.9] mb-6">
+              MADINA<br />
+              <span className="text-[#ff6b35]">BASKET</span>BALL
+            </h1>
+
+            <p className="text-lg sm:text-xl text-white/65 max-w-xl mb-10 font-medium leading-relaxed">
+              Community-built. Community-run. Libya Quarters&apos; premier basketball court — home to pick-up games, training, and tournament rivalries.
             </p>
-            
-            <p className="text-lg sm:text-xl mb-8 text-white/90 max-w-2xl mx-auto leading-relaxed">
-              Libya Quarters' premier basketball hub. Home to pick-up games, training programs, tournaments, and a thriving community of players. Built by the community, for the community.
-            </p>
-            
+
             {/* CTAs */}
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-8">
+            <div className="flex flex-wrap gap-4">
               <Link
                 href="/register"
-                className="px-8 py-4 bg-primary text-white font-semibold rounded-lg hover:bg-primary-dark transition-all transform hover:scale-105 shadow-lg flex items-center space-x-2"
+                className="inline-flex items-center gap-2.5 px-8 py-4 bg-[#ff6b35] text-white font-bold text-sm uppercase tracking-wider rounded-xl hover:bg-[#e55a2b] transition-all hover:scale-105 shadow-xl shadow-[#ff6b35]/25"
               >
-                <span>Register to Play</span>
-                <ArrowRight className="w-5 h-5" />
+                Register to Play <ArrowRight className="w-4 h-4" />
               </Link>
               <Link
                 href="/journey"
-                className="px-8 py-4 bg-white/10 backdrop-blur-sm border-2 border-white text-white font-semibold rounded-lg hover:bg-white/20 transition-all"
+                className="inline-flex items-center gap-2.5 px-8 py-4 bg-white/10 backdrop-blur-sm border border-white/25 text-white font-bold text-sm uppercase tracking-wider rounded-xl hover:bg-white/20 transition-all"
               >
-                See the Journey
+                Our Journey
               </Link>
             </div>
-            
-            {/* Location */}
-            <div className="flex items-center justify-center space-x-2 text-white/90">
+
+            <div className="flex items-center gap-2 mt-10 text-white/35 text-sm">
               <MapPin className="w-4 h-4" />
-              <span className="text-sm">Libya Quarters, Madina, Accra, Ghana</span>
+              Libya Quarters, Madina, Accra, Ghana
             </div>
           </div>
         </div>
+
+        {/* Scroll hint */}
+        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-35">
+          <span className="text-white text-[0.55rem] font-bold tracking-[0.3em] uppercase">Scroll</span>
+          <div className="w-px h-8 bg-white/50" />
+        </div>
       </section>
 
-      {/* Announcements Section */}
+      {/* ══ ANNOUNCEMENTS ═════════════════════════════════════════════ */}
       {announcements.length > 0 && (
-        <section className="py-12 bg-gray-50">
+        <section className="py-8 bg-[#0d0d0d] border-b border-white/5">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="max-w-4xl mx-auto space-y-4">
-              {announcements.map((announcement: any) => {
-                const Icon = getAnnouncementIcon(announcement.type);
+            <div className="max-w-4xl mx-auto space-y-3">
+              {announcements.map((a: any) => {
+                const Icon = announcementIcon(a.type);
                 return (
-                  <div 
-                    key={announcement.id}
-                    className={`rounded-lg border-2 p-4 shadow-sm ${getAnnouncementColors(announcement.type)}`}
-                  >
-                    <div className="flex items-start space-x-3">
-                      <Icon className="w-5 h-5 mt-0.5 flex-shrink-0" />
-                      <div className="flex-1">
-                        <h3 className="font-bold text-lg mb-1">{announcement.title}</h3>
-                        <p className="text-sm opacity-90">{announcement.message}</p>
-                      </div>
+                  <div key={a.id} className={`flex items-start gap-3 p-4 rounded-xl border ${announcementColors(a.type)}`}>
+                    <Icon className="w-5 h-5 flex-shrink-0 mt-0.5" />
+                    <div>
+                      {a.title && <p className="font-bold text-sm mb-0.5">{a.title}</p>}
+                      <p className="text-sm opacity-90">{a.content}</p>
                     </div>
                   </div>
                 );
@@ -220,215 +183,120 @@ export default async function Home() {
         </section>
       )}
 
-      {/* Stats Section - Enhanced */}
-      <section className="py-16 bg-white">
+      {/* ══ STATS BAR ════════════════════════════════════════════════ */}
+      <section className="bg-[#111] border-b border-white/5">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-6xl mx-auto">
-            <div className="text-center p-6 bg-muted rounded-xl">
-              <div className="text-3xl sm:text-4xl font-bold text-primary mb-2">GHS 44,750</div>
-              <div className="text-gray-600 font-medium text-sm">Amount Raised</div>
-            </div>
-            <div className="text-center p-6 bg-muted rounded-xl">
-              <div className="text-3xl sm:text-4xl font-bold text-green-600 mb-2">Active</div>
-              <div className="text-gray-600 font-medium text-sm">Court Status</div>
-            </div>
-            <div className="text-center p-6 bg-muted rounded-xl">
-              <div className="text-3xl sm:text-4xl font-bold text-primary mb-2">150+</div>
-              <div className="text-gray-600 font-medium text-sm">Players Registered</div>
-            </div>
-            <div className="text-center p-6 bg-muted rounded-xl">
-              <div className="text-3xl sm:text-4xl font-bold text-primary mb-2">12+</div>
-              <div className="text-gray-600 font-medium text-sm">Events Hosted</div>
-            </div>
+          <div className="grid grid-cols-3 divide-x divide-white/10">
+            {[
+              { value: "150+",      label: "Active Players",  sub: "and growing" },
+              { value: "GHS 44.7K", label: "Community Raised", sub: "100% transparent" },
+              { value: "12+",       label: "Events Hosted",   sub: "since June 2025" },
+            ].map(({ value, label, sub }) => (
+              <div key={label} className="py-10 px-4 text-center group cursor-default">
+                <div className="stat-number text-white group-hover:text-[#ff6b35] transition-colors duration-300">{value}</div>
+                <div className="text-white/50 font-bold uppercase text-[0.62rem] tracking-widest mt-2">{label}</div>
+                <div className="text-white/25 text-xs mt-1">{sub}</div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* Solar Lighting Feature Section */}
-      <section className="py-20 bg-gradient-to-br from-accent/20 via-primary/10 to-secondary/20 relative overflow-hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-accent/10 via-transparent to-transparent opacity-50" />
+      {/* ══ HIGHLIGHTS REEL ══════════════════════════════════════════ */}
+      <section className="py-20 bg-[#0d0d0d] court-lines relative overflow-hidden">
+        <span className="watermark text-white bottom-0 right-0">HOOPS</span>
+
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="max-w-6xl mx-auto">
-            <div className="text-center mb-12">
-              <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-accent to-primary rounded-lg mb-4 shadow-lg">
-                <Sun className="w-8 h-8 text-white" />
-              </div>
-              <div className="inline-flex items-center mb-4 px-4 py-2 bg-accent/90 backdrop-blur-sm rounded-full text-sm font-bold uppercase tracking-widest text-gray-900">
-                <Zap className="w-4 h-4 mr-2" />
-                Pioneering Innovation
-              </div>
-              <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-4 uppercase tracking-tight">
-                Solar-Powered<br />Basketball Court
-              </h2>
-              <p className="text-xl text-gray-700 max-w-3xl mx-auto font-medium">
-                Madina Basketball is proud to be among the first basketball courts in Ghana with a complete solar lighting system, enabling night play and sustainable operations.
-              </p>
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-12">
+            <div>
+              <p className="text-[#ff6b35] font-bold text-xs uppercase tracking-[0.25em] mb-2">On the Court</p>
+              <h2 className="text-4xl sm:text-5xl font-black text-white uppercase">Highlights Reel</h2>
             </div>
-            
-            <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-8 md:p-12 shadow-2xl border border-white/50">
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-                <div>
-                  <div className="flex items-center space-x-2 mb-6">
-                    <span className="px-4 py-2 bg-primary/10 text-primary text-sm font-bold rounded-full uppercase tracking-widest">
-                      Sustainable
-                    </span>
-                    <span className="px-4 py-2 bg-green-500/10 text-green-700 text-sm font-bold rounded-full uppercase tracking-widest">
-                      100% Solar
-                    </span>
-                  </div>
-                  <h3 className="text-3xl sm:text-4xl font-bold mb-6 uppercase tracking-tight">
-                    Play Under the Stars
-                  </h3>
-                  <p className="text-lg text-gray-700 leading-relaxed mb-6">
-                    Our state-of-the-art solar lighting system ensures the court is fully illuminated for evening games and training sessions. This sustainable solution extends playing hours while reducing environmental impact.
-                  </p>
-                  <div className="space-y-4 mb-8">
-                    <div className="flex items-start space-x-4">
-                      <div className="w-10 h-10 bg-accent/20 rounded-lg flex items-center justify-center flex-shrink-0 mt-1">
-                        <Sun className="w-5 h-5 text-primary" />
-                      </div>
-                      <div>
-                        <h4 className="font-bold text-gray-900 mb-1 uppercase tracking-wide">Extended Play Hours</h4>
-                        <p className="text-gray-600 text-sm">Games can continue well into the evening with reliable, bright lighting powered entirely by solar energy.</p>
-                      </div>
-                    </div>
-                    <div className="flex items-start space-x-4">
-                      <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center flex-shrink-0 mt-1">
-                        <Leaf className="w-5 h-5 text-green-600" />
-                      </div>
-                      <div>
-                        <h4 className="font-bold text-gray-900 mb-1 uppercase tracking-wide">Eco-Friendly</h4>
-                        <p className="text-gray-600 text-sm">Zero carbon footprint. Our solar system reduces reliance on grid electricity and contributes to a cleaner environment.</p>
-                      </div>
-                    </div>
-                    <div className="flex items-start space-x-4">
-                      <div className="w-10 h-10 bg-secondary/10 rounded-lg flex items-center justify-center flex-shrink-0 mt-1">
-                        <Zap className="w-5 h-5 text-secondary" />
-                      </div>
-                      <div>
-                        <h4 className="font-bold text-gray-900 mb-1 uppercase tracking-wide">Cost-Effective</h4>
-                        <p className="text-gray-600 text-sm">Solar power eliminates ongoing electricity costs, ensuring the court remains sustainable for years to come.</p>
-                      </div>
-                    </div>
-                  </div>
-                  <Link
-                    href="/journey"
-                    className="inline-flex items-center space-x-2 px-6 py-3 bg-primary text-white font-semibold rounded-lg hover:bg-primary-dark transition-all transform hover:scale-105 shadow-lg"
-                  >
-                    <span>Learn More</span>
-                    <ArrowRight className="w-5 h-5" />
-                  </Link>
-                </div>
-                <div className="relative">
-                  <div className="aspect-[4/3] bg-gradient-to-br from-accent/30 to-primary/30 rounded-2xl overflow-hidden shadow-2xl relative group">
-                    {/* Placeholder for solar panel image - you can replace this with actual image */}
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <div className="text-center p-8">
-                        <Sun className="w-24 h-24 text-white/40 mx-auto mb-4" />
-                        <p className="text-white/60 font-bold uppercase tracking-widest text-sm">Solar Lighting System</p>
-                        <p className="text-white/40 text-xs mt-2">Image Coming Soon</p>
-                      </div>
-                    </div>
-                    {/* Uncomment and update when you have the image:
-                    <Image
-                      src="/images/solar-lighting-system.jpg"
-                      alt="Solar Lighting System at Madina Basketball Court"
-                      fill
-                      className="object-cover group-hover:scale-105 transition-transform duration-500"
-                      unoptimized
-                    />
-                    */}
-                  </div>
-                  <div className="absolute -bottom-4 -right-4 bg-accent rounded-xl p-4 shadow-xl border-4 border-white">
-                    <div className="text-center">
-                      <div className="text-2xl font-black text-gray-900">FIRST</div>
-                      <div className="text-xs font-bold uppercase tracking-widest text-gray-700">In Ghana</div>
-                    </div>
-                  </div>
-                </div>
+            <Link
+              href="/media"
+              className="inline-flex items-center gap-2 text-white/45 hover:text-[#ff6b35] text-sm font-bold uppercase tracking-wider transition-colors"
+            >
+              Full Gallery <ArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
+
+          {/* 6-clip responsive grid — first clip is taller on desktop */}
+          <div className="grid grid-cols-2 lg:grid-cols-3 gap-3">
+            {CLIPS.map(({ src, label }, i) => (
+              <div
+                key={src}
+                className={`video-card rounded-xl relative overflow-hidden ${i === 0 ? "col-span-2 lg:col-span-1 lg:row-span-2" : ""}`}
+                style={{ aspectRatio: i === 0 ? "4/5" : "16/9" }}
+              >
+                <video
+                  autoPlay loop muted playsInline preload="none"
+                  className="absolute inset-0 w-full h-full object-cover"
+                >
+                  <source src={src} type="video/mp4" />
+                </video>
+                <div className="video-label">{label}</div>
               </div>
-            </div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* Featured Event Section */}
+      {/* ══ FEATURED EVENT (conditional) ═════════════════════════════ */}
       {featuredEvent && (
-        <section className="py-20 bg-gradient-to-br from-primary to-secondary text-white">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <section className="py-20 bg-gradient-to-br from-[#004e89] to-[#003060] text-white relative overflow-hidden">
+          <div className="absolute inset-0 court-lines opacity-40" />
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <div className="max-w-6xl mx-auto">
-              <div className="text-center mb-8">
-                <div className="inline-flex items-center justify-center w-16 h-16 bg-white/20 backdrop-blur-sm rounded-lg mb-4">
-                  <Trophy className="w-8 h-8 text-white" />
+              <div className="flex items-center gap-3 mb-10">
+                <div className="w-10 h-10 bg-white/15 rounded-xl flex items-center justify-center">
+                  <Trophy className="w-5 h-5 text-[#ffd23f]" />
                 </div>
-                <h2 className="text-4xl sm:text-5xl font-bold mb-4 uppercase tracking-tight">Featured Event</h2>
-                <p className="text-xl text-white/90 max-w-2xl mx-auto">
-                  Don't miss tonight's game!
-                </p>
+                <div>
+                  <p className="text-[#ffd23f] font-bold text-xs uppercase tracking-widest">Featured Event</p>
+                  <h2 className="text-3xl font-black uppercase">Don&apos;t Miss It</h2>
+                </div>
               </div>
-              <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 md:p-12 shadow-2xl border border-white/20">
+
+              <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 md:p-12 border border-white/15">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
                   {featuredEvent.image_url && (
                     <div className="relative aspect-video rounded-xl overflow-hidden">
-                      <Image
-                        src={featuredEvent.image_url}
-                        alt={featuredEvent.title}
-                        fill
-                        className="object-cover"
-                      />
+                      <Image src={featuredEvent.image_url} alt={featuredEvent.title} fill className="object-cover" />
                     </div>
                   )}
                   <div>
-                    <div className="flex items-center space-x-2 mb-4">
-                      <span className="px-4 py-2 bg-white/20 backdrop-blur-sm text-white text-sm font-semibold rounded-full uppercase">
-                        {featuredEvent.type}
-                      </span>
-                      <span className="px-4 py-2 bg-green-500 text-white text-sm font-semibold rounded-full">
-                        Tonight
-                      </span>
+                    <div className="flex flex-wrap gap-2 mb-4">
+                      <span className="pill bg-white/20 text-white border border-white/20">{featuredEvent.type}</span>
+                      <span className="pill bg-green-500 text-white">Upcoming</span>
                     </div>
-                    <h3 className="text-3xl sm:text-4xl font-bold mb-4">{featuredEvent.title}</h3>
+                    <h3 className="text-3xl font-black mb-4">{featuredEvent.title}</h3>
                     {featuredEvent.description && (
-                      <p className="text-white/90 text-lg mb-6">{featuredEvent.description}</p>
+                      <p className="text-white/75 mb-5 leading-relaxed">{featuredEvent.description}</p>
                     )}
-                    <div className="space-y-3 mb-6">
-                      <div className="flex items-center space-x-3">
-                        <Calendar className="w-5 h-5 text-white/80" />
-                        <span className="text-white/90">
-                          {new Date(featuredEvent.date).toLocaleDateString("en-US", {
-                            weekday: "long",
-                            month: "long",
-                            day: "numeric",
-                            year: "numeric",
-                          })}
-                        </span>
+                    <div className="space-y-2.5 text-sm text-white/75">
+                      <div className="flex items-center gap-3">
+                        <Calendar className="w-4 h-4 text-[#ffd23f]" />
+                        {new Date(featuredEvent.date).toLocaleDateString("en-GB", {
+                          weekday: "long", day: "numeric", month: "long", year: "numeric",
+                        })}
                       </div>
                       {featuredEvent.time && (
-                        <div className="flex items-center space-x-3">
-                          <Clock className="w-5 h-5 text-white/80" />
-                          <span className="text-white/90">{featuredEvent.time}</span>
+                        <div className="flex items-center gap-3">
+                          <Clock className="w-4 h-4 text-[#ffd23f]" /> {featuredEvent.time}
                         </div>
                       )}
                       {featuredEvent.location && (
-                        <div className="flex items-center space-x-3">
-                          <MapPin className="w-5 h-5 text-white/80" />
-                          <span className="text-white/90">{featuredEvent.location}</span>
+                        <div className="flex items-center gap-3">
+                          <MapPin className="w-4 h-4 text-[#ffd23f]" /> {featuredEvent.location}
                         </div>
                       )}
                       {featuredEvent.teams && (
-                        <div className="flex items-center space-x-3">
-                          <Users className="w-5 h-5 text-white/80" />
-                          <span className="text-white/90 font-semibold">{featuredEvent.teams}</span>
+                        <div className="flex items-center gap-3">
+                          <Users className="w-4 h-4 text-[#ffd23f]" />
+                          <span className="font-semibold">{featuredEvent.teams}</span>
                         </div>
                       )}
                     </div>
-                    <Link
-                      href={`/events/${featuredEvent.id}`}
-                      className="inline-flex items-center space-x-2 px-6 py-3 bg-white text-primary font-semibold rounded-lg hover:bg-white/90 transition-all transform hover:scale-105 shadow-lg"
-                    >
-                      <span>View Details</span>
-                      <ArrowRight className="w-5 h-5" />
-                    </Link>
                   </div>
                 </div>
               </div>
@@ -437,22 +305,22 @@ export default async function Home() {
         </section>
       )}
 
-      {/* Upcoming Events Section */}
+      {/* ══ UPCOMING EVENTS (conditional) ════════════════════════════ */}
       {upcomingEvents.length > 0 && (
-        <section className="py-20 bg-muted">
+        <section className="py-20 bg-[#f5f5f5]">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <div className="max-w-6xl mx-auto">
-              <div className="text-center mb-12">
-                <div className="inline-flex items-center justify-center w-16 h-16 bg-primary rounded-lg mb-4">
-                  <Calendar className="w-8 h-8 text-white" />
+              <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-12">
+                <div>
+                  <p className="text-[#ff6b35] font-bold text-xs uppercase tracking-[0.25em] mb-2">Mark Your Calendar</p>
+                  <h2 className="text-4xl font-black text-gray-900 uppercase">Upcoming Events</h2>
                 </div>
-                <h2 className="text-4xl sm:text-5xl font-bold mb-4 uppercase tracking-tight">Upcoming Events</h2>
-                <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-                  Don't miss out on the next games, tournaments, and community events
-                </p>
+                <div className="w-10 h-10 bg-[#ff6b35] rounded-xl flex items-center justify-center">
+                  <Calendar className="w-5 h-5 text-white" />
+                </div>
               </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {upcomingEvents.map((event) => (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {upcomingEvents.map((event: any) => (
                   <EventCard key={event.id} event={event} />
                 ))}
               </div>
@@ -461,144 +329,152 @@ export default async function Home() {
         </section>
       )}
 
-      {/* Mission Section */}
-      <section className="py-20 bg-muted">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-6xl mx-auto">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-              <div>
-                <div className="text-sm font-semibold text-primary mb-3 uppercase tracking-wide">Our Mission</div>
-                <h2 className="text-4xl sm:text-5xl font-bold mb-6 uppercase tracking-tight">
-                  Basketball for Everyone
-                </h2>
-                <p className="text-lg text-gray-700 leading-relaxed mb-4">
-                  The Madina Basketball court is a thriving hub for players of all levels. From daily pick-up games to structured training sessions, from youth development programs to competitive tournaments—this is where the community comes to play.
-                </p>
-                <p className="text-lg text-gray-700 leading-relaxed mb-6">
-                  Home to teams like Zurak Basketball and Madina Old Gees, the court hosts regular events and serves as the foundation for Madina Basketball's ongoing basketball and social impact initiatives.
-                </p>
-                <Link
-                  href="/journey"
-                  className="inline-flex items-center space-x-2 text-primary font-semibold hover:underline"
-                >
-                  <span>Read Our Story</span>
-                  <ArrowRight className="w-5 h-5" />
-                </Link>
-              </div>
-              <div className="relative">
-                <div className="bg-white rounded-xl p-8 shadow-lg">
-                  <div className="text-6xl font-bold text-primary mb-2">2025</div>
-                  <div className="text-2xl font-semibold text-gray-800">Active & Growing</div>
-                </div>
-                <div className="mt-6 aspect-[4/3] bg-gray-200 rounded-xl overflow-hidden relative">
-                  <Image
-                    src="/images/journey/after/court-painting.jpg"
-                    alt="Madina Basketball Court - Court Painting"
-                    fill
-                    className="object-cover"
-                    unoptimized
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Get Involved Section */}
-      <section className="py-20 bg-white">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-6xl mx-auto">
-            <div className="text-center mb-12">
-              <h2 className="text-4xl sm:text-5xl font-bold mb-4 uppercase tracking-tight">Get Involved</h2>
-              <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-                Whether you want to play, book the court for your team, or support our programs, 
-                there's a place for you at Madina Basketball.
+      {/* ══ COURT STORY ═══════════════════════════════════════════════ */}
+      <section className="py-20 bg-white relative overflow-hidden">
+        <span className="watermark text-gray-900 -bottom-8 -left-8">COURT</span>
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+            <div>
+              <p className="text-[#ff6b35] font-bold text-xs uppercase tracking-[0.25em] mb-3">Our Mission</p>
+              <h2 className="text-5xl sm:text-6xl font-black text-gray-900 uppercase mb-5">
+                Basketball<br />for Everyone
+              </h2>
+              <div className="w-12 h-1 bg-[#ff6b35] rounded-full mb-7" />
+              <p className="text-gray-600 text-lg leading-relaxed mb-4">
+                The Madina Basketball court is a thriving hub for players of all levels — from daily pick-up games and youth training sessions to competitive inter-community tournaments.
               </p>
+              <p className="text-gray-500 leading-relaxed mb-8">
+                Home to Zurak Basketball and Madina Old Gees, built by 18 community donors and managed with full financial transparency.
+              </p>
+              <div className="flex flex-col gap-3 mb-8">
+                {[
+                  { icon: Users,       label: "150+ Registered Players" },
+                  { icon: Trophy,      label: "2 Active Competing Teams" },
+                  { icon: CheckCircle, label: "100% Community-Built & Funded" },
+                ].map(({ icon: Icon, label }) => (
+                  <div key={label} className="flex items-center gap-3 text-gray-700 text-sm font-semibold">
+                    <div className="w-8 h-8 bg-[#ff6b35]/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                      <Icon className="w-4 h-4 text-[#ff6b35]" />
+                    </div>
+                    {label}
+                  </div>
+                ))}
+              </div>
+              <Link
+                href="/journey"
+                className="inline-flex items-center gap-2 text-[#ff6b35] font-bold text-sm uppercase tracking-wider hover:gap-3 transition-all"
+              >
+                Read Our Full Story <ArrowRight className="w-4 h-4" />
+              </Link>
             </div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              <div className="bg-muted rounded-xl p-8 hover:shadow-lg transition-shadow">
-                <div className="w-12 h-12 bg-primary rounded-lg flex items-center justify-center mb-4">
-                  <Users className="w-6 h-6 text-white" />
-                </div>
-                <h3 className="text-2xl font-bold mb-3 uppercase">Register to Play</h3>
-                <p className="text-gray-600 mb-6">
-                  Join our community of players. Register for pick-up games, training sessions, and tournaments.
-                </p>
-                <Link
-                  href="/register"
-                  className="inline-flex items-center space-x-2 text-primary font-semibold hover:underline"
-                >
-                  <span>Register Now</span>
-                  <ArrowRight className="w-5 h-5" />
-                </Link>
+
+            <div className="relative">
+              <div className="aspect-[4/5] rounded-2xl overflow-hidden shadow-2xl">
+                <Image
+                  src="/images/journey/after/hero-court.jpg"
+                  alt="Madina Basketball Court" fill
+                  className="object-cover" unoptimized
+                />
               </div>
-              
-              <div className="bg-muted rounded-xl p-8 hover:shadow-lg transition-shadow">
-                <div className="w-12 h-12 bg-primary rounded-lg flex items-center justify-center mb-4">
-                  <Calendar className="w-6 h-6 text-white" />
-                </div>
-                <h3 className="text-2xl font-bold mb-3 uppercase">Book the Court</h3>
-                <p className="text-gray-600 mb-6">
-                  Reserve the court for your team, school, or event. Available for bookings during operating hours.
-                </p>
-                <Link
-                  href="/book"
-                  className="inline-flex items-center space-x-2 text-primary font-semibold hover:underline"
-                >
-                  <span>Book Now</span>
-                  <ArrowRight className="w-5 h-5" />
-                </Link>
+              <div className="absolute -bottom-5 -left-5 bg-[#ff6b35] text-white rounded-2xl p-5 shadow-xl">
+                <div className="text-3xl font-black">2025</div>
+                <div className="text-xs font-bold uppercase tracking-widest opacity-80">Active &amp; Growing</div>
               </div>
-              
-              <div className="bg-muted rounded-xl p-8 hover:shadow-lg transition-shadow">
-                <div className="w-12 h-12 bg-primary rounded-lg flex items-center justify-center mb-4">
-                  <CheckCircle className="w-6 h-6 text-white" />
-                </div>
-                <h3 className="text-2xl font-bold mb-3 uppercase">Our Story</h3>
-                <p className="text-gray-600 mb-6">
-                  Learn how the community came together to create this basketball hub. Full transparency on the journey from vision to reality.
-                </p>
-                <Link
-                  href="/journey"
-                  className="inline-flex items-center space-x-2 text-primary font-semibold hover:underline"
-                >
-                  <span>Our Journey</span>
-                  <ArrowRight className="w-5 h-5" />
-                </Link>
+              <div className="absolute -top-5 -right-5 w-32 h-32 rounded-xl overflow-hidden border-4 border-white shadow-xl hidden sm:block">
+                <Image
+                  src="/images/events/launch-day/courtsidemadinafans.jpg"
+                  alt="Fans courtside" fill className="object-cover" unoptimized
+                />
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Final CTA */}
-      <section className="py-20 bg-secondary text-white">
+      {/* ══ GET INVOLVED ══════════════════════════════════════════════ */}
+      <section className="py-20 bg-[#0d0d0d] court-lines">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-3xl mx-auto text-center">
-            <h2 className="text-4xl sm:text-5xl font-bold mb-6 uppercase tracking-tight">Ready to Ball?</h2>
-            <p className="text-xl mb-8 text-white/90">
-              The court is open. The community is waiting. Come be part of something real.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link
-                href="/court"
-                className="px-8 py-4 bg-white text-secondary font-semibold rounded-lg hover:bg-gray-100 transition-all transform hover:scale-105"
-              >
-                Visit the Court
-              </Link>
-              <Link
-                href="/register"
-                className="px-8 py-4 bg-primary text-white font-semibold rounded-lg hover:bg-primary-dark transition-all transform hover:scale-105 flex items-center justify-center space-x-2"
-              >
-                <span>Join Now</span>
-                <ArrowRight className="w-5 h-5" />
-              </Link>
+          <div className="max-w-6xl mx-auto">
+            <div className="text-center mb-14">
+              <p className="text-[#ff6b35] font-bold text-xs uppercase tracking-[0.25em] mb-2">Join Us</p>
+              <h2 className="text-4xl sm:text-5xl font-black text-white uppercase">Get Involved</h2>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {[
+                {
+                  icon: Users,    title: "Register to Play",
+                  desc: "Join 150+ players. Sign up for pick-up games, training sessions, and community tournaments.",
+                  href: "/register", cta: "Register Now",
+                  from: "from-[#ff6b35]/10", border: "border-[#ff6b35]/20",
+                },
+                {
+                  icon: Calendar, title: "Book the Court",
+                  desc: "Reserve the court for your team, school, or event during operating hours.",
+                  href: "/book", cta: "Book Now",
+                  from: "from-[#004e89]/10", border: "border-[#004e89]/30",
+                },
+                {
+                  icon: Trophy,   title: "Our Story",
+                  desc: "See how 18 donors raised GHS 44,750 to build this court from the ground up.",
+                  href: "/journey", cta: "Read Journey",
+                  from: "from-[#ffd23f]/10", border: "border-[#ffd23f]/20",
+                },
+              ].map(({ icon: Icon, title, desc, href, cta, from, border }) => (
+                <div
+                  key={title}
+                  className={`group relative bg-gradient-to-br ${from} to-transparent border ${border} rounded-2xl p-8 hover:scale-[1.02] transition-all duration-300`}
+                >
+                  <div className="w-12 h-12 bg-white/8 rounded-xl flex items-center justify-center mb-6 group-hover:bg-[#ff6b35]/20 transition-colors">
+                    <Icon className="w-6 h-6 text-white" />
+                  </div>
+                  <h3 className="text-xl font-black text-white uppercase mb-3">{title}</h3>
+                  <p className="text-white/50 text-sm leading-relaxed mb-6">{desc}</p>
+                  <Link
+                    href={href}
+                    className="inline-flex items-center gap-2 text-white font-bold text-xs uppercase tracking-widest hover:text-[#ff6b35] transition-colors"
+                  >
+                    {cta} <ArrowRight className="w-3.5 h-3.5" />
+                  </Link>
+                </div>
+              ))}
             </div>
           </div>
         </div>
       </section>
+
+      {/* ══ FINAL CTA ════════════════════════════════════════════════ */}
+      <section className="relative py-28 bg-[#ff6b35] overflow-hidden">
+        <div className="absolute inset-0 opacity-15">
+          <Image
+            src="/images/journey/after/hero-court-daytime-aerial.jpg"
+            alt="" fill className="object-cover" unoptimized
+          />
+        </div>
+        <div className="absolute inset-0 bg-gradient-to-b from-[#ff6b35]/50 to-[#ff6b35]" />
+        <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h2 className="text-5xl sm:text-7xl font-black text-white uppercase leading-none mb-6">
+            Ready to Ball?
+          </h2>
+          <p className="text-xl text-white/80 max-w-xl mx-auto mb-10 font-medium">
+            The court is open. The community is here. Come be part of something real.
+          </p>
+          <div className="flex flex-wrap justify-center gap-4">
+            <Link
+              href="/court"
+              className="px-8 py-4 bg-white text-[#ff6b35] font-black text-sm uppercase tracking-wider rounded-xl hover:bg-gray-100 transition-all hover:scale-105 shadow-2xl"
+            >
+              Visit the Court
+            </Link>
+            <Link
+              href="/register"
+              className="inline-flex items-center gap-2 px-8 py-4 bg-[#0a0a0a] text-white font-black text-sm uppercase tracking-wider rounded-xl hover:bg-black transition-all hover:scale-105 shadow-2xl"
+            >
+              Join Now <ArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
+        </div>
+      </section>
+
     </div>
   );
 }

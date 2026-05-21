@@ -46,6 +46,11 @@ next-env.d.ts
 # Personal planning/notes (not for deployment)
 plans/
 docs/
+*.docx
+
+# Claude / Cursor local tooling
+.claude/
+.cursor/
 
 # Source media folder (not for deployment)
 madinabasketballmedia/

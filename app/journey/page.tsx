@@ -62,9 +62,9 @@ export default function Journey() {
       phase: "active",
     },
     {
-      date: "January 13, 2026",
-      title: "Solar Lighting System Installed",
-      description: "Madina Basketball becomes one of the first basketball courts in Ghana with a complete solar lighting system. This major milestone enables night play, extends court hours, and demonstrates our commitment to sustainable, eco-friendly operations. The solar-powered lighting system ensures the court remains fully operational while reducing environmental impact and operating costs.",
+      date: "January 2026",
+      title: "Lighting System — Lessons Learned",
+      description: "An attempted solar lighting installation in January 2026 revealed challenges with the supply chain — batteries sourced from China proved defective, leaving the system underperforming. The lights were removed and the court returned to grid power. The experience sharpened our resolve: a proper, lasting lighting upgrade remains a key goal for the court's future.",
       phase: "active",
     },
     {
