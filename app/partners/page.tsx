@@ -24,7 +24,7 @@ export default function Partners() {
       {/* ── Hero ── */}
       <section className="relative overflow-hidden court-lines border-b border-white/6">
         <div className="absolute left-0 top-0 h-full w-1 bg-gradient-to-b from-transparent via-[#ff6b35] to-transparent" />
-        <div className="container mx-auto px-6 lg:px-8 py-24 lg:py-32">
+        <div className="container mx-auto px-6 lg:px-8 py-16 lg:py-24">
           <span className="pill bg-[#ff6b35]/15 text-[#ff6b35] border border-[#ff6b35]/30 mb-5 inline-flex">
             Partners &amp; Supporters
           </span>
@@ -46,20 +46,18 @@ export default function Partners() {
       <section className="py-16 bg-[#0d0d0d] border-b border-white/6">
         <div className="container mx-auto px-6 lg:px-8 max-w-3xl">
           <p className="text-white/60 leading-relaxed text-base mb-4">
-            The Madina Basketball court renovation was made possible through the support of
-            <strong className="text-white"> 18 generous donors</strong> who raised
-            <strong className="text-white"> GHS 44,750</strong>. From significant contributions
-            to smaller donations, every supporter played a crucial role.
+            The renovation was funded entirely by
+            <strong className="text-white"> 18 donors</strong> who raised
+            <strong className="text-white"> GHS 44,750</strong>. Every contribution counted.
           </p>
           <p className="text-white/60 leading-relaxed text-base">
-            We are deeply grateful to everyone who believed in this project. This court truly
-            belongs to the community — and that includes all of you.
+            This court belongs to the community. These names are on it.
           </p>
         </div>
       </section>
 
       {/* ── Donors ── */}
-      <section id="donors" className="py-20">
+      <section id="donors" className="py-12 sm:py-16 lg:py-20">
         <div className="container mx-auto px-6 lg:px-8 max-w-5xl">
           <div className="flex items-center gap-4 mb-10">
             <div className="w-12 h-12 bg-[#ff6b35]/10 border border-[#ff6b35]/30 rounded-xl flex items-center justify-center">
@@ -112,13 +110,13 @@ export default function Partners() {
       </section>
 
       {/* ── Volunteer Contributors ── */}
-      <section className="py-20 bg-[#0d0d0d]">
+      <section className="py-12 sm:py-16 lg:py-20 bg-[#0d0d0d]">
         <div className="container mx-auto px-6 lg:px-8 max-w-3xl">
           <p className="text-[#ff6b35] font-bold text-xs uppercase tracking-[0.25em] mb-3">Beyond Money</p>
           <h2 className="text-3xl font-black uppercase tracking-tight mb-6 orange-rule">Volunteer Contributors</h2>
           <p className="text-white/60 leading-relaxed mb-6">
             Beyond financial contributions, many community members gave their time and expertise to make this
-            project a success — engineers, organisers, volunteers, and every person who spread the word.
+            project a success: engineers, organisers, volunteers, and everyone who spread the word.
           </p>
           <ul className="space-y-3">
             {[
@@ -137,7 +135,7 @@ export default function Partners() {
       </section>
 
       {/* ── Partnership Opportunities ── */}
-      <section id="sponsors" className="py-20">
+      <section id="sponsors" className="py-12 sm:py-16 lg:py-20">
         <div className="container mx-auto px-6 lg:px-8 max-w-5xl">
           <p className="text-[#ff6b35] font-bold text-xs uppercase tracking-[0.25em] mb-3">Get Involved</p>
           <h2 className="text-3xl font-black uppercase tracking-tight mb-4">Partnership Opportunities</h2>
@@ -189,17 +187,18 @@ export default function Partners() {
       </section>
 
       {/* ── Thank You ── */}
-      <section className="border-t border-white/6 py-20 bg-[#0d0d0d]">
+      <section className="border-t border-white/6 py-12 sm:py-16 lg:py-20 bg-[#0d0d0d]">
         <div className="container mx-auto px-6 lg:px-8 text-center max-w-3xl">
-          <div className="text-5xl mb-6">🙏</div>
+          <div className="w-14 h-14 bg-[#ff6b35]/10 border border-[#ff6b35]/25 rounded-2xl flex items-center justify-center mx-auto mb-6">
+            <Heart className="w-7 h-7 text-[#ff6b35]" />
+          </div>
           <h2 className="text-3xl font-black uppercase tracking-tight mb-6">Thank You</h2>
           <p className="text-white/60 leading-relaxed mb-4">
-            To every supporter, contributor, volunteer, and believer — this court exists because of you.
-            Your trust, your contributions, and your commitment to the community made this possible.
+            To every donor, volunteer, and community member who backed this project: this court exists
+            because of you. Your trust and your contributions made it real.
           </p>
-          <p className="text-white/40 text-sm">
-            Together, we built more than a basketball court. We built a symbol of what is possible
-            when a community comes together with transparency, purpose, and shared vision.
+          <p className="text-white/35 text-sm">
+            This was not just a court renovation. It was proof of what a community can do when it moves together.
           </p>
         </div>
       </section>

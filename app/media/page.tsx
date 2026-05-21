@@ -138,22 +138,25 @@ function Lightbox({
       onClick={onClose}
     >
       <button
-        className="absolute top-4 right-4 text-white/70 hover:text-white p-2 z-10"
+        className="absolute top-3 right-3 w-11 h-11 flex items-center justify-center text-white/70 hover:text-white bg-white/10 hover:bg-white/20 rounded-full z-10 transition-colors"
         onClick={onClose}
+        aria-label="Close"
       >
-        <X size={28} />
+        <X size={22} />
       </button>
       <button
-        className="absolute left-4 top-1/2 -translate-y-1/2 text-white/70 hover:text-white p-2 z-10"
+        className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 w-11 h-11 flex items-center justify-center text-white/70 hover:text-white bg-white/10 hover:bg-white/20 rounded-full z-10 transition-colors"
         onClick={(e) => { e.stopPropagation(); onNav(-1); }}
+        aria-label="Previous"
       >
-        <ChevronLeft size={36} />
+        <ChevronLeft size={24} />
       </button>
       <button
-        className="absolute right-4 top-1/2 -translate-y-1/2 text-white/70 hover:text-white p-2 z-10"
+        className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 w-11 h-11 flex items-center justify-center text-white/70 hover:text-white bg-white/10 hover:bg-white/20 rounded-full z-10 transition-colors"
         onClick={(e) => { e.stopPropagation(); onNav(1); }}
+        aria-label="Next"
       >
-        <ChevronRight size={36} />
+        <ChevronRight size={24} />
       </button>
 
       <div
@@ -262,7 +265,7 @@ export default function MediaPage() {
             <span className="text-[#ff6b35]">IN MOTION</span>
           </h1>
           <p className="mt-4 text-white/60 max-w-xl text-base">
-            Every clip, every photo — the raw energy of Madina Basketball captured in real time.
+            Every clip, every photo. The raw energy of Madina Basketball captured in real time.
           </p>
         </div>
       </section>
@@ -320,7 +323,7 @@ export default function MediaPage() {
           <div>
             <div className="mb-10">
               <p className="text-white/40 text-xs tracking-widest uppercase mb-1">June 22, 2025</p>
-              <h2 className="text-3xl font-black uppercase tracking-tight">Launch Day — Madina vs Kawukudi</h2>
+              <h2 className="text-3xl font-black uppercase tracking-tight">Launch Day: Madina vs Kawukudi</h2>
               <p className="text-white/50 mt-2 text-sm max-w-lg">
                 The day Madina Zurak Court officially opened its doors. Community, competition, and joy.
               </p>
@@ -347,7 +350,7 @@ export default function MediaPage() {
             </div>
 
             <p className="text-white/30 text-xs text-center mt-6">
-              {LAUNCH_PHOTOS.length} photos — click any to expand
+              {LAUNCH_PHOTOS.length} photos. Click any to expand.
             </p>
           </div>
         )}

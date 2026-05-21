@@ -1,177 +1,155 @@
-/**
- * Tools Landing Page
- * 
- * Hub for all game-related tools available on the Madina Basketball platform.
- * Provides education on tool usage, workflows, and how tools connect together.
- * 
- * @component
- */
-
 import Link from "next/link";
-import { Trophy, BarChart3, FileText, Clock, Users, ArrowRight, PlayCircle, Download, Clipboard, Smartphone, WifiOff } from "lucide-react";
+import { Trophy, BarChart3, FileText, Clock, Users, ArrowRight, PlayCircle, Download, Clipboard, Smartphone, WifiOff, ChevronRight } from "lucide-react";
+
+const tools = [
+  {
+    id: "scoreboard",
+    name: "Live Game Scoreboard",
+    description: "Real-time score tracking for basketball games with multiple modes",
+    icon: Trophy,
+    accent: "#ff6b35",
+    href: "/game",
+    features: [
+      "Three tracking modes: Basic, Player Stats, Full Management",
+      "Countdown timer with flexible duration (5–30 minutes)",
+      "Quarter-by-quarter score tracking",
+      "Team fouls tracking per quarter",
+      "Save and export game results",
+      "Professional LED-style display",
+    ],
+    useCase: "Perfect for live games, tournaments, and practice sessions",
+  },
+  {
+    id: "teamsheet",
+    name: "Team Sheet Generator",
+    description: "Create professional team rosters for games and events",
+    icon: Users,
+    accent: "#004e89",
+    href: "/teamsheet",
+    features: [
+      "Create rosters for both home and away teams",
+      "Player names, jersey numbers, and positions",
+      "PDF export for printing",
+      "Required for Player Stats mode",
+      "Direct integration with scoreboard tools",
+    ],
+    useCase: "Essential for organised games and player attribution",
+  },
+  {
+    id: "statssheet",
+    name: "Stats Sheet Generator",
+    description: "Generate blank or pre-filled statistics sheets for manual tracking",
+    icon: Clipboard,
+    accent: "#ffd23f",
+    href: "/statssheet",
+    features: [
+      "Blank stats sheets for manual tracking",
+      "Pre-filled from team sheets",
+      "Comprehensive stat categories",
+      "PDF export ready",
+      "Professional formatting",
+    ],
+    useCase: "Ideal for detailed stat tracking and record keeping",
+  },
+];
+
+const workflows = [
+  {
+    title: "Quick Game Tracking",
+    description: "For casual games and practice sessions",
+    steps: [
+      { tool: "Live Game Scoreboard", action: "Select Basic mode", icon: PlayCircle },
+      { tool: "Scoreboard", action: "Enter team names and start tracking", icon: Clock },
+      { tool: "Scoreboard", action: "Save results when done", icon: Download },
+    ],
+    accent: "#ff6b35",
+  },
+  {
+    title: "Detailed Player Tracking",
+    description: "For organised games with player statistics",
+    steps: [
+      { tool: "Team Sheet Generator", action: "Create rosters for both teams", icon: Users },
+      { tool: "Team Sheet", action: "Click 'Start Player Stats Game'", icon: ArrowRight },
+      { tool: "Live Scoreboard", action: "Select players when scoring", icon: BarChart3 },
+      { tool: "Scoreboard", action: "View real-time player statistics", icon: Trophy },
+    ],
+    accent: "#004e89",
+  },
+  {
+    title: "Manual Stats Recording",
+    description: "For detailed stat tracking on paper",
+    steps: [
+      { tool: "Team Sheet Generator", action: "Create team roster", icon: Users },
+      { tool: "Stats Sheet Generator", action: "Generate pre-filled stats sheet", icon: FileText },
+      { tool: "Stats Sheet", action: "Print and track manually during game", icon: Download },
+    ],
+    accent: "#ff6b35",
+  },
+];
 
 export default function ToolsPage() {
-  const tools = [
-    {
-      id: "scoreboard",
-      name: "Live Game Scoreboard",
-      description: "Real-time score tracking for basketball games with multiple modes",
-      icon: Trophy,
-      color: "primary",
-      href: "/game",
-      features: [
-        "Three tracking modes: Basic, Player Stats, Full Management",
-        "Countdown timer with flexible duration (5-30 minutes)",
-        "Quarter-by-quarter score tracking",
-        "Team fouls tracking per quarter",
-        "Save and export game results",
-        "Professional LED-style display"
-      ],
-      useCase: "Perfect for live games, tournaments, and practice sessions"
-    },
-    {
-      id: "teamsheet",
-      name: "Team Sheet Generator",
-      description: "Create professional team rosters for games and events",
-      icon: Users,
-      color: "secondary",
-      href: "/teamsheet",
-      features: [
-        "Create rosters for both home and away teams",
-        "Player names, jersey numbers, and positions",
-        "PDF export for printing",
-        "Required for Player Stats mode",
-        "Direct integration with scoreboard tools"
-      ],
-      useCase: "Essential for organized games and player attribution"
-    },
-    {
-      id: "statssheet",
-      name: "Stats Sheet Generator",
-      description: "Generate blank or pre-filled statistics sheets for manual tracking",
-      icon: Clipboard,
-      color: "primary",
-      href: "/statssheet",
-      features: [
-        "Blank stats sheets for manual tracking",
-        "Pre-filled from team sheets",
-        "Comprehensive stat categories",
-        "PDF export ready",
-        "Professional formatting"
-      ],
-      useCase: "Ideal for detailed stat tracking and record keeping"
-    }
-  ];
-
-  const workflows = [
-    {
-      title: "Quick Game Tracking",
-      description: "For casual games and practice sessions",
-      steps: [
-        { tool: "Live Game Scoreboard", action: "Select Basic mode", icon: PlayCircle },
-        { tool: "Live Game Scoreboard", action: "Enter team names and start tracking", icon: Clock },
-        { tool: "Live Game Scoreboard", action: "Save results when done", icon: Download }
-      ],
-      color: "primary"
-    },
-    {
-      title: "Detailed Player Tracking",
-      description: "For organized games with player statistics",
-      steps: [
-        { tool: "Team Sheet Generator", action: "Create rosters for both teams", icon: Users },
-        { tool: "Team Sheet Generator", action: "Click 'Start Player Stats Game'", icon: ArrowRight },
-        { tool: "Live Game Scoreboard", action: "Select players when scoring", icon: BarChart3 },
-        { tool: "Live Game Scoreboard", action: "View real-time player statistics", icon: Trophy }
-      ],
-      color: "secondary"
-    },
-    {
-      title: "Manual Stats Recording",
-      description: "For detailed stat tracking on paper",
-      steps: [
-        { tool: "Team Sheet Generator", action: "Create team roster", icon: Users },
-        { tool: "Stats Sheet Generator", action: "Generate pre-filled stats sheet", icon: FileText },
-        { tool: "Stats Sheet Generator", action: "Print and track manually during game", icon: Download }
-      ],
-      color: "primary"
-    }
-  ];
-
   return (
-    <div className="min-h-screen bg-gradient-to-br from-primary/5 via-white to-secondary/5">
-      {/* Hero Section */}
-      <section className="bg-gradient-to-br from-primary to-secondary text-white py-16 sm:py-20">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-3xl mx-auto text-center">
-            <div className="inline-flex items-center justify-center w-20 h-20 bg-white/20 rounded-full mb-6">
-              <Trophy className="w-10 h-10 text-white" />
-            </div>
-            <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-4">
-              Game Tools
-            </h1>
-            <p className="text-xl sm:text-2xl text-white/90 mb-6">
-              Professional basketball game management tools, built for Madina Basketball
-            </p>
-            <p className="text-lg text-white/80 max-w-2xl mx-auto">
-              Our suite of tools helps you manage games, track statistics, and maintain professional records. 
-              Each tool is designed to work seamlessly with the others.
-            </p>
-          </div>
+    <div className="min-h-screen bg-[#0a0a0a] text-white">
+
+      {/* ── Hero ── */}
+      <section className="relative overflow-hidden court-lines border-b border-white/6">
+        <div className="absolute left-0 top-0 h-full w-1 bg-gradient-to-b from-transparent via-[#ff6b35] to-transparent" />
+        <div className="container mx-auto px-6 lg:px-8 py-16 lg:py-24">
+          <span className="pill bg-[#ff6b35]/15 text-[#ff6b35] border border-[#ff6b35]/30 mb-5 inline-flex">
+            Game Tools
+          </span>
+          <h1
+            className="font-black uppercase leading-none mb-5"
+            style={{ fontSize: "clamp(2.8rem,8vw,6rem)", letterSpacing: "-0.04em" }}
+          >
+            GAME<br />
+            <span className="text-[#ff6b35]">MANAGEMENT</span>
+          </h1>
+          <p className="text-white/55 max-w-xl text-base leading-relaxed">
+            Professional basketball game tools built for Madina Basketball: scoreboard, team sheets,
+            and stats tracking. Works offline. Install as an app.
+          </p>
         </div>
       </section>
 
-      {/* Tools Overview */}
-      <section className="py-16">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-4xl mx-auto text-center mb-12">
-            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
-              Our Tools
-            </h2>
-            <p className="text-lg text-gray-600">
-              Each tool serves a specific purpose and can be used independently or together for comprehensive game management.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+      {/* ── Tools Cards ── */}
+      <section className="py-12 sm:py-16 lg:py-20 bg-[#0d0d0d]">
+        <div className="container mx-auto px-6 lg:px-8 max-w-5xl">
+          <p className="text-[#ff6b35] font-bold text-xs uppercase tracking-[0.25em] mb-3">Suite</p>
+          <h2 className="text-3xl font-black uppercase tracking-tight mb-10">Our Tools</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {tools.map((tool) => {
               const Icon = tool.icon;
-              const isPrimary = tool.color === "primary";
-              const isSecondary = tool.color === "secondary";
               return (
-                <div
-                  key={tool.id}
-                  className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow border-2 border-gray-100"
-                >
-                  <div className={`p-6 ${isPrimary ? 'bg-primary' : isSecondary ? 'bg-secondary' : 'bg-gray-800'}`}>
-                    <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center mx-auto mb-4">
-                      <Icon className={`w-8 h-8 ${isPrimary ? 'text-primary' : isSecondary ? 'text-secondary' : 'text-gray-800'}`} />
+                <div key={tool.id} className="bg-[#111] border border-white/8 rounded-2xl overflow-hidden hover:border-white/20 transition-colors flex flex-col">
+                  <div className="px-6 pt-6 pb-4" style={{ borderBottom: `1px solid ${tool.accent}20` }}>
+                    <div
+                      className="w-12 h-12 rounded-xl flex items-center justify-center mb-4"
+                      style={{ background: `${tool.accent}15`, border: `1px solid ${tool.accent}30` }}
+                    >
+                      <Icon className="w-6 h-6" style={{ color: tool.accent }} />
                     </div>
-                    <h3 className="text-2xl font-bold text-white text-center">
-                      {tool.name}
-                    </h3>
+                    <h3 className="text-white font-black uppercase tracking-tight text-lg">{tool.name}</h3>
+                    <p className="text-white/50 text-sm mt-1">{tool.description}</p>
                   </div>
-                  <div className="p-6">
-                    <p className="text-gray-600 mb-4 min-h-[3rem]">
-                      {tool.description}
-                    </p>
-                    <ul className="space-y-2 mb-6">
-                      {tool.features.map((feature, index) => (
-                        <li key={index} className="flex items-start text-sm">
-                          <span className={`mr-2 font-bold ${isPrimary ? 'text-primary' : isSecondary ? 'text-secondary' : 'text-gray-800'}`}>✓</span>
-                          <span className="text-gray-700">{feature}</span>
+                  <div className="px-6 py-4 flex-1">
+                    <ul className="space-y-2 mb-4">
+                      {tool.features.map((f, i) => (
+                        <li key={i} className="flex items-start gap-2 text-sm text-white/60">
+                          <ChevronRight className="w-3.5 h-3.5 flex-shrink-0 mt-0.5" style={{ color: tool.accent }} />
+                          {f}
                         </li>
                       ))}
                     </ul>
-                    <p className="text-xs text-gray-500 mb-4 italic">
-                      {tool.useCase}
-                    </p>
+                    <p className="text-white/30 text-xs italic mb-5">{tool.useCase}</p>
+                  </div>
+                  <div className="px-6 pb-6">
                     <Link
                       href={tool.href}
-                      className={`w-full block text-center px-6 py-3 text-white rounded-lg hover:opacity-90 transition-opacity font-semibold ${
-                        isPrimary ? 'bg-primary hover:bg-primary-dark' : isSecondary ? 'bg-secondary hover:bg-blue-700' : 'bg-gray-800 hover:bg-gray-700'
-                      }`}
+                      className="w-full flex items-center justify-center gap-2 py-2.5 rounded-lg font-bold text-sm uppercase tracking-wider transition-colors text-white"
+                      style={{ background: tool.accent }}
                     >
-                      Use {tool.name.split(' ')[0]} Tool
+                      Open {tool.name.split(" ")[0]} Tool <ArrowRight className="w-4 h-4" />
                     </Link>
                   </div>
                 </div>
@@ -181,196 +159,75 @@ export default function ToolsPage() {
         </div>
       </section>
 
-      {/* PWA Installation Section */}
-      <section className="py-16 bg-gradient-to-br from-blue-50 to-purple-50">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-4xl mx-auto">
-            <div className="text-center mb-12">
-              <div className="inline-flex items-center justify-center w-16 h-16 bg-primary/10 rounded-full mb-4">
-                <Smartphone className="w-8 h-8 text-primary" />
-              </div>
-              <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
-                Works Offline - Install as App
-              </h2>
-              <p className="text-lg text-gray-600">
-                Install these tools on your device for offline use and faster access
-              </p>
+      {/* ── Install as App ── */}
+      <section className="py-12 sm:py-16 lg:py-20">
+        <div className="container mx-auto px-6 lg:px-8 max-w-4xl">
+          <div className="flex items-center gap-4 mb-8">
+            <div className="w-10 h-10 bg-[#ff6b35]/10 rounded-xl flex items-center justify-center">
+              <Smartphone className="w-5 h-5 text-[#ff6b35]" />
             </div>
-            
-            {/* Installation Instructions */}
-            <div className="grid md:grid-cols-2 gap-8 mb-8">
-              {/* iPhone/iPad */}
-              <div className="bg-white rounded-lg shadow p-6 border border-gray-200">
-                <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center">
-                  <Smartphone className="w-6 h-6 text-primary mr-2" />
-                  iPhone & iPad
-                </h3>
-                <ol className="space-y-3 text-gray-700">
-                  <li className="flex items-start">
-                    <span className="font-bold text-primary mr-2">1.</span>
-                    <span>Open this site in <strong>Safari</strong> browser</span>
-                  </li>
-                  <li className="flex items-start">
-                    <span className="font-bold text-primary mr-2">2.</span>
-                    <span>Tap the <strong>Share</strong> button (square with arrow)</span>
-                  </li>
-                  <li className="flex items-start">
-                    <span className="font-bold text-primary mr-2">3.</span>
-                    <span>Scroll down and tap <strong>"Add to Home Screen"</strong></span>
-                  </li>
-                  <li className="flex items-start">
-                    <span className="font-bold text-primary mr-2">4.</span>
-                    <span>Tap <strong>"Add"</strong> to complete</span>
-                  </li>
-                </ol>
-              </div>
-              
-              {/* Android */}
-              <div className="bg-white rounded-lg shadow p-6 border border-gray-200">
-                <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center">
-                  <Smartphone className="w-6 h-6 text-secondary mr-2" />
-                  Android
-                </h3>
-                <ol className="space-y-3 text-gray-700">
-                  <li className="flex items-start">
-                    <span className="font-bold text-secondary mr-2">1.</span>
-                    <span>Open this site in <strong>Chrome</strong> browser</span>
-                  </li>
-                  <li className="flex items-start">
-                    <span className="font-bold text-secondary mr-2">2.</span>
-                    <span>Tap the menu <strong>(⋮)</strong> or wait for install prompt</span>
-                  </li>
-                  <li className="flex items-start">
-                    <span className="font-bold text-secondary mr-2">3.</span>
-                    <span>Select <strong>"Install app"</strong> or <strong>"Add to Home Screen"</strong></span>
-                  </li>
-                  <li className="flex items-start">
-                    <span className="font-bold text-secondary mr-2">4.</span>
-                    <span>Tap <strong>"Install"</strong> to complete</span>
-                  </li>
-                </ol>
-              </div>
-            </div>
-            
-            {/* Benefits */}
-            <div className="bg-white rounded-lg shadow p-6 border border-gray-200">
-              <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center">
-                <WifiOff className="w-6 h-6 text-primary mr-2" />
-                Why Install as an App?
-              </h3>
-              <div className="grid sm:grid-cols-2 gap-4">
-                <div className="flex items-start">
-                  <div className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center mr-3 flex-shrink-0">
-                    <div className="w-2 h-2 rounded-full bg-primary"></div>
-                  </div>
-                  <div>
-                    <strong className="text-gray-900">Works Without Internet</strong>
-                    <p className="text-sm text-gray-600">Track games offline, syncs when back online</p>
-                  </div>
-                </div>
-                <div className="flex items-start">
-                  <div className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center mr-3 flex-shrink-0">
-                    <div className="w-2 h-2 rounded-full bg-primary"></div>
-                  </div>
-                  <div>
-                    <strong className="text-gray-900">Faster Loading</strong>
-                    <p className="text-sm text-gray-600">Opens instantly like a native app</p>
-                  </div>
-                </div>
-                <div className="flex items-start">
-                  <div className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center mr-3 flex-shrink-0">
-                    <div className="w-2 h-2 rounded-full bg-primary"></div>
-                  </div>
-                  <div>
-                    <strong className="text-gray-900">Home Screen Icon</strong>
-                    <p className="text-sm text-gray-600">Easy access, no browser needed</p>
-                  </div>
-                </div>
-                <div className="flex items-start">
-                  <div className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center mr-3 flex-shrink-0">
-                    <div className="w-2 h-2 rounded-full bg-primary"></div>
-                  </div>
-                  <div>
-                    <strong className="text-gray-900">Full-Screen Experience</strong>
-                    <p className="text-sm text-gray-600">No browser bars, more space for game</p>
-                  </div>
-                </div>
-                <div className="flex items-start">
-                  <div className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center mr-3 flex-shrink-0">
-                    <div className="w-2 h-2 rounded-full bg-primary"></div>
-                  </div>
-                  <div>
-                    <strong className="text-gray-900">Auto-Saves Games</strong>
-                    <p className="text-sm text-gray-600">Never lose game data, even if device dies</p>
-                  </div>
-                </div>
-                <div className="flex items-start">
-                  <div className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center mr-3 flex-shrink-0">
-                    <div className="w-2 h-2 rounded-full bg-primary"></div>
-                  </div>
-                  <div>
-                    <strong className="text-gray-900">No App Store Needed</strong>
-                    <p className="text-sm text-gray-600">Install directly from website</p>
-                  </div>
-                </div>
-              </div>
+            <div>
+              <p className="text-[#ff6b35] font-bold text-xs uppercase tracking-[0.25em]">PWA</p>
+              <h2 className="text-2xl font-black uppercase tracking-tight">Works Offline: Install as App</h2>
             </div>
           </div>
-        </div>
-      </section>
 
-      {/* Workflow Section */}
-      <section className="py-16 bg-gray-50">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-5xl mx-auto">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
-                How Tools Work Together
-              </h2>
-              <p className="text-lg text-gray-600">
-                Choose the workflow that best fits your needs
-              </p>
+          <div className="grid md:grid-cols-2 gap-4 mb-6">
+            {[
+              {
+                platform: "iPhone & iPad",
+                steps: [
+                  "Open this site in Safari browser",
+                  "Tap the Share button (square with arrow)",
+                  "Scroll and tap \"Add to Home Screen\"",
+                  "Tap \"Add\" to complete",
+                ],
+              },
+              {
+                platform: "Android",
+                steps: [
+                  "Open this site in Chrome browser",
+                  "Tap the menu (⋮) or wait for install prompt",
+                  "Select \"Install app\" or \"Add to Home Screen\"",
+                  "Tap \"Install\" to complete",
+                ],
+              },
+            ].map(({ platform, steps }) => (
+              <div key={platform} className="bg-[#111] border border-white/8 rounded-2xl p-6">
+                <h3 className="text-white font-black uppercase tracking-tight mb-4">{platform}</h3>
+                <ol className="space-y-2">
+                  {steps.map((s, i) => (
+                    <li key={i} className="flex items-start gap-3 text-sm text-white/60">
+                      <span className="text-[#ff6b35] font-black w-4 flex-shrink-0">{i + 1}.</span>
+                      {s}
+                    </li>
+                  ))}
+                </ol>
+              </div>
+            ))}
+          </div>
+
+          <div className="bg-[#111] border border-white/8 rounded-2xl p-6">
+            <div className="flex items-center gap-3 mb-5">
+              <WifiOff className="w-5 h-5 text-[#ff6b35]" />
+              <h3 className="text-white font-black uppercase tracking-tight">Why Install as an App?</h3>
             </div>
-
-            <div className="space-y-8">
-              {workflows.map((workflow, index) => (
-                <div
-                  key={index}
-                  className="bg-white rounded-lg shadow p-6 sm:p-8 border border-gray-200"
-                >
-                  <div className="mb-6">
-                    <h3 className="text-2xl font-bold text-gray-900 mb-2">
-                      {workflow.title}
-                    </h3>
-                    <p className="text-gray-600">{workflow.description}</p>
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {[
+                { title: "Works Without Internet", text: "Track games offline, syncs when back online" },
+                { title: "Faster Loading", text: "Opens instantly like a native app" },
+                { title: "Home Screen Icon", text: "Easy access, no browser needed" },
+                { title: "Full-Screen Experience", text: "No browser bars, more space for the game" },
+                { title: "Auto-Saves Games", text: "Never lose game data, even if device dies" },
+                { title: "No App Store Needed", text: "Install directly from the website" },
+              ].map(({ title, text }) => (
+                <div key={title} className="flex items-start gap-3">
+                  <div className="w-5 h-5 rounded-full bg-[#ff6b35]/15 border border-[#ff6b35]/30 flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <div className="w-1.5 h-1.5 rounded-full bg-[#ff6b35]" />
                   </div>
-                  <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 overflow-x-auto pb-2">
-                    {workflow.steps.map((step, stepIndex) => {
-                      const StepIcon = step.icon;
-                      const isPrimary = workflow.color === "primary";
-                      return (
-                        <div key={stepIndex} className="flex items-center gap-3 flex-shrink-0 sm:flex-1">
-                          {stepIndex > 0 && (
-                            <ArrowRight className="w-5 h-5 text-gray-400 hidden sm:block flex-shrink-0" />
-                          )}
-                          <div className="flex items-center gap-3 flex-1 min-w-0">
-                            <div className={`w-12 h-12 rounded-lg flex items-center justify-center flex-shrink-0 ${
-                              isPrimary ? 'bg-primary/10' : 'bg-secondary/10'
-                            }`}>
-                              <StepIcon className={`w-6 h-6 ${isPrimary ? 'text-primary' : 'text-secondary'}`} />
-                            </div>
-                            <div className="flex-1 min-w-0">
-                              <div className="text-sm font-semibold text-gray-900 whitespace-nowrap">
-                                {step.tool}
-                              </div>
-                              <div className="text-xs text-gray-600">
-                                {step.action}
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      );
-                    })}
+                  <div>
+                    <p className="text-white font-bold text-sm">{title}</p>
+                    <p className="text-white/45 text-xs mt-0.5">{text}</p>
                   </div>
                 </div>
               ))}
@@ -379,342 +236,141 @@ export default function ToolsPage() {
         </div>
       </section>
 
-      {/* Quick Start Guide */}
-      <section className="py-16">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-4xl mx-auto">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
-                Quick Start Guide
-              </h2>
-              <p className="text-lg text-gray-600">
-                Common use cases and which tool to use
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="bg-white rounded-lg shadow p-6 border border-gray-200">
-                <h3 className="text-xl font-bold text-gray-900 mb-3">
-                  Quick Pickup Game
-                </h3>
-                <p className="text-gray-600 mb-4">
-                  Just need to track scores quickly?
-                </p>
-                <ul className="space-y-2 mb-4">
-                  <li className="flex items-start text-sm">
-                    <span className="text-primary mr-2 font-bold">→</span>
-                    <span className="text-gray-700">Use <strong>Live Game Scoreboard</strong> in Basic mode</span>
-                  </li>
-                  <li className="flex items-start text-sm">
-                    <span className="text-primary mr-2 font-bold">→</span>
-                    <span className="text-gray-700">No setup required - just enter team names and start</span>
-                  </li>
-                </ul>
+      {/* ── Workflows ── */}
+      <section className="py-12 sm:py-16 lg:py-20 bg-[#0d0d0d]">
+        <div className="container mx-auto px-6 lg:px-8 max-w-4xl">
+          <p className="text-[#ff6b35] font-bold text-xs uppercase tracking-[0.25em] mb-3">Workflows</p>
+          <h2 className="text-3xl font-black uppercase tracking-tight mb-10">How Tools Work Together</h2>
+          <div className="space-y-4">
+            {workflows.map((wf, i) => (
+              <div key={i} className="bg-[#111] border border-white/8 rounded-2xl p-6">
+                <h3 className="text-white font-black uppercase tracking-tight mb-1">{wf.title}</h3>
+                <p className="text-white/40 text-sm mb-5">{wf.description}</p>
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 flex-wrap">
+                  {wf.steps.map((step, si) => {
+                    const StepIcon = step.icon;
+                    return (
+                      <div key={si} className="flex items-center gap-2 flex-shrink-0">
+                        {si > 0 && <ArrowRight className="w-4 h-4 text-white/20 hidden sm:block" />}
+                        <div className="flex items-center gap-2 bg-white/5 border border-white/8 rounded-lg px-3 py-2">
+                          <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ background: `${wf.accent}15` }}>
+                            <StepIcon className="w-4 h-4" style={{ color: wf.accent }} />
+                          </div>
+                          <div>
+                            <p className="text-white text-xs font-bold">{step.tool}</p>
+                            <p className="text-white/40 text-[0.65rem]">{step.action}</p>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
               </div>
-
-              <div className="bg-white rounded-lg shadow p-6 border border-gray-200">
-                <h3 className="text-xl font-bold text-gray-900 mb-3">
-                  Organized Game with Stats
-                </h3>
-                <p className="text-gray-600 mb-4">
-                  Need to track individual player performance?
-                </p>
-                <ul className="space-y-2 mb-4">
-                  <li className="flex items-start text-sm">
-                    <span className="text-secondary mr-2 font-bold">→</span>
-                    <span className="text-gray-700">Start with <strong>Team Sheet Generator</strong></span>
-                  </li>
-                  <li className="flex items-start text-sm">
-                    <span className="text-secondary mr-2 font-bold">→</span>
-                    <span className="text-gray-700">Create rosters for both teams</span>
-                  </li>
-                  <li className="flex items-start text-sm">
-                    <span className="text-secondary mr-2 font-bold">→</span>
-                    <span className="text-gray-700">Click "Start Player Stats Game" to begin tracking</span>
-                  </li>
-                </ul>
-              </div>
-
-              <div className="bg-white rounded-lg shadow p-6 border border-gray-200">
-                <h3 className="text-xl font-bold text-gray-900 mb-3">
-                  Manual Stat Tracking
-                </h3>
-                <p className="text-gray-600 mb-4">
-                  Prefer to track stats on paper?
-                </p>
-                <ul className="space-y-2 mb-4">
-                  <li className="flex items-start text-sm">
-                    <span className="text-primary mr-2 font-bold">→</span>
-                    <span className="text-gray-700">Use <strong>Team Sheet Generator</strong> to create roster</span>
-                  </li>
-                  <li className="flex items-start text-sm">
-                    <span className="text-primary mr-2 font-bold">→</span>
-                    <span className="text-gray-700">Generate <strong>Stats Sheet</strong> with pre-filled players</span>
-                  </li>
-                  <li className="flex items-start text-sm">
-                    <span className="text-primary mr-2 font-bold">→</span>
-                    <span className="text-gray-700">Print and track manually during the game</span>
-                  </li>
-                </ul>
-              </div>
-
-              <div className="bg-white rounded-lg shadow p-6 border border-gray-200">
-                <h3 className="text-xl font-bold text-gray-900 mb-3">
-                  Tournament or League
-                </h3>
-                <p className="text-gray-600 mb-4">
-                  Managing multiple games?
-                </p>
-                <ul className="space-y-2 mb-4">
-                  <li className="flex items-start text-sm">
-                    <span className="text-secondary mr-2 font-bold">→</span>
-                    <span className="text-gray-700">Create team sheets for all participating teams</span>
-                  </li>
-                  <li className="flex items-start text-sm">
-                    <span className="text-secondary mr-2 font-bold">→</span>
-                    <span className="text-gray-700">Use <strong>Player Stats mode</strong> for each game</span>
-                  </li>
-                  <li className="flex items-start text-sm">
-                    <span className="text-secondary mr-2 font-bold">→</span>
-                    <span className="text-gray-700">Save all games for records and analysis</span>
-                  </li>
-                </ul>
-              </div>
-            </div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* User Manual Section */}
-      <section className="py-16">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-5xl mx-auto">
-            <div className="text-center mb-12">
-              <div className="inline-flex items-center justify-center w-16 h-16 bg-secondary/10 rounded-full mb-4">
-                <FileText className="w-8 h-8 text-secondary" />
-              </div>
-              <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
-                Scorekeeping Best Practices
-              </h2>
-              <p className="text-lg text-gray-600">
-                Essential tips for professional game tracking
-              </p>
-            </div>
-            
-            {/* Manual Topics */}
-            <div className="space-y-4">
-              {/* Basic Scoreboard */}
-              <details className="bg-white rounded-xl shadow-lg overflow-hidden group">
-                <summary className="cursor-pointer p-6 hover:bg-gray-50 transition-colors">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center">
-                      <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center mr-4">
-                        <Trophy className="w-5 h-5 text-primary" />
-                      </div>
-                      <div>
-                        <h3 className="text-xl font-bold text-gray-900">Basic Scoreboard - Quick Guide</h3>
-                        <p className="text-sm text-gray-600">Simple score tracking for casual games</p>
-                      </div>
-                    </div>
-                    <ArrowRight className="w-5 h-5 text-gray-400 group-open:rotate-90 transition-transform" />
+      {/* ── Scorekeeping Guide ── */}
+      <section className="py-12 sm:py-16 lg:py-20">
+        <div className="container mx-auto px-6 lg:px-8 max-w-4xl">
+          <p className="text-[#ff6b35] font-bold text-xs uppercase tracking-[0.25em] mb-3">Reference</p>
+          <h2 className="text-3xl font-black uppercase tracking-tight mb-10">Scorekeeping Best Practices</h2>
+          <div className="space-y-3">
+            {[
+              {
+                icon: Trophy, accent: "#ff6b35", title: "Basic Scoreboard: Quick Guide",
+                sub: "Simple score tracking for casual games",
+                items: [
+                  "Set timer duration before starting (5–30 minutes)",
+                  "Use +1, +2, +3 buttons for scoring each team",
+                  "–1 button for immediate corrections (current quarter only)",
+                  "Track team fouls each quarter (resets per quarter)",
+                  "Advance quarters when the period ends",
+                  "Save or download PDF when game is complete",
+                ],
+              },
+              {
+                icon: BarChart3, accent: "#004e89", title: "Player Stats Mode: Pro Tracking",
+                sub: "Detailed player performance tracking",
+                items: [
+                  "Create team rosters BEFORE starting game (cannot add players mid-game)",
+                  "Select player after each basket for attribution",
+                  "Use 'Undo' button for mistakes (current quarter only)",
+                  "Shot clock auto-resets on scores and defensive rebounds",
+                  "View real-time stats for each player below scoreboard",
+                  "Print or save complete game stats when done",
+                ],
+              },
+              {
+                icon: Clock, accent: "#ffd23f", title: "Professional Scorekeeping Standards",
+                sub: "FIBA/NBA official practices",
+                items: [
+                  "Completed quarters are locked. Cannot be modified.",
+                  "Only undo events from the current quarter. Past quarters are locked.",
+                  "Note corrections separately if errors discovered in past quarters",
+                  "Follows FIBA/NBA standards for official record keeping",
+                  "Prevents retroactive changes. Audit trail maintained.",
+                ],
+              },
+              {
+                icon: WifiOff, accent: "#22c55e", title: "Offline Mode: Data Safety",
+                sub: "How your data is protected",
+                items: [
+                  "Auto-saves every 2 seconds to your device storage",
+                  "Works completely without internet after first install",
+                  "Data syncs automatically when back online",
+                  "Install as app for best offline experience",
+                  "Recovery system restores games if app closes unexpectedly",
+                  "Offline indicator shows connection status in the bottom-right corner",
+                ],
+              },
+            ].map(({ icon: Icon, accent, title, sub, items }) => (
+              <details key={title} className="group bg-[#111] border border-white/8 rounded-2xl overflow-hidden">
+                <summary className="cursor-pointer p-5 hover:bg-white/3 transition-colors flex items-center gap-4">
+                  <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: `${accent}15`, border: `1px solid ${accent}30` }}>
+                    <Icon className="w-5 h-5" style={{ color: accent }} />
                   </div>
+                  <div className="flex-1">
+                    <p className="text-white font-black uppercase tracking-tight text-sm">{title}</p>
+                    <p className="text-white/40 text-xs mt-0.5">{sub}</p>
+                  </div>
+                  <ChevronRight className="w-4 h-4 text-white/30 group-open:rotate-90 transition-transform flex-shrink-0" />
                 </summary>
-                <div className="px-6 pb-6 border-t border-gray-100">
-                  <ul className="space-y-3 mt-4 text-gray-700">
-                    <li className="flex items-start">
-                      <span className="text-primary font-bold mr-2">•</span>
-                      <span><strong>Set timer duration</strong> before starting (5-30 minutes)</span>
-                    </li>
-                    <li className="flex items-start">
-                      <span className="text-primary font-bold mr-2">•</span>
-                      <span><strong>Use +1, +2, +3 buttons</strong> for scoring each team</span>
-                    </li>
-                    <li className="flex items-start">
-                      <span className="text-primary font-bold mr-2">•</span>
-                      <span><strong>-1 button</strong> for immediate corrections (current quarter only)</span>
-                    </li>
-                    <li className="flex items-start">
-                      <span className="text-primary font-bold mr-2">•</span>
-                      <span><strong>Track team fouls</strong> each quarter (resets per quarter)</span>
-                    </li>
-                    <li className="flex items-start">
-                      <span className="text-primary font-bold mr-2">•</span>
-                      <span><strong>Advance quarters</strong> when period ends</span>
-                    </li>
-                    <li className="flex items-start">
-                      <span className="text-primary font-bold mr-2">•</span>
-                      <span><strong>Save or download PDF</strong> when game complete</span>
-                    </li>
+                <div className="px-5 pb-5 border-t border-white/6">
+                  <ul className="space-y-2 mt-4">
+                    {items.map((item, i) => (
+                      <li key={i} className="flex items-start gap-2 text-sm text-white/55">
+                        <span className="font-black mt-0.5" style={{ color: accent }}>•</span>
+                        <span dangerouslySetInnerHTML={{ __html: item.replace(/\*\*(.*?)\*\*/g, "<strong class='text-white'>$1</strong>") }} />
+                      </li>
+                    ))}
                   </ul>
                 </div>
               </details>
-              
-              {/* Stats Scoreboard */}
-              <details className="bg-white rounded-xl shadow-lg overflow-hidden group">
-                <summary className="cursor-pointer p-6 hover:bg-gray-50 transition-colors">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center">
-                      <div className="w-10 h-10 bg-secondary/10 rounded-lg flex items-center justify-center mr-4">
-                        <BarChart3 className="w-5 h-5 text-secondary" />
-                      </div>
-                      <div>
-                        <h3 className="text-xl font-bold text-gray-900">Player Stats Mode - Professional Tracking</h3>
-                        <p className="text-sm text-gray-600">Detailed player performance tracking</p>
-                      </div>
-                    </div>
-                    <ArrowRight className="w-5 h-5 text-gray-400 group-open:rotate-90 transition-transform" />
-                  </div>
-                </summary>
-                <div className="px-6 pb-6 border-t border-gray-100">
-                  <ul className="space-y-3 mt-4 text-gray-700">
-                    <li className="flex items-start">
-                      <span className="text-secondary font-bold mr-2">•</span>
-                      <span><strong>Create team rosters BEFORE</strong> starting game (cannot add players mid-game)</span>
-                    </li>
-                    <li className="flex items-start">
-                      <span className="text-secondary font-bold mr-2">•</span>
-                      <span><strong>Select player</strong> after each basket for attribution</span>
-                    </li>
-                    <li className="flex items-start">
-                      <span className="text-secondary font-bold mr-2">•</span>
-                      <span><strong>Use "Undo" button</strong> for mistakes (current quarter only)</span>
-                    </li>
-                    <li className="flex items-start">
-                      <span className="text-secondary font-bold mr-2">•</span>
-                      <span><strong>Shot clock auto-resets</strong> on scores and defensive rebounds</span>
-                    </li>
-                    <li className="flex items-start">
-                      <span className="text-secondary font-bold mr-2">•</span>
-                      <span><strong>View real-time stats</strong> for each player below scoreboard</span>
-                    </li>
-                    <li className="flex items-start">
-                      <span className="text-secondary font-bold mr-2">•</span>
-                      <span><strong>Print or save</strong> complete game stats when done</span>
-                    </li>
-                  </ul>
-                </div>
-              </details>
-              
-              {/* Professional Standards */}
-              <details className="bg-white rounded-xl shadow-lg overflow-hidden group">
-                <summary className="cursor-pointer p-6 hover:bg-gray-50 transition-colors">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center">
-                      <div className="w-10 h-10 bg-yellow-100 rounded-lg flex items-center justify-center mr-4">
-                        <Clock className="w-5 h-5 text-yellow-600" />
-                      </div>
-                      <div>
-                        <h3 className="text-xl font-bold text-gray-900">Professional Scorekeeping Standards</h3>
-                        <p className="text-sm text-gray-600">FIBA/NBA official practices</p>
-                      </div>
-                    </div>
-                    <ArrowRight className="w-5 h-5 text-gray-400 group-open:rotate-90 transition-transform" />
-                  </div>
-                </summary>
-                <div className="px-6 pb-6 border-t border-gray-100">
-                  <ul className="space-y-3 mt-4 text-gray-700">
-                    <li className="flex items-start">
-                      <span className="text-yellow-600 font-bold mr-2">•</span>
-                      <span><strong>Completed quarters are locked</strong> - cannot be modified (maintains integrity)</span>
-                    </li>
-                    <li className="flex items-start">
-                      <span className="text-yellow-600 font-bold mr-2">•</span>
-                      <span><strong>Only undo events from current quarter</strong> - past quarters are official</span>
-                    </li>
-                    <li className="flex items-start">
-                      <span className="text-yellow-600 font-bold mr-2">•</span>
-                      <span><strong>Note corrections separately</strong> if errors discovered in past quarters</span>
-                    </li>
-                    <li className="flex items-start">
-                      <span className="text-yellow-600 font-bold mr-2">•</span>
-                      <span><strong>Follows FIBA/NBA standards</strong> for official record keeping</span>
-                    </li>
-                    <li className="flex items-start">
-                      <span className="text-yellow-600 font-bold mr-2">•</span>
-                      <span><strong>Prevents silent retroactive changes</strong> - audit trail maintained</span>
-                    </li>
-                  </ul>
-                </div>
-              </details>
-              
-              {/* Offline Mode */}
-              <details className="bg-white rounded-xl shadow-lg overflow-hidden group">
-                <summary className="cursor-pointer p-6 hover:bg-gray-50 transition-colors">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center">
-                      <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center mr-4">
-                        <WifiOff className="w-5 h-5 text-green-600" />
-                      </div>
-                      <div>
-                        <h3 className="text-xl font-bold text-gray-900">Offline Mode - Data Safety</h3>
-                        <p className="text-sm text-gray-600">How your data is protected</p>
-                      </div>
-                    </div>
-                    <ArrowRight className="w-5 h-5 text-gray-400 group-open:rotate-90 transition-transform" />
-                  </div>
-                </summary>
-                <div className="px-6 pb-6 border-t border-gray-100">
-                  <ul className="space-y-3 mt-4 text-gray-700">
-                    <li className="flex items-start">
-                      <span className="text-green-600 font-bold mr-2">•</span>
-                      <span><strong>Auto-saves every 2 seconds</strong> to your device storage</span>
-                    </li>
-                    <li className="flex items-start">
-                      <span className="text-green-600 font-bold mr-2">•</span>
-                      <span><strong>Works completely without internet</strong> after first installation</span>
-                    </li>
-                    <li className="flex items-start">
-                      <span className="text-green-600 font-bold mr-2">•</span>
-                      <span><strong>Data syncs automatically</strong> when back online</span>
-                    </li>
-                    <li className="flex items-start">
-                      <span className="text-green-600 font-bold mr-2">•</span>
-                      <span><strong>Install as app</strong> for best offline experience</span>
-                    </li>
-                    <li className="flex items-start">
-                      <span className="text-green-600 font-bold mr-2">•</span>
-                      <span><strong>Recovery system</strong> restores games if app closes unexpectedly</span>
-                    </li>
-                    <li className="flex items-start">
-                      <span className="text-green-600 font-bold mr-2">•</span>
-                      <span><strong>Offline indicator</strong> shows connection status in bottom-right corner</span>
-                    </li>
-                  </ul>
-                </div>
-              </details>
-            </div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* Call to Action */}
-      <section className="py-16 bg-gradient-to-br from-primary to-secondary text-white">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-3xl mx-auto text-center">
-            <h2 className="text-3xl sm:text-4xl font-bold mb-4">
-              Ready to Get Started?
-            </h2>
-            <p className="text-xl text-white/90 mb-8">
-              Choose a tool above to begin, or explore our workflows to see how they connect.
-            </p>
-            <div className="flex flex-wrap justify-center gap-4">
-              <Link
-                href="/game"
-                className="px-8 py-3 bg-white text-primary rounded-lg hover:bg-gray-100 transition-colors font-semibold text-lg"
-              >
-                Start Scoreboard
-              </Link>
-              <Link
-                href="/teamsheet"
-                className="px-8 py-3 bg-white/10 text-white border-2 border-white rounded-lg hover:bg-white/20 transition-colors font-semibold text-lg"
-              >
-                Create Team Sheet
-              </Link>
-            </div>
+      {/* ── CTA ── */}
+      <section className="bg-[#ff6b35] py-16">
+        <div className="container mx-auto px-6 lg:px-8 text-center">
+          <h2 className="text-3xl font-black uppercase tracking-tight mb-4 text-white">Ready to Get Started?</h2>
+          <p className="text-white/80 max-w-sm mx-auto mb-8 text-sm">
+            Choose a tool to begin, or explore our workflows to see how they connect.
+          </p>
+          <div className="flex flex-wrap justify-center gap-4">
+            <Link href="/game" className="px-8 py-3 bg-white text-[#ff6b35] font-bold text-sm rounded-lg hover:bg-white/90 transition-colors uppercase tracking-wider">
+              Start Scoreboard
+            </Link>
+            <Link href="/teamsheet" className="px-8 py-3 bg-transparent border-2 border-white text-white font-bold text-sm rounded-lg hover:bg-white/15 transition-colors uppercase tracking-wider">
+              Create Team Sheet
+            </Link>
           </div>
         </div>
       </section>
+
     </div>
   );
 }
-

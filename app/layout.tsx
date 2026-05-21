@@ -37,7 +37,7 @@ const poppins = Poppins({
  * Used for search engines and social media sharing
  */
 export const metadata: Metadata = {
-  title: "Madina Basketball — Community-Built Court, Now Active",
+  title: "Madina Basketball | Community-Built Court, Now Active",
   description: "A grassroots basketball initiative in Libya Quarters, Madina (Accra, Ghana). Community-renovated court, now active with training programs, pick-up games, and bookings.",
   keywords: "basketball, Madina, Accra, Ghana, community sports, youth development, Libya Quarters",
   icons: {

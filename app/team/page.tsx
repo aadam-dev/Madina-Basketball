@@ -42,7 +42,7 @@ const FALLBACK_MEMBERS: TeamMember[] = [
     id: "4", section: "executive", order_index: 4,
     name: "Kwame",
     role: "Executive Member & Head Coach",
-    description: "Kwame bridges leadership and coaching — guiding both the executive vision and the development of players on the court.",
+    description: "Kwame bridges leadership and coaching, driving both the executive vision and player development on the court.",
     image_url: "",
   },
   {
@@ -155,7 +155,7 @@ export default async function Team() {
       {/* ── Hero ── */}
       <section className="relative overflow-hidden court-lines border-b border-white/6">
         <div className="absolute left-0 top-0 h-full w-1 bg-gradient-to-b from-transparent via-[#ff6b35] to-transparent" />
-        <div className="container mx-auto px-6 lg:px-8 py-24 lg:py-32">
+        <div className="container mx-auto px-6 lg:px-8 py-16 lg:py-24">
           <span className="pill bg-[#ff6b35]/15 text-[#ff6b35] border border-[#ff6b35]/30 mb-5 inline-flex">
             Leadership
           </span>
@@ -167,14 +167,14 @@ export default async function Team() {
             <span className="text-[#ff6b35]">BEHIND</span> THE COURT
           </h1>
           <p className="text-white/50 max-w-xl text-base leading-relaxed">
-            From strategic leadership to boots-on-ground operations — meet the team
+            From strategy to court operations: meet the team
             building Madina Basketball into something that lasts.
           </p>
         </div>
       </section>
 
       {/* ── Team Grid ── */}
-      <div className="container mx-auto px-6 lg:px-8 py-20">
+      <div className="container mx-auto px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
         <Section title="Executive Leadership" members={sortedExec} isLead />
         <Section title="Coaching Staff"       members={sortedCoach} />
         <Section title="Maintenance & Oversight" members={maintenance} />
@@ -183,13 +183,13 @@ export default async function Team() {
       </div>
 
       {/* ── CTA ── */}
-      <section className="border-t border-white/8 bg-[#0d0d0d] py-20">
+      <section className="border-t border-white/8 bg-[#0d0d0d] py-12 sm:py-16 lg:py-20">
         <div className="container mx-auto px-6 lg:px-8 text-center">
           <h2 className="text-2xl font-black text-white uppercase tracking-tight mb-4">
             Want to get involved?
           </h2>
           <p className="text-white/45 max-w-md mx-auto mb-8 text-sm">
-            Whether as a volunteer, coach, or community supporter — there is always
+            Whether as a volunteer, coach, or community supporter, there is always
             a place for you at Madina Basketball.
           </p>
           <Link

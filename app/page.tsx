@@ -2,12 +2,13 @@ import Link from "next/link";
 import Image from "next/image";
 import {
   ArrowRight, Calendar, Users, Trophy, CheckCircle,
-  MapPin, Clock, Info, AlertTriangle,
+  MapPin, Clock, Info, AlertTriangle, Clipboard,
   CheckCircle as CheckCircleIcon, Calendar as CalendarIcon,
 } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 import EventCard from "@/components/EventCard";
 import HeroBackground from "@/components/HeroBackground";
+import AnimateIn from "@/components/AnimateIn";
 
 /* ─── Data fetchers ───────────────────────────────────────────────── */
 
@@ -109,7 +110,7 @@ export default async function Home() {
         {/* Orange left-edge accent */}
         <div className="absolute left-0 top-0 h-full w-1 bg-gradient-to-b from-transparent via-[#ff6b35] to-transparent" />
 
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10 py-28">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10 py-16 sm:py-20 lg:py-28">
           <div className="max-w-5xl">
             {/* Badges */}
             <div className="flex flex-wrap gap-3 mb-8">
@@ -188,14 +189,19 @@ export default async function Home() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-3 divide-x divide-white/10">
             {[
-              { value: "150+",      label: "Active Players",  sub: "and growing" },
-              { value: "GHS 44.7K", label: "Community Raised", sub: "100% transparent" },
-              { value: "12+",       label: "Events Hosted",   sub: "since June 2025" },
+              { value: "150+",    label: "Active Players",  sub: "and growing" },
+              { value: "₵44.7K",  label: "Community Raised", sub: "100% transparent" },
+              { value: "12+",     label: "Events Hosted",   sub: "since June 2025" },
             ].map(({ value, label, sub }) => (
-              <div key={label} className="py-10 px-4 text-center group cursor-default">
-                <div className="stat-number text-white group-hover:text-[#ff6b35] transition-colors duration-300">{value}</div>
-                <div className="text-white/50 font-bold uppercase text-[0.62rem] tracking-widest mt-2">{label}</div>
-                <div className="text-white/25 text-xs mt-1">{sub}</div>
+              <div key={label} className="py-6 lg:py-10 px-2 sm:px-4 text-center group cursor-default">
+                <div
+                  className="font-black leading-none text-white group-hover:text-[#ff6b35] transition-colors duration-300"
+                  style={{ fontSize: "clamp(1.5rem, 5vw, 5rem)", letterSpacing: "-0.05em" }}
+                >
+                  {value}
+                </div>
+                <div className="text-white/50 font-bold uppercase text-[0.55rem] sm:text-[0.62rem] tracking-widest mt-2">{label}</div>
+                <div className="text-white/25 text-[0.6rem] sm:text-xs mt-1 hidden sm:block">{sub}</div>
               </div>
             ))}
           </div>
@@ -203,7 +209,7 @@ export default async function Home() {
       </section>
 
       {/* ══ HIGHLIGHTS REEL ══════════════════════════════════════════ */}
-      <section className="py-20 bg-[#0d0d0d] court-lines relative overflow-hidden">
+      <section className="py-12 sm:py-16 lg:py-20 bg-[#0d0d0d] court-lines relative overflow-hidden">
         <span className="watermark text-white bottom-0 right-0">HOOPS</span>
 
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -220,13 +226,12 @@ export default async function Home() {
             </Link>
           </div>
 
-          {/* 6-clip responsive grid — first clip is taller on desktop */}
-          <div className="grid grid-cols-2 lg:grid-cols-3 gap-3">
+          {/* 6-clip responsive grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
             {CLIPS.map(({ src, label }, i) => (
               <div
                 key={src}
-                className={`video-card rounded-xl relative overflow-hidden ${i === 0 ? "col-span-2 lg:col-span-1 lg:row-span-2" : ""}`}
-                style={{ aspectRatio: i === 0 ? "4/5" : "16/9" }}
+                className={`video-card rounded-xl relative overflow-hidden aspect-video ${i === 0 ? "sm:col-span-2 lg:col-span-1 lg:row-span-2 lg:aspect-[4/5]" : ""}`}
               >
                 <video
                   autoPlay loop muted playsInline preload="metadata"
@@ -307,13 +312,13 @@ export default async function Home() {
 
       {/* ══ UPCOMING EVENTS (conditional) ════════════════════════════ */}
       {upcomingEvents.length > 0 && (
-        <section className="py-20 bg-[#f5f5f5]">
+        <section className="py-12 sm:py-16 lg:py-20 bg-[#0d0d0d]">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <div className="max-w-6xl mx-auto">
               <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-12">
                 <div>
                   <p className="text-[#ff6b35] font-bold text-xs uppercase tracking-[0.25em] mb-2">Mark Your Calendar</p>
-                  <h2 className="text-4xl font-black text-gray-900 uppercase">Upcoming Events</h2>
+                  <h2 className="text-4xl font-black text-white uppercase">Upcoming Events</h2>
                 </div>
                 <div className="w-10 h-10 bg-[#ff6b35] rounded-xl flex items-center justify-center">
                   <Calendar className="w-5 h-5 text-white" />
@@ -329,22 +334,63 @@ export default async function Home() {
         </section>
       )}
 
+      {/* ══ GAME TOOLS ═══════════════════════════════════════════════ */}
+      <section className="py-10 sm:py-14 lg:py-16 bg-[#111] border-y border-white/5">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-5xl mx-auto">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-10">
+              <div>
+                <p className="text-[#ff6b35] font-bold text-xs uppercase tracking-[0.25em] mb-1">Built for the Court</p>
+                <h2 className="text-3xl font-black text-white uppercase">Game Tools</h2>
+              </div>
+              <Link href="/tools" className="inline-flex items-center gap-2 text-white/40 hover:text-[#ff6b35] text-sm font-bold uppercase tracking-wider transition-colors">
+                All Tools <ArrowRight className="w-4 h-4" />
+              </Link>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              {[
+                { icon: Trophy,    title: "Live Scoreboard",    desc: "Real-time score tracking: Basic, Player Stats, or Full Management mode.", href: "/game",       accent: "#ff6b35" },
+                { icon: Users,     title: "Team Sheet",         desc: "Build professional rosters and export to PDF before any game.",            href: "/teamsheet",  accent: "#004e89" },
+                { icon: Clipboard, title: "Stats Sheet",        desc: "Generate printable stat sheets, pre-filled from your team roster.",        href: "/statssheet", accent: "#ffd23f" },
+              ].map(({ icon: Icon, title, desc, href, accent }, i) => (
+                <AnimateIn key={title} delay={i * 80}>
+                <Link
+                  href={href}
+                  className="group bg-[#0d0d0d] border border-white/8 rounded-2xl p-6 hover:border-white/20 transition-all hover:scale-[1.02] block h-full"
+                >
+                  <div className="w-10 h-10 rounded-xl flex items-center justify-center mb-4 transition-colors" style={{ background: `${accent}15`, border: `1px solid ${accent}25` }}>
+                    <Icon className="w-5 h-5" style={{ color: accent }} />
+                  </div>
+                  <h3 className="text-white font-black uppercase tracking-tight text-sm mb-2">{title}</h3>
+                  <p className="text-white/45 text-xs leading-relaxed mb-4">{desc}</p>
+                  <span className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest group-hover:gap-2.5 transition-all" style={{ color: accent }}>
+                    Open Tool <ArrowRight className="w-3 h-3" />
+                  </span>
+                </Link>
+                </AnimateIn>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* ══ COURT STORY ═══════════════════════════════════════════════ */}
-      <section className="py-20 bg-white relative overflow-hidden">
-        <span className="watermark text-gray-900 -bottom-8 -left-8">COURT</span>
+      <section className="py-12 sm:py-16 lg:py-20 bg-[#0a0a0a] relative overflow-hidden">
+        <span className="watermark -bottom-8 -left-8">COURT</span>
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div>
               <p className="text-[#ff6b35] font-bold text-xs uppercase tracking-[0.25em] mb-3">Our Mission</p>
-              <h2 className="text-5xl sm:text-6xl font-black text-gray-900 uppercase mb-5">
+              <h2 className="text-5xl sm:text-6xl font-black text-white uppercase mb-5">
                 Basketball<br />for Everyone
               </h2>
               <div className="w-12 h-1 bg-[#ff6b35] rounded-full mb-7" />
-              <p className="text-gray-600 text-lg leading-relaxed mb-4">
-                The Madina Basketball court is a thriving hub for players of all levels — from daily pick-up games and youth training sessions to competitive inter-community tournaments.
+              <p className="text-white/60 text-lg leading-relaxed mb-4">
+                Madina Basketball runs daily pick-up games, structured training, and competitive tournaments.
+                Open to every level, every age.
               </p>
-              <p className="text-gray-500 leading-relaxed mb-8">
-                Home to Zurak Basketball and Madina Old Gees, built by 18 community donors and managed with full financial transparency.
+              <p className="text-white/45 leading-relaxed mb-8">
+                Home to Zurak Basketball and Madina Old Gees. Built by 18 donors, run with full transparency.
               </p>
               <div className="flex flex-col gap-3 mb-8">
                 {[
@@ -352,7 +398,7 @@ export default async function Home() {
                   { icon: Trophy,      label: "2 Active Competing Teams" },
                   { icon: CheckCircle, label: "100% Community-Built & Funded" },
                 ].map(({ icon: Icon, label }) => (
-                  <div key={label} className="flex items-center gap-3 text-gray-700 text-sm font-semibold">
+                  <div key={label} className="flex items-center gap-3 text-white/70 text-sm font-semibold">
                     <div className="w-8 h-8 bg-[#ff6b35]/10 rounded-lg flex items-center justify-center flex-shrink-0">
                       <Icon className="w-4 h-4 text-[#ff6b35]" />
                     </div>
@@ -380,7 +426,7 @@ export default async function Home() {
                 <div className="text-3xl font-black">2025</div>
                 <div className="text-xs font-bold uppercase tracking-widest opacity-80">Active &amp; Growing</div>
               </div>
-              <div className="absolute -top-5 -right-5 w-32 h-32 rounded-xl overflow-hidden border-4 border-white shadow-xl hidden sm:block">
+              <div className="absolute -top-5 -right-5 w-32 h-32 rounded-xl overflow-hidden border-4 border-[#0a0a0a] shadow-xl hidden sm:block">
                 <Image
                   src="/images/events/launch-day/courtsidemadinafans.jpg"
                   alt="Fans courtside" fill className="object-cover" unoptimized
@@ -392,7 +438,7 @@ export default async function Home() {
       </section>
 
       {/* ══ GET INVOLVED ══════════════════════════════════════════════ */}
-      <section className="py-20 bg-[#0d0d0d] court-lines">
+      <section className="py-12 sm:py-16 lg:py-20 bg-[#0d0d0d] court-lines">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-14">
@@ -419,9 +465,9 @@ export default async function Home() {
                   href: "/journey", cta: "Read Journey",
                   from: "from-[#ffd23f]/10", border: "border-[#ffd23f]/20",
                 },
-              ].map(({ icon: Icon, title, desc, href, cta, from, border }) => (
+              ].map(({ icon: Icon, title, desc, href, cta, from, border }, i) => (
+                <AnimateIn key={title} delay={i * 90}>
                 <div
-                  key={title}
                   className={`group relative bg-gradient-to-br ${from} to-transparent border ${border} rounded-2xl p-8 hover:scale-[1.02] transition-all duration-300`}
                 >
                   <div className="w-12 h-12 bg-white/8 rounded-xl flex items-center justify-center mb-6 group-hover:bg-[#ff6b35]/20 transition-colors">
@@ -436,6 +482,7 @@ export default async function Home() {
                     {cta} <ArrowRight className="w-3.5 h-3.5" />
                   </Link>
                 </div>
+                </AnimateIn>
               ))}
             </div>
           </div>
@@ -443,10 +490,10 @@ export default async function Home() {
       </section>
 
       {/* ══ FINAL CTA ════════════════════════════════════════════════ */}
-      <section className="relative py-28 bg-[#ff6b35] overflow-hidden">
+      <section className="relative py-16 sm:py-20 lg:py-28 bg-[#ff6b35] overflow-hidden">
         <div className="absolute inset-0 opacity-15">
           <Image
-            src="/images/journey/after/hero-court-daytime-aerial.jpg"
+            src="/images/journey/after/hero-background.jpg"
             alt="" fill className="object-cover" unoptimized
           />
         </div>
