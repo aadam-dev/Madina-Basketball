@@ -100,9 +100,9 @@ export default async function Home() {
         {/* Video + overlay stack */}
         <div className="absolute inset-0">
           <HeroBackground />
-          <div className="absolute inset-0 bg-black/55" />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-transparent to-[#0a0a0a]/30" />
-          <div className="absolute inset-0 bg-gradient-to-r from-[#0a0a0a]/65 via-transparent to-transparent" />
+          <div className="absolute inset-0 bg-black/45" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-transparent to-[#0a0a0a]/20" />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#0a0a0a]/60 via-transparent to-transparent" />
         </div>
         {/* Court texture */}
         <div className="absolute inset-0 court-lines opacity-50 pointer-events-none" />
@@ -229,7 +229,7 @@ export default async function Home() {
                 style={{ aspectRatio: i === 0 ? "4/5" : "16/9" }}
               >
                 <video
-                  autoPlay loop muted playsInline preload="none"
+                  autoPlay loop muted playsInline preload="metadata"
                   className="absolute inset-0 w-full h-full object-cover"
                 >
                   <source src={src} type="video/mp4" />

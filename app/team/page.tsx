@@ -3,7 +3,6 @@ import Link from "next/link";
 import SafeImage from "@/components/SafeImage";
 import { supabase } from "@/lib/supabase";
 
-// Revalidate every 60 seconds to ensure fresh data
 export const revalidate = 60;
 
 interface TeamMember {
@@ -16,222 +15,192 @@ interface TeamMember {
   order_index: number;
 }
 
-async function getTeamMembers() {
+/* ─── Static fallback roster (shown when DB is empty) ──────────────── */
+const FALLBACK_MEMBERS: TeamMember[] = [
+  {
+    id: "1", section: "executive", order_index: 1,
+    name: "Shafic",
+    role: "Co-Founder & President",
+    description: "The driving force behind Madina Basketball. Shafic mobilised the community, led fundraising, and turned a neglected court into a living hub for Accra's basketball culture.",
+    image_url: "",
+  },
+  {
+    id: "2", section: "executive", order_index: 2,
+    name: "Adam",
+    role: "Co-Founder & Operations Lead",
+    description: "Adam co-founded Madina Basketball and oversees day-to-day operations, partnerships, and the digital infrastructure that keeps the community connected.",
+    image_url: "",
+  },
+  {
+    id: "3", section: "executive", order_index: 3,
+    name: "Hisham",
+    role: "Executive Member",
+    description: "Hisham contributes strategic direction and community engagement, helping to grow the reach and impact of Madina Basketball.",
+    image_url: "",
+  },
+  {
+    id: "4", section: "executive", order_index: 4,
+    name: "Kwame",
+    role: "Executive Member & Head Coach",
+    description: "Kwame bridges leadership and coaching — guiding both the executive vision and the development of players on the court.",
+    image_url: "",
+  },
+  {
+    id: "5", section: "executive", order_index: 5,
+    name: "Titus",
+    role: "Executive Member",
+    description: "Titus supports governance and community relations, ensuring Madina Basketball stays true to its roots.",
+    image_url: "",
+  },
+  {
+    id: "6", section: "executive", order_index: 6,
+    name: "Mustafa",
+    role: "Executive Member",
+    description: "Mustafa contributes on and off the court, playing a key role in organising events and engaging the wider community.",
+    image_url: "",
+  },
+];
+
+async function getTeamMembers(): Promise<TeamMember[]> {
   try {
     const { data, error } = await supabase
-      .from('team_members')
-      .select('*')
-      .order('order_index', { ascending: true });
-
-    if (error) {
-      console.error('Error fetching team members:', error);
-      return [];
-    }
-
-    return data || [];
-  } catch (error) {
-    console.error('Error fetching team members:', error);
-    return [];
+      .from("team_members")
+      .select("*")
+      .order("order_index", { ascending: true });
+    if (error || !data || data.length === 0) return FALLBACK_MEMBERS;
+    return data;
+  } catch {
+    return FALLBACK_MEMBERS;
   }
 }
 
 export default async function Team() {
   const allMembers = await getTeamMembers();
 
-  // Group members by section
-  const executiveBody = allMembers.filter(m => m.section === 'executive');
-  const coaches = allMembers.filter(m => m.section === 'coach');
-  const maintenanceTeam = allMembers.filter(m => m.section === 'maintenance');
-  const keyStakeholders = allMembers.filter(m => m.section === 'stakeholder');
-  const mediaTeam = allMembers.filter(m => m.section === 'media');
+  const executiveBody  = allMembers.filter(m => m.section === "executive");
+  const coaches        = allMembers.filter(m => m.section === "coach");
+  const maintenance    = allMembers.filter(m => m.section === "maintenance");
+  const stakeholders   = allMembers.filter(m => m.section === "stakeholder");
+  const mediaTeam      = allMembers.filter(m => m.section === "media");
 
-  // Custom ordering for executive: Shafic and Adam centered, then Hisham, Kwame, Titus, Mustafa
-  const executiveOrder = ['Shafic', 'Adam', 'Hisham', 'Kwame', 'Titus', 'Mustafa'];
-  const sortedExecutive = [...executiveBody].sort((a, b) => {
-    const aIndex = executiveOrder.findIndex(name => a.name.includes(name) || a.name === name);
-    const bIndex = executiveOrder.findIndex(name => b.name.includes(name) || b.name === name);
-    if (aIndex === -1) return 1;
-    if (bIndex === -1) return -1;
-    return aIndex - bIndex;
-  });
-
-  // Custom ordering for coaches: Kwame, Hisham, Lord, Jesse
-  const coachOrder = ['Kwame', 'Hisham', 'Lord', 'Jesse'];
-  const sortedCoaches = [...coaches].sort((a, b) => {
-    const aIndex = coachOrder.findIndex(name => a.name.includes(name) || a.name === name);
-    const bIndex = coachOrder.findIndex(name => b.name.includes(name) || b.name === name);
-    if (aIndex === -1) return 1;
-    if (bIndex === -1) return -1;
-    return aIndex - bIndex;
-  });
-
-  const getSectionIcon = (section: string) => {
-    switch (section) {
-      case 'executive':
-        return Shield;
-      case 'coach':
-        return Trophy;
-      case 'maintenance':
-        return Wrench;
-      case 'stakeholder':
-        return Building2;
-      case 'media':
-        return Camera;
-      default:
-        return Users;
-    }
+  const execOrder  = ["Shafic", "Adam", "Hisham", "Kwame", "Titus", "Mustafa"];
+  const coachOrder = ["Kwame", "Hisham", "Lord", "Jesse"];
+  const byOrder = (ord: string[]) => (a: TeamMember, b: TeamMember) => {
+    const ai = ord.findIndex(n => a.name.includes(n));
+    const bi = ord.findIndex(n => b.name.includes(n));
+    if (ai === -1) return 1;
+    if (bi === -1) return -1;
+    return ai - bi;
   };
+  const sortedExec   = [...executiveBody].sort(byOrder(execOrder));
+  const sortedCoach  = [...coaches].sort(byOrder(coachOrder));
 
-  const renderTeamSection = (title: string, members: TeamMember[], icon: any, iconColor: string, isExecutive: boolean = false) => {
+  /* ── Card ── */
+  const MemberCard = ({ member }: { member: TeamMember }) => (
+    <div className="group relative bg-[#111] border border-white/8 rounded-2xl overflow-hidden hover:border-[#ff6b35]/40 transition-all duration-300">
+      <div className="relative h-60 bg-gradient-to-br from-[#ff6b35]/10 to-[#004e89]/10">
+        <SafeImage
+          src={member.image_url}
+          alt={member.name}
+          fill
+          className="object-cover group-hover:scale-105 transition-transform duration-500"
+          placeholderSize="lg"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#111] via-transparent to-transparent" />
+      </div>
+      <div className="p-5">
+        <h3 className="text-white font-black text-lg uppercase tracking-tight">{member.name}</h3>
+        <p className="text-[#ff6b35] font-bold text-xs uppercase tracking-widest mt-1 mb-3">{member.role}</p>
+        {member.description && (
+          <p className="text-white/50 text-sm leading-relaxed">{member.description}</p>
+        )}
+      </div>
+    </div>
+  );
+
+  /* ── Section ── */
+  const Section = ({
+    title, members, isLead = false,
+  }: { title: string; members: TeamMember[]; isLead?: boolean }) => {
     if (members.length === 0) return null;
-
-    const Icon = icon;
-
-    // Special layout for executive: Shafic and Adam centered on first row
-    if (isExecutive && members.length >= 2) {
-      const firstTwo = members.slice(0, 2);
-      const rest = members.slice(2);
-
-      return (
-        <section className="py-16">
-          <div className="flex items-center space-x-3 mb-12">
-            <Icon className={`w-8 h-8 ${iconColor}`} />
-            <h2 className="text-3xl font-bold text-gray-900">{title}</h2>
-          </div>
-          
-          {/* First row: Shafic and Adam centered */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8 max-w-4xl mx-auto">
-            {firstTwo.map((member) => (
-              <div
-                key={member.id}
-                className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all transform hover:-translate-y-1"
-              >
-                <div className="relative h-64 bg-gradient-to-br from-primary/10 to-secondary/10">
-                  <SafeImage
-                    src={member.image_url}
-                    alt={member.name}
-                    fill
-                    className="object-cover"
-                    placeholderSize="lg"
-                  />
-                </div>
-                <div className="p-6">
-                  <h3 className="text-xl font-bold text-gray-900 mb-2">{member.name}</h3>
-                  <p className="text-primary font-semibold mb-3">{member.role}</p>
-                  <p className="text-gray-600 text-sm leading-relaxed">{member.description || ''}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {/* Rest of executive members */}
-          {rest.length > 0 && (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-              {rest.map((member) => (
-                <div
-                  key={member.id}
-                  className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all transform hover:-translate-y-1"
-                >
-                  <div className="relative h-64 bg-gradient-to-br from-primary/10 to-secondary/10">
-                    <SafeImage
-                      src={member.image_url}
-                      alt={member.name}
-                      fill
-                      className="object-cover"
-                      placeholderSize="lg"
-                    />
-                  </div>
-                  <div className="p-6">
-                    <h3 className="text-xl font-bold text-gray-900 mb-2">{member.name}</h3>
-                    <p className="text-primary font-semibold mb-3">{member.role}</p>
-                    <p className="text-gray-600 text-sm leading-relaxed">{member.description || ''}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
-        </section>
-      );
-    }
-
-    // Standard layout for other sections
     return (
-      <section className="py-16">
-        <div className="flex items-center space-x-3 mb-12">
-          <Icon className={`w-8 h-8 ${iconColor}`} />
-          <h2 className="text-3xl font-bold text-gray-900">{title}</h2>
+      <section className="mb-20">
+        <div className="flex items-center gap-4 mb-10">
+          <div className="w-1 h-8 bg-[#ff6b35] rounded-full" />
+          <h2 className="text-2xl font-black text-white uppercase tracking-tight">{title}</h2>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {members.map((member) => (
-            <div
-              key={member.id}
-              className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all transform hover:-translate-y-1"
-            >
-              <div className="relative h-64 bg-gradient-to-br from-primary/10 to-secondary/10">
-                <SafeImage
-                    src={member.image_url}
-                    alt={member.name}
-                    fill
-                    className="object-cover"
-                  placeholderSize="lg"
-                  />
-              </div>
-              <div className="p-6">
-                <h3 className="text-xl font-bold text-gray-900 mb-2">{member.name}</h3>
-                <p className="text-primary font-semibold mb-3">{member.role}</p>
-                <p className="text-gray-600 text-sm leading-relaxed">{member.description || ''}</p>
-              </div>
+        {isLead && members.length >= 2 ? (
+          <>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-2xl mb-6">
+              {members.slice(0, 2).map(m => <MemberCard key={m.id} member={m} />)}
             </div>
-          ))}
-        </div>
+            {members.length > 2 && (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                {members.slice(2).map(m => <MemberCard key={m.id} member={m} />)}
+              </div>
+            )}
+          </>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {members.map(m => <MemberCard key={m.id} member={m} />)}
+          </div>
+        )}
       </section>
     );
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
-      {/* Hero Section */}
-      <section className="bg-gradient-to-r from-primary to-primary-dark text-white py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center">
-            <h1 className="text-4xl md:text-5xl font-extrabold mb-6">
-              Our Leadership Team
-            </h1>
-            <p className="text-xl text-white/90 max-w-3xl mx-auto leading-relaxed">
-              Meet the dedicated individuals leading Madina Basketball. From strategic
-              leadership to hands-on operations, our team works together to build and
-              maintain a thriving basketball community.
-            </p>
-          </div>
+    <div className="min-h-screen bg-[#0a0a0a]">
+
+      {/* ── Hero ── */}
+      <section className="relative overflow-hidden court-lines border-b border-white/6">
+        <div className="absolute left-0 top-0 h-full w-1 bg-gradient-to-b from-transparent via-[#ff6b35] to-transparent" />
+        <div className="container mx-auto px-6 lg:px-8 py-24 lg:py-32">
+          <span className="pill bg-[#ff6b35]/15 text-[#ff6b35] border border-[#ff6b35]/30 mb-5 inline-flex">
+            Leadership
+          </span>
+          <h1
+            className="text-white font-black uppercase leading-none mb-5"
+            style={{ fontSize: "clamp(2.8rem,8vw,6rem)", letterSpacing: "-0.04em" }}
+          >
+            THE PEOPLE<br />
+            <span className="text-[#ff6b35]">BEHIND</span> THE COURT
+          </h1>
+          <p className="text-white/50 max-w-xl text-base leading-relaxed">
+            From strategic leadership to boots-on-ground operations — meet the team
+            building Madina Basketball into something that lasts.
+          </p>
         </div>
       </section>
 
-      {/* Team Sections */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {renderTeamSection("Executive Leadership", sortedExecutive, Shield, "text-primary", true)}
-        {renderTeamSection("Coaching Staff", sortedCoaches, Trophy, "text-yellow-600")}
-        {renderTeamSection("Maintenance & Oversight", maintenanceTeam, Wrench, "text-green-600")}
-        {renderTeamSection("Key Stakeholders", keyStakeholders, Building2, "text-blue-600")}
-        {renderTeamSection("Media & Communications", mediaTeam, Camera, "text-purple-600")}
-
-        {/* Call to Action */}
-        <section className="py-16">
-          <div className="bg-gradient-to-r from-primary to-primary-dark rounded-2xl p-12 text-center text-white">
-            <h2 className="text-3xl font-bold mb-4">Want to Get Involved?</h2>
-            <p className="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
-              We're always looking for passionate individuals to join our community. Whether
-              as a volunteer, coach, or supporter, there's a place for you at Madina Basketball.
-            </p>
-            <Link
-              href="/contact"
-              className="inline-flex items-center space-x-2 px-8 py-4 bg-white text-primary rounded-lg hover:bg-gray-100 transition-colors font-semibold text-lg"
-            >
-              <Mail className="w-5 h-5" />
-              <span>Get in Touch</span>
-            </Link>
-          </div>
-        </section>
+      {/* ── Team Grid ── */}
+      <div className="container mx-auto px-6 lg:px-8 py-20">
+        <Section title="Executive Leadership" members={sortedExec} isLead />
+        <Section title="Coaching Staff"       members={sortedCoach} />
+        <Section title="Maintenance & Oversight" members={maintenance} />
+        <Section title="Key Stakeholders"     members={stakeholders} />
+        <Section title="Media & Comms"        members={mediaTeam} />
       </div>
+
+      {/* ── CTA ── */}
+      <section className="border-t border-white/8 bg-[#0d0d0d] py-20">
+        <div className="container mx-auto px-6 lg:px-8 text-center">
+          <h2 className="text-2xl font-black text-white uppercase tracking-tight mb-4">
+            Want to get involved?
+          </h2>
+          <p className="text-white/45 max-w-md mx-auto mb-8 text-sm">
+            Whether as a volunteer, coach, or community supporter — there is always
+            a place for you at Madina Basketball.
+          </p>
+          <Link
+            href="/contact"
+            className="inline-flex items-center gap-2 px-8 py-3 bg-[#ff6b35] text-white font-bold text-sm rounded-lg hover:bg-[#e55a2b] transition-colors uppercase tracking-wider"
+          >
+            <Mail className="w-4 h-4" /> Get in Touch
+          </Link>
+        </div>
+      </section>
+
     </div>
   );
 }

@@ -34,16 +34,16 @@ export default function Header() {
       }`}
     >
       <nav className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16 lg:h-20">
+        <div className="flex items-center justify-between h-[4.5rem] lg:h-[5.5rem]">
 
           {/* ── Logo ───────────────────────────────────────────────────── */}
           <Link href="/" className="flex items-center gap-3 group flex-shrink-0">
-            <div className="h-10 w-10 flex items-center justify-center">
+            <div className="h-12 w-12 flex items-center justify-center">
               <Image
                 src="/images/logo/madina-basketball-logo.png?v=3"
                 alt="Madina Basketball Logo"
-                width={40}
-                height={40}
+                width={52}
+                height={52}
                 className="object-contain transition-transform duration-300 group-hover:scale-110"
                 priority
                 loading="eager"

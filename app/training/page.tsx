@@ -1,250 +1,187 @@
-import { Calendar, Users, Target, Trophy, Heart, Clock, Star } from "lucide-react";
+import { Calendar, Users, Target, Trophy, Heart, Clock, Star, ArrowRight } from "lucide-react";
+import Link from "next/link";
+import Image from "next/image";
 
 export default function Training() {
+  const focus = [
+    { icon: Target,   title: "Youth Development",  text: "Developing young players through structured training, mentorship, and positive role modelling." },
+    { icon: Heart,    title: "Inclusion",           text: "Welcoming girls, boys, beginners, and players from all backgrounds. Basketball is for everyone." },
+    { icon: Users,    title: "Community Building",  text: "Training sessions are more than basketball — they are opportunities to build friendships and bonds." },
+    { icon: Trophy,   title: "Skill Development",   text: "Progressive programmes helping players improve fundamentals, game understanding, and competitive skills." },
+    { icon: Star,     title: "Character Building",  text: "Discipline, respect, teamwork, and resilience — values that extend well beyond the court." },
+    { icon: Calendar, title: "Regular Sessions",    text: "Consistent weekly training ensures continuous improvement and keeps players engaged with the sport." },
+  ];
+
+  const events = [
+    {
+      title: "Eid Games",
+      icon: Trophy,
+      text: "Annual tournament held during Eid celebrations, bringing together players from across the community for competitive games and celebration.",
+      sub: "Community calendar highlight — basketball + culture.",
+    },
+    {
+      title: "Night of Legends",
+      icon: Star,
+      text: "Held every December 27th — the Madina Old Gees take on different communities in competitive games, followed by a community feast.",
+      sub: "Veterans, rivalries, and community spirit.",
+    },
+    {
+      title: "Community Tournaments",
+      icon: Calendar,
+      text: "Regular tournaments providing opportunities for players to test skills and compete in a structured, inclusive environment.",
+      sub: "Competitive experience. Community spirit.",
+    },
+  ];
+
   return (
-    <div className="min-h-screen bg-white">
-      {/* Hero */}
-      <section className="bg-gradient-to-br from-secondary to-primary text-white py-20">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-3xl mx-auto text-center">
-            <h1 className="text-4xl sm:text-5xl font-bold mb-6">Training & Programs</h1>
-            <p className="text-xl text-white/90">
-              Building skills, character, and community through basketball
-            </p>
-          </div>
+    <div className="min-h-screen bg-[#0a0a0a] text-white">
+
+      {/* ── Hero ── */}
+      <section className="relative overflow-hidden court-lines border-b border-white/6">
+        <div className="absolute left-0 top-0 h-full w-1 bg-gradient-to-b from-transparent via-[#ff6b35] to-transparent" />
+        <div className="container mx-auto px-6 lg:px-8 py-24 lg:py-32">
+          {/* Active badge */}
+          <span className="pill bg-green-500/20 border border-green-500/40 text-green-300 mb-5 inline-flex">
+            <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
+            Training Active
+          </span>
+          <h1
+            className="font-black uppercase leading-none mb-5"
+            style={{ fontSize: "clamp(2.8rem,8vw,6rem)", letterSpacing: "-0.04em" }}
+          >
+            TRAINING &amp;<br />
+            <span className="text-[#ff6b35]">PROGRAMS</span>
+          </h1>
+          <p className="text-white/55 max-w-xl text-base leading-relaxed">
+            Building skills, character, and community through basketball.
+            Weekly sessions. All levels welcome.
+          </p>
         </div>
       </section>
 
-      {/* Weekly Training */}
-      <section className="py-20">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-4xl mx-auto">
-            <h2 className="text-3xl sm:text-4xl font-bold mb-8 text-center">Weekly Training Sessions</h2>
-            <div className="bg-green-50 border-2 border-green-200 rounded-xl p-6 mb-6">
-              <div className="flex items-center space-x-2 text-green-800 font-semibold mb-2">
-                <Trophy className="w-5 h-5" />
-                <span>Training Programs Now Active!</span>
-              </div>
-              <p className="text-green-700">
-                Our training programs are in full action. Regular sessions are running weekly, developing skills, 
-                building character, and strengthening our community. Join us!
+      {/* ── Training Sessions ── */}
+      <section className="py-20 bg-[#0d0d0d]">
+        <div className="container mx-auto px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center max-w-6xl mx-auto">
+            <div>
+              <p className="text-[#ff6b35] font-bold text-xs uppercase tracking-[0.25em] mb-3">Weekly Training</p>
+              <h2 className="text-3xl font-black uppercase tracking-tight mb-6 orange-rule">Sessions Now Running</h2>
+              <p className="text-white/60 leading-relaxed mb-6">
+                Our training programmes are in full action. Regular sessions run weekly, developing skills,
+                building character, and strengthening our community. Open to players of all skill levels and ages.
               </p>
-            </div>
-            <div className="bg-muted rounded-xl p-8 mb-8">
-              <div className="flex items-center space-x-3 mb-6">
-                <Calendar className="w-6 h-6 text-primary" />
-                <h3 className="text-2xl font-semibold">Regular Training - Now Active</h3>
-              </div>
-              <p className="text-gray-700 text-lg leading-relaxed mb-6">
-                We run weekly training sessions focused on skill development, teamwork, and personal growth.
-                These sessions are open to players of all skill levels and ages. <strong>Our training programs 
-                are currently active and welcoming new participants.</strong>
-              </p>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="bg-white p-6 rounded-lg">
-                  <div className="flex items-center space-x-2 mb-3">
-                    <Clock className="w-5 h-5 text-primary" />
-                    <span className="font-semibold">Schedule</span>
-                  </div>
-                  <p className="text-gray-600">
-                    Weekly sessions are held on scheduled days. Check our social media or contact us
-                    for the current schedule.
-                  </p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
+                <div className="bg-[#111] border border-white/8 rounded-xl p-5">
+                  <Clock className="w-5 h-5 text-[#ff6b35] mb-3" />
+                  <p className="text-white font-bold text-sm mb-1">Schedule</p>
+                  <p className="text-white/50 text-sm">Weekly sessions on scheduled days. Check social media or contact us for the current timetable.</p>
                 </div>
-                <div className="bg-white p-6 rounded-lg">
-                  <div className="flex items-center space-x-2 mb-3">
-                    <Users className="w-5 h-5 text-primary" />
-                    <span className="font-semibold">Who Can Join</span>
-                  </div>
-                  <p className="text-gray-600">
-                    Open to all community members. Beginners welcome. No prior experience required.
-                  </p>
+                <div className="bg-[#111] border border-white/8 rounded-xl p-5">
+                  <Users className="w-5 h-5 text-[#ff6b35] mb-3" />
+                  <p className="text-white font-bold text-sm mb-1">Who Can Join</p>
+                  <p className="text-white/50 text-sm">Open to all community members. Beginners welcome. No prior experience required.</p>
                 </div>
               </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Program Focus Areas */}
-      <section className="py-20 bg-muted">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-6xl mx-auto">
-            <h2 className="text-3xl sm:text-4xl font-bold mb-12 text-center">Program Focus</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              <div className="bg-white p-6 rounded-xl shadow-sm">
-                <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
-                  <Target className="w-6 h-6 text-primary" />
-                </div>
-                <h3 className="text-xl font-semibold mb-3">Youth Development</h3>
-                <p className="text-gray-600">
-                  Focus on developing young players through structured training, mentorship,
-                  and positive role modeling.
-                </p>
-              </div>
-              <div className="bg-white p-6 rounded-xl shadow-sm">
-                <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
-                  <Heart className="w-6 h-6 text-primary" />
-                </div>
-                <h3 className="text-xl font-semibold mb-3">Inclusion</h3>
-                <p className="text-gray-600">
-                  Programs specifically designed to welcome girls, beginners, and players from
-                  all backgrounds. Basketball is for everyone.
-                </p>
-              </div>
-              <div className="bg-white p-6 rounded-xl shadow-sm">
-                <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
-                  <Users className="w-6 h-6 text-primary" />
-                </div>
-                <h3 className="text-xl font-semibold mb-3">Community Building</h3>
-                <p className="text-gray-600">
-                  Training sessions are more than just basketball—they're opportunities to build
-                  friendships and strengthen community bonds.
-                </p>
-              </div>
-              <div className="bg-white p-6 rounded-xl shadow-sm">
-                <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
-                  <Trophy className="w-6 h-6 text-primary" />
-                </div>
-                <h3 className="text-xl font-semibold mb-3">Skill Development</h3>
-                <p className="text-gray-600">
-                  Progressive training programs that help players improve their fundamentals,
-                  game understanding, and competitive skills.
-                </p>
-              </div>
-              <div className="bg-white p-6 rounded-xl shadow-sm">
-                <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
-                  <Heart className="w-6 h-6 text-primary" />
-                </div>
-                <h3 className="text-xl font-semibold mb-3">Character Building</h3>
-                <p className="text-gray-600">
-                  Emphasis on discipline, respect, teamwork, and resilience—values that extend
-                  beyond the court.
-                </p>
-              </div>
-              <div className="bg-white p-6 rounded-xl shadow-sm">
-                <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
-                  <Calendar className="w-6 h-6 text-primary" />
-                </div>
-                <h3 className="text-xl font-semibold mb-3">Regular Sessions</h3>
-                <p className="text-gray-600">
-                  Consistent weekly training ensures continuous improvement and maintains
-                  engagement with the sport.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Annual Events */}
-      <section className="py-20">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-4xl mx-auto">
-            <h2 className="text-3xl sm:text-4xl font-bold mb-12 text-center">Annual Events</h2>
-            <div className="space-y-8">
-              <div className="bg-muted rounded-xl p-8">
-                <div className="flex items-center space-x-3 mb-4">
-                  <Trophy className="w-8 h-8 text-primary" />
-                  <h3 className="text-2xl font-semibold">Eid Games</h3>
-                </div>
-                <p className="text-gray-700 text-lg leading-relaxed mb-4">
-                  Our annual tournament held during Eid celebrations, bringing together players
-                  from across the community for competitive games, food, and celebration.
-                </p>
-                <p className="text-gray-600">
-                  The Eid Games have become a highlight of the community calendar, combining
-                  basketball competition with cultural celebration.
-                </p>
-              </div>
-              <div className="bg-muted rounded-xl p-8">
-                <div className="flex items-center space-x-3 mb-4">
-                  <Star className="w-8 h-8 text-primary" />
-                  <h3 className="text-2xl font-semibold">Night of Legends</h3>
-                </div>
-                <p className="text-gray-700 text-lg leading-relaxed mb-4">
-                  An annual celebration held on December 27th where the Madina Old Gees take on
-                  different communities in competitive games, followed by a community feast.
-                </p>
-                <p className="text-gray-600">
-                  This special event brings together veteran players and community members for
-                  a night of basketball, camaraderie, and celebration.
-                </p>
-              </div>
-              <div className="bg-muted rounded-xl p-8">
-                <div className="flex items-center space-x-3 mb-4">
-                  <Calendar className="w-8 h-8 text-primary" />
-                  <h3 className="text-2xl font-semibold">Community Tournaments</h3>
-                </div>
-                <p className="text-gray-700 text-lg leading-relaxed mb-4">
-                  Regular tournaments and competitions that provide opportunities for players
-                  to test their skills and compete in a structured environment.
-                </p>
-                <p className="text-gray-600">
-                  These events help build competitive experience while maintaining the
-                  community-focused, inclusive spirit of the court.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Volunteer Coaches */}
-      <section className="py-20 bg-muted">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-4xl mx-auto">
-            <h2 className="text-3xl sm:text-4xl font-bold mb-8 text-center">Coaching</h2>
-            <div className="bg-white rounded-xl p-8 shadow-sm">
-              <p className="text-gray-700 text-lg leading-relaxed mb-6">
-                Our training programs are led by volunteer coaches who are passionate about
-                basketball and community development. These dedicated individuals give their
-                time to help players improve their skills and grow as people.
-              </p>
-              <p className="text-gray-700 text-lg leading-relaxed mb-6">
-                We are always looking for additional volunteer coaches who can contribute to
-                our programs. If you have basketball experience and a desire to give back to
-                the community, we'd love to hear from you.
-              </p>
-              <div className="mt-8">
-                <a
-                  href="/contact"
-                  className="inline-block px-8 py-4 bg-primary text-white font-semibold rounded-lg hover:bg-primary-dark transition-all transform hover:scale-105"
-                >
-                  Contact Us About Coaching
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* CTA */}
-      <section className="py-20 bg-secondary text-white">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-3xl mx-auto text-center">
-            <h2 className="text-3xl sm:text-4xl font-bold mb-6">Join Our Programs</h2>
-            <p className="text-xl mb-8 text-white/90">
-              Whether you're a beginner or experienced player, there's a place for you in our training programs.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <a
+              <Link
                 href="/register"
-                className="px-8 py-4 bg-primary text-white font-semibold rounded-lg hover:bg-primary-dark transition-all transform hover:scale-105"
+                className="inline-flex items-center gap-2 px-6 py-3 bg-[#ff6b35] text-white font-bold text-sm rounded-lg hover:bg-[#e55a2b] transition-colors uppercase tracking-wider"
               >
-                Register to Play
-              </a>
-              <a
-                href="/contact"
-                className="px-8 py-4 bg-transparent border-2 border-white text-white font-semibold rounded-lg hover:bg-white/10 transition-all"
-              >
-                Get More Information
-              </a>
+                Register to Join <ArrowRight className="w-4 h-4" />
+              </Link>
+            </div>
+            <div className="relative aspect-[4/3] rounded-2xl overflow-hidden">
+              <Image
+                src="/images/events/launch-day/rebound-hustle.jpg"
+                alt="Training session on court"
+                fill
+                className="object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#0d0d0d]/60 to-transparent" />
             </div>
           </div>
         </div>
       </section>
+
+      {/* ── Focus Areas ── */}
+      <section className="py-20">
+        <div className="container mx-auto px-6 lg:px-8">
+          <p className="text-[#ff6b35] font-bold text-xs uppercase tracking-[0.25em] mb-3">What We Develop</p>
+          <h2 className="text-3xl font-black uppercase tracking-tight mb-10">Programme Focus</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {focus.map(({ icon: Icon, title, text }) => (
+              <div key={title} className="bg-[#111] border border-white/8 rounded-2xl p-6 hover:border-[#ff6b35]/30 transition-colors">
+                <div className="w-10 h-10 bg-[#ff6b35]/10 rounded-xl flex items-center justify-center mb-4">
+                  <Icon className="w-5 h-5 text-[#ff6b35]" />
+                </div>
+                <h3 className="text-white font-black uppercase text-sm tracking-tight mb-2">{title}</h3>
+                <p className="text-white/50 text-sm leading-relaxed">{text}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── Annual Events ── */}
+      <section className="py-20 bg-[#0d0d0d]">
+        <div className="container mx-auto px-6 lg:px-8">
+          <p className="text-[#ff6b35] font-bold text-xs uppercase tracking-[0.25em] mb-3">Calendar</p>
+          <h2 className="text-3xl font-black uppercase tracking-tight mb-10">Annual Events</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {events.map(({ title, icon: Icon, text, sub }) => (
+              <div key={title} className="bg-[#111] border border-white/8 rounded-2xl p-6 hover:border-[#ff6b35]/30 transition-colors">
+                <div className="w-10 h-10 bg-[#ff6b35]/10 rounded-xl flex items-center justify-center mb-5">
+                  <Icon className="w-5 h-5 text-[#ff6b35]" />
+                </div>
+                <h3 className="text-white font-black uppercase tracking-tight text-lg mb-3">{title}</h3>
+                <p className="text-white/55 text-sm leading-relaxed mb-4">{text}</p>
+                <p className="text-[#ff6b35] text-xs font-bold uppercase tracking-wider">{sub}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── Coaching ── */}
+      <section className="py-20 border-t border-white/6">
+        <div className="container mx-auto px-6 lg:px-8 max-w-4xl">
+          <p className="text-[#ff6b35] font-bold text-xs uppercase tracking-[0.25em] mb-3">Staff</p>
+          <h2 className="text-3xl font-black uppercase tracking-tight mb-6 orange-rule">Coaching</h2>
+          <p className="text-white/60 leading-relaxed mb-4">
+            Our training programmes are led by volunteer coaches passionate about basketball and community
+            development. These dedicated individuals give their time to help players improve their skills
+            and grow as people.
+          </p>
+          <p className="text-white/60 leading-relaxed mb-8">
+            We are always looking for additional volunteer coaches. If you have basketball experience and
+            a desire to give back, we would love to hear from you.
+          </p>
+          <Link
+            href="/contact"
+            className="inline-flex items-center gap-2 px-6 py-3 bg-white/8 border border-white/15 text-white font-bold text-sm rounded-lg hover:bg-white/15 transition-colors uppercase tracking-wider"
+          >
+            Enquire About Coaching <ArrowRight className="w-4 h-4" />
+          </Link>
+        </div>
+      </section>
+
+      {/* ── CTA ── */}
+      <section className="bg-[#ff6b35] py-16">
+        <div className="container mx-auto px-6 lg:px-8 text-center">
+          <h2 className="text-2xl font-black uppercase tracking-tight mb-4 text-white">Join Our Programmes</h2>
+          <p className="text-white/80 max-w-md mx-auto mb-8 text-sm">
+            Beginner or veteran — there is a place for you in our training programmes.
+          </p>
+          <div className="flex flex-wrap gap-4 justify-center">
+            <Link href="/register" className="px-8 py-3 bg-white text-[#ff6b35] font-bold text-sm rounded-lg hover:bg-white/90 transition-colors uppercase tracking-wider">
+              Register to Play
+            </Link>
+            <Link href="/contact" className="px-8 py-3 bg-transparent border-2 border-white text-white font-bold text-sm rounded-lg hover:bg-white/15 transition-colors uppercase tracking-wider">
+              Get More Info
+            </Link>
+          </div>
+        </div>
+      </section>
+
     </div>
   );
 }
-

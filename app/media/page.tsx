@@ -268,7 +268,7 @@ export default function MediaPage() {
       </section>
 
       {/* ── Tab Bar ──────────────────────────────────────────────────────── */}
-      <div className="sticky top-16 lg:top-20 z-40 bg-[#0d0d0d]/95 backdrop-blur-sm border-b border-white/8">
+      <div className="sticky top-[4.5rem] lg:top-[5.5rem] z-40 bg-[#0d0d0d]/95 backdrop-blur-sm border-b border-white/8">
         <div className="container mx-auto px-6 lg:px-8">
           <div className="flex gap-1 overflow-x-auto scrollbar-hide py-3">
             {tabs.map((t) => (

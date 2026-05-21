@@ -1,16 +1,3 @@
-/**
- * HeroBackground Component
- * 
- * Displays a video background with image fallback for the homepage hero section.
- * 
- * Behavior:
- * - Attempts to load and play video
- * - Falls back to static image if video fails to load
- * - Smooth transition between image and video
- * 
- * @component
- */
-
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
@@ -18,71 +5,45 @@ import Image from 'next/image';
 
 export default function HeroBackground() {
   const videoRef = useRef<HTMLVideoElement>(null);
-  // Start with image visible, hide it when video successfully loads
-  const [showImage, setShowImage] = useState(true);
+  const [videoReady, setVideoReady] = useState(false);
 
-  /**
-   * Video loading logic
-   * Attempts to load video and switches to image if video fails
-   */
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
-
-    // Handle video load errors - fallback to image
-    const handleError = () => {
-      setShowImage(true);
-    };
-
-    // Video is ready to play - hide image and show video
-    const handleCanPlay = () => {
-      setShowImage(false);
-    };
-
-    // Video data loaded - hide image and show video
-    const handleLoadedData = () => {
-      setShowImage(false);
-    };
-
-    // Attach event listeners
-    video.addEventListener('error', handleError);
-    video.addEventListener('canplay', handleCanPlay);
-    video.addEventListener('loadeddata', handleLoadedData);
-
-    // Trigger video load
+    const onReady = () => setVideoReady(true);
+    video.addEventListener('canplay', onReady);
+    video.addEventListener('loadeddata', onReady);
     video.load();
-
-    // Cleanup: remove event listeners on unmount
     return () => {
-      video.removeEventListener('error', handleError);
-      video.removeEventListener('canplay', handleCanPlay);
-      video.removeEventListener('loadeddata', handleLoadedData);
+      video.removeEventListener('canplay', onReady);
+      video.removeEventListener('loadeddata', onReady);
     };
   }, []);
 
   return (
-    <div className="absolute inset-0 opacity-30">
-      {/* Image - shown by default */}
+    <>
+      {/* Fallback image — always rendered, hidden once video is ready */}
       <Image
-        src="/images/journey/after/hero-page.jpg"
-        alt="Madina Basketball Court - Completed"
+        src="/images/journey/after/hero-court-daytime-aerial.jpg"
+        alt="Madina Basketball Court"
         fill
-        className={`object-cover transition-opacity duration-500 ${showImage ? 'opacity-100' : 'opacity-0'}`}
         priority
         unoptimized
+        className={`object-cover transition-opacity duration-700 ${videoReady ? 'opacity-0' : 'opacity-100'}`}
       />
-      {/* Video background - overlays if it loads */}
+      {/* MP4 video — swaps in when ready */}
       <video
         ref={videoRef}
         autoPlay
         loop
         muted
         playsInline
-        className={`w-full h-full object-cover transition-opacity duration-500 ${showImage ? 'opacity-0' : 'opacity-100'}`}
+        preload="metadata"
+        className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ${videoReady ? 'opacity-100' : 'opacity-0'}`}
       >
-        <source src="/videos/compressed/hero-section-video.MOV" type="video/quicktime" />
+        <source src="/videos/highlights/compressed/launch-aerial-view-compressed.mp4" type="video/mp4" />
+        <source src="/videos/highlights/compressed/launch-game-highlights-compressed.mp4" type="video/mp4" />
       </video>
-    </div>
+    </>
   );
 }
-
