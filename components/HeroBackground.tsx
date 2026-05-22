@@ -24,14 +24,14 @@ export default function HeroBackground() {
     <>
       {/* Fallback image — always rendered, hidden once video is ready */}
       <Image
-        src="/images/journey/after/hero-background.jpg"
+        src="/images/journey/after/completed-evening.jpg"
         alt="Madina Basketball Court"
         fill
         priority
         unoptimized
         className={`object-cover transition-opacity duration-700 ${videoReady ? 'opacity-0' : 'opacity-100'}`}
       />
-      {/* MP4 video — swaps in when ready */}
+      {/* Hero video — swaps in when ready */}
       <video
         ref={videoRef}
         autoPlay
@@ -41,8 +41,7 @@ export default function HeroBackground() {
         preload="metadata"
         className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ${videoReady ? 'opacity-100' : 'opacity-0'}`}
       >
-        <source src="/videos/highlights/compressed/launch-aerial-view-compressed.mp4" type="video/mp4" />
-        <source src="/videos/highlights/compressed/launch-game-highlights-compressed.mp4" type="video/mp4" />
+        <source src="/videos/compressed/hero-section-video.MOV" />
       </video>
     </>
   );
