@@ -1,5 +1,6 @@
 import { Users, Camera, Wrench, Trophy, Building2, Mail, Shield } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 import SafeImage from "@/components/SafeImage";
 import { supabase } from "@/lib/supabase";
 
@@ -153,23 +154,39 @@ export default async function Team() {
     <div className="min-h-screen bg-[#0a0a0a]">
 
       {/* ── Hero ── */}
-      <section className="relative overflow-hidden court-lines border-b border-white/6">
+      <section className="relative overflow-hidden court-lines border-b border-white/6 min-h-[340px] lg:min-h-[420px]">
         <div className="absolute left-0 top-0 h-full w-1 bg-gradient-to-b from-transparent via-[#ff6b35] to-transparent" />
-        <div className="container mx-auto px-6 lg:px-8 py-16 lg:py-24">
-          <span className="pill bg-[#ff6b35]/15 text-[#ff6b35] border border-[#ff6b35]/30 mb-5 inline-flex">
-            Leadership
-          </span>
-          <h1
-            className="text-white font-black uppercase leading-none mb-5"
-            style={{ fontSize: "clamp(2.8rem,8vw,6rem)", letterSpacing: "-0.04em" }}
-          >
-            THE PEOPLE<br />
-            <span className="text-[#ff6b35]">BEHIND</span> THE COURT
-          </h1>
-          <p className="text-white/50 max-w-xl text-base leading-relaxed">
-            From strategy to court operations: meet the team
-            building Madina Basketball into something that lasts.
-          </p>
+
+        {/* Hero photo — desktop only */}
+        <div className="hidden lg:block absolute right-0 top-0 h-full w-[48%] pointer-events-none">
+          <Image
+            src="/images/events/launch-day/shafic-courtside.jpg"
+            alt="Madina Basketball leadership"
+            fill
+            priority
+            className="object-cover object-top"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#0a0a0a] via-[#0a0a0a]/55 to-[#0a0a0a]/10" />
+          <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-[#0a0a0a] to-transparent" />
+        </div>
+
+        <div className="container mx-auto px-6 lg:px-8 py-16 lg:py-24 relative z-10">
+          <div className="max-w-xl">
+            <span className="pill bg-[#ff6b35]/15 text-[#ff6b35] border border-[#ff6b35]/30 mb-5 inline-flex">
+              Leadership
+            </span>
+            <h1
+              className="text-white font-black uppercase leading-none mb-5"
+              style={{ fontSize: "clamp(2.8rem,8vw,6rem)", letterSpacing: "-0.04em" }}
+            >
+              THE PEOPLE<br />
+              <span className="text-[#ff6b35]">BEHIND</span> THE COURT
+            </h1>
+            <p className="text-white/50 max-w-xl text-base leading-relaxed">
+              From strategy to court operations: meet the team
+              building Madina Basketball into something that lasts.
+            </p>
+          </div>
         </div>
       </section>
 

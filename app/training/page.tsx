@@ -3,6 +3,7 @@ import Link from "next/link";
 import Image from "next/image";
 import AnimateIn from "@/components/AnimateIn";
 
+
 export default function Training() {
   const focus = [
     { icon: Target,   title: "Youth Development",  text: "Developing young players through structured training, mentorship, and accountability." },
@@ -38,23 +39,44 @@ export default function Training() {
     <div className="min-h-screen bg-[#0a0a0a] text-white">
 
       {/* ── Hero ── */}
-      <section className="relative overflow-hidden court-lines border-b border-white/6">
+      <section className="relative overflow-hidden court-lines border-b border-white/6 min-h-[340px] lg:min-h-[420px]">
         <div className="absolute left-0 top-0 h-full w-1 bg-gradient-to-b from-transparent via-[#ff6b35] to-transparent" />
-        <div className="container mx-auto px-6 lg:px-8 py-16 lg:py-24">
-          <span className="pill bg-green-500/20 border border-green-500/40 text-green-300 mb-5 inline-flex">
-            <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
-            Training Active
-          </span>
-          <h1
-            className="font-black uppercase leading-none mb-5"
-            style={{ fontSize: "clamp(2.8rem,8vw,6rem)", letterSpacing: "-0.04em" }}
-          >
-            TRAINING &amp;<br />
-            <span className="text-[#ff6b35]">PROGRAMS</span>
-          </h1>
-          <p className="text-white/55 max-w-xl text-base leading-relaxed">
-            Weekly sessions. All levels welcome. Building players and community on the same court.
-          </p>
+
+        {/* Hero photo — desktop only */}
+        <div className="hidden lg:block absolute right-0 top-0 h-full w-[48%] pointer-events-none">
+          <Image
+            src="/images/events/launch-day/rebound-hustle.jpg"
+            alt="Training session at Madina Basketball"
+            fill
+            priority
+            className="object-cover object-center"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#0a0a0a] via-[#0a0a0a]/55 to-[#0a0a0a]/10" />
+          <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-[#0a0a0a] to-transparent" />
+          {/* Floating badge */}
+          <div className="absolute top-8 right-8 flex items-center gap-2 bg-green-500/20 border border-green-500/40 backdrop-blur-sm rounded-full px-4 py-2">
+            <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
+            <span className="text-green-300 text-xs font-bold uppercase tracking-wider">Weekly Sessions Active</span>
+          </div>
+        </div>
+
+        <div className="container mx-auto px-6 lg:px-8 py-16 lg:py-24 relative z-10">
+          <div className="max-w-xl">
+            <span className="pill bg-green-500/20 border border-green-500/40 text-green-300 mb-5 inline-flex">
+              <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
+              Training Active
+            </span>
+            <h1
+              className="font-black uppercase leading-none mb-5"
+              style={{ fontSize: "clamp(2.8rem,8vw,6rem)", letterSpacing: "-0.04em" }}
+            >
+              TRAINING &amp;<br />
+              <span className="text-[#ff6b35]">PROGRAMS</span>
+            </h1>
+            <p className="text-white/55 max-w-xl text-base leading-relaxed">
+              Weekly sessions. All levels welcome. Building players and community on the same court.
+            </p>
+          </div>
         </div>
       </section>
 

@@ -24,7 +24,7 @@ export default function HeroBackground() {
     <>
       {/* Fallback image — always rendered, hidden once video is ready */}
       <Image
-        src="/images/journey/after/hero-court-daytime-aerial.jpg"
+        src="/images/journey/after/hero-background.jpg"
         alt="Madina Basketball Court"
         fill
         priority

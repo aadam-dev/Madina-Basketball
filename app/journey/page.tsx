@@ -81,23 +81,58 @@ export default function Journey() {
     <div className="min-h-screen bg-[#0a0a0a] text-white">
 
       {/* ── Hero ── */}
-      <section className="relative overflow-hidden court-lines border-b border-white/6">
+      <section className="relative overflow-hidden court-lines border-b border-white/6 min-h-[340px] lg:min-h-[440px]">
         <div className="absolute left-0 top-0 h-full w-1 bg-gradient-to-b from-transparent via-[#ff6b35] to-transparent" />
-        <div className="container mx-auto px-6 lg:px-8 py-16 lg:py-24">
-          <span className="pill bg-[#ff6b35]/15 text-[#ff6b35] border border-[#ff6b35]/30 mb-5 inline-flex">
-            The Journey
-          </span>
-          <h1
-            className="font-black uppercase leading-none mb-5"
-            style={{ fontSize: "clamp(2.8rem,8vw,6rem)", letterSpacing: "-0.04em" }}
-          >
-            FROM<br />
-            <span className="text-[#ff6b35]">BROKEN</span> TO BUILT
-          </h1>
-          <p className="text-white/55 max-w-xl text-base leading-relaxed">
-            How a community transformed a neglected court into an active basketball hub.
-            Every step documented, every decision public.
-          </p>
+
+        {/* Hero — split before/after on desktop */}
+        <div className="hidden lg:flex absolute right-0 top-0 h-full w-[48%] pointer-events-none">
+          {/* Before (left half of image strip) */}
+          <div className="relative w-1/2 h-full grayscale brightness-50">
+            <Image
+              src="/images/journey/before/abandoned-court.jpg"
+              alt="Before renovation"
+              fill
+              priority
+              className="object-cover object-center"
+            />
+          </div>
+          {/* After (right half) */}
+          <div className="relative w-1/2 h-full">
+            <Image
+              src="/images/journey/after/hero-court.jpg"
+              alt="After renovation"
+              fill
+              priority
+              className="object-cover object-center"
+            />
+          </div>
+          {/* Overlay fades */}
+          <div className="absolute inset-0 bg-gradient-to-r from-[#0a0a0a] via-[#0a0a0a]/50 to-[#0a0a0a]/5" />
+          <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-[#0a0a0a] to-transparent" />
+          {/* Before/After labels */}
+          <div className="absolute top-6 left-[6%] text-[0.6rem] font-black uppercase tracking-widest text-white/40 bg-black/40 backdrop-blur-sm px-2 py-1 rounded">Before</div>
+          <div className="absolute top-6 right-6 text-[0.6rem] font-black uppercase tracking-widest text-[#ff6b35] bg-black/40 backdrop-blur-sm px-2 py-1 rounded border border-[#ff6b35]/30">After</div>
+          {/* Divider line */}
+          <div className="absolute top-0 left-1/2 h-full w-px bg-white/15" />
+        </div>
+
+        <div className="container mx-auto px-6 lg:px-8 py-16 lg:py-24 relative z-10">
+          <div className="max-w-xl">
+            <span className="pill bg-[#ff6b35]/15 text-[#ff6b35] border border-[#ff6b35]/30 mb-5 inline-flex">
+              The Journey
+            </span>
+            <h1
+              className="font-black uppercase leading-none mb-5"
+              style={{ fontSize: "clamp(2.8rem,8vw,6rem)", letterSpacing: "-0.04em" }}
+            >
+              FROM<br />
+              <span className="text-[#ff6b35]">BROKEN</span> TO BUILT
+            </h1>
+            <p className="text-white/55 max-w-xl text-base leading-relaxed">
+              How a community transformed a neglected court into an active basketball hub.
+              Every step documented, every decision public.
+            </p>
+          </div>
         </div>
       </section>
 

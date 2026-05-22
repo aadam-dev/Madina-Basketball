@@ -1,4 +1,4 @@
-import { Target, Heart, Users, Shield, ArrowRight } from "lucide-react";
+import { Target, Heart, Users, Shield, ArrowRight, Eye, Home, Unlock } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import AnimateIn from "@/components/AnimateIn";
@@ -8,22 +8,43 @@ export default function About() {
     <div className="min-h-screen bg-[#0a0a0a] text-white">
 
       {/* ── Hero ── */}
-      <section className="relative overflow-hidden court-lines border-b border-white/6">
+      <section className="relative overflow-hidden court-lines border-b border-white/6 min-h-[340px] lg:min-h-[420px]">
         <div className="absolute left-0 top-0 h-full w-1 bg-gradient-to-b from-transparent via-[#ff6b35] to-transparent" />
-        <div className="container mx-auto px-6 lg:px-8 py-16 lg:py-24">
-          <span className="pill bg-[#ff6b35]/15 text-[#ff6b35] border border-[#ff6b35]/30 mb-5 inline-flex">
-            About Us
-          </span>
-          <h1
-            className="font-black uppercase leading-none mb-5"
-            style={{ fontSize: "clamp(2.8rem,8vw,6rem)", letterSpacing: "-0.04em" }}
-          >
-            MORE THAN<br />
-            <span className="text-[#ff6b35]">A COURT</span>
-          </h1>
-          <p className="text-white/55 max-w-xl text-base leading-relaxed">
-            A community basketball hub rooted in Libya Quarters, Madina.
-          </p>
+
+        {/* Hero photo — desktop only */}
+        <div className="hidden lg:block absolute right-0 top-0 h-full w-[48%] pointer-events-none">
+          <Image
+            src="/images/events/launch-day/launch-game-action-shot-01.jpg"
+            alt="Game action at Madina Basketball"
+            fill
+            priority
+            className="object-cover object-center"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#0a0a0a] via-[#0a0a0a]/55 to-[#0a0a0a]/10" />
+          <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-[#0a0a0a] to-transparent" />
+          {/* Floating stat */}
+          <div className="absolute bottom-8 right-8 bg-black/60 border border-white/15 backdrop-blur-sm rounded-xl px-4 py-3 text-right">
+            <div className="text-[#ff6b35] font-black text-xl">150+</div>
+            <div className="text-white/50 text-[0.6rem] uppercase tracking-widest font-bold">Players Registered</div>
+          </div>
+        </div>
+
+        <div className="container mx-auto px-6 lg:px-8 py-16 lg:py-24 relative z-10">
+          <div className="max-w-xl">
+            <span className="pill bg-[#ff6b35]/15 text-[#ff6b35] border border-[#ff6b35]/30 mb-5 inline-flex">
+              About Us
+            </span>
+            <h1
+              className="font-black uppercase leading-none mb-5"
+              style={{ fontSize: "clamp(2.8rem,8vw,6rem)", letterSpacing: "-0.04em" }}
+            >
+              MORE THAN<br />
+              <span className="text-[#ff6b35]">A COURT</span>
+            </h1>
+            <p className="text-white/55 max-w-xl text-base leading-relaxed">
+              A community basketball hub rooted in Libya Quarters, Madina.
+            </p>
+          </div>
         </div>
       </section>
 
@@ -167,14 +188,14 @@ export default function About() {
           </AnimateIn>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
             {[
-              { title: "Transparency", text: "Every step, every decision, every cedi is documented and shared. Trust is built through openness." },
-              { title: "Ownership",    text: "This is the community's court. Built, maintained, and enjoyed by the people of Madina." },
-              { title: "Access",       text: "No barriers, no exclusions. The court is open to all." },
-            ].map(({ title, text }, i) => (
+              { icon: Eye,    title: "Transparency", text: "Every step, every decision, every cedi is documented and shared. Trust is built through openness." },
+              { icon: Home,   title: "Ownership",    text: "This is the community's court. Built, maintained, and enjoyed by the people of Madina." },
+              { icon: Unlock, title: "Access",       text: "No barriers, no exclusions. The court is open to all." },
+            ].map(({ icon: Icon, title, text }, i) => (
               <AnimateIn key={title} delay={i * 100}>
                 <div className="text-center bg-[#111] border border-white/8 rounded-2xl p-8 hover:border-[#ff6b35]/25 transition-colors h-full">
                   <div className="w-10 h-10 bg-[#ff6b35]/10 rounded-xl flex items-center justify-center mx-auto mb-4">
-                    <div className="w-3 h-3 rounded-sm bg-[#ff6b35]" />
+                    <Icon className="w-5 h-5 text-[#ff6b35]" />
                   </div>
                   <h3 className="text-white font-black uppercase text-sm tracking-tight mb-3">{title}</h3>
                   <p className="text-white/50 text-sm leading-relaxed">{text}</p>
