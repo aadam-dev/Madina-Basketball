@@ -16,6 +16,7 @@ import { usePathname } from "next/navigation";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import OfflineIndicator from "@/components/OfflineIndicator";
+import FloatingActions from "@/components/FloatingActions";
 import { useOfflineSync } from "@/lib/hooks/useGameAutoSave";
 
 export default function SiteWrapper({ children }: { children: React.ReactNode }) {
@@ -41,6 +42,7 @@ export default function SiteWrapper({ children }: { children: React.ReactNode })
       <Header />
       <main className="min-h-screen">{children}</main>
       <Footer />
+      <FloatingActions />
       <OfflineIndicator />
     </>
   );

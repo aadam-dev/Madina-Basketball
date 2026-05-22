@@ -2,6 +2,7 @@ import { MapPin, Clock, CheckCircle, Ruler, Users } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import AnimateIn from "@/components/AnimateIn";
+import BeforeAfterSlider from "@/components/BeforeAfterSlider";
 
 export default function Court() {
   const features = [
@@ -79,6 +80,23 @@ export default function Court() {
               Book Now
             </Link>
           </div>
+        </div>
+      </section>
+
+      {/* ── Before / After Slider ── */}
+      <section className="py-12 sm:py-16 lg:py-20 bg-[#0d0d0d]">
+        <div className="container mx-auto px-6 lg:px-8 max-w-4xl">
+          <p className="text-[#ff6b35] font-bold text-xs uppercase tracking-[0.25em] mb-3">Transformation</p>
+          <h2 className="text-3xl font-black uppercase tracking-tight mb-3">Then vs Now</h2>
+          <p className="text-white/45 text-sm mb-8">Drag the handle to see what the community built.</p>
+          <AnimateIn>
+            <BeforeAfterSlider
+              before="/images/journey/before/abandoned-court.jpg"
+              after="/images/journey/after/completed-evening.jpg"
+              beforeAlt="Abandoned court before renovation"
+              afterAlt="Renovated Madina Basketball court"
+            />
+          </AnimateIn>
         </div>
       </section>
 

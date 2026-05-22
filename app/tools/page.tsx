@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Trophy, BarChart3, FileText, Clock, Users, ArrowRight, PlayCircle, Download, Clipboard, Smartphone, WifiOff, ChevronRight } from "lucide-react";
+import { Trophy, BarChart3, FileText, Clock, Users, ArrowRight, PlayCircle, Download, Clipboard, Smartphone, WifiOff, ChevronRight, Image as ImageIcon } from "lucide-react";
 
 const tools = [
   {
@@ -50,6 +50,23 @@ const tools = [
       "Professional formatting",
     ],
     useCase: "Ideal for detailed stat tracking and record keeping",
+  },
+  {
+    id: "flyer",
+    name: "Flyer Generator",
+    description: "Design sharp game posters for WhatsApp, Instagram, and print in seconds",
+    icon: ImageIcon,
+    accent: "#ff6b35",
+    href: "/flyer",
+    features: [
+      "4 professional templates: Dark Banger, Split Court, Night Gold, Photo Court",
+      "Rivalry (2 teams) and Top 4 tournament modes",
+      "Live preview across all templates simultaneously",
+      "Countdown badge auto-calculated from game date",
+      "Madina Basketball logo and court photo auto-applied",
+      "Download as 1080×1080 PNG — ready for Instagram and WhatsApp",
+    ],
+    useCase: "Create professional game flyers in under a minute",
   },
 ];
 

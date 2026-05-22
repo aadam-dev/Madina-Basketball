@@ -3,6 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useState, useEffect } from "react";
+import { usePathname } from "next/navigation";
 import { Menu, X, ArrowRight } from "lucide-react";
 
 const NAV_LINKS = [
@@ -19,6 +20,7 @@ const NAV_LINKS = [
 export default function Header() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const pathname = usePathname();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 12);
@@ -73,16 +75,23 @@ export default function Header() {
 
             {/* ── Desktop Nav ── */}
             <div className="hidden lg:flex items-center gap-1">
-              {NAV_LINKS.map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  prefetch={true}
-                  className="px-3 py-2 text-[0.78rem] font-semibold text-white/55 hover:text-white uppercase tracking-wider transition-colors rounded-lg hover:bg-white/6"
-                >
-                  {link.label}
-                </Link>
-              ))}
+              {NAV_LINKS.map((link) => {
+                const active = pathname === link.href;
+                return (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    prefetch={true}
+                    className={`px-3 py-2 text-[0.78rem] font-semibold uppercase tracking-wider transition-colors rounded-lg ${
+                      active
+                        ? "text-[#ff6b35] bg-[#ff6b35]/8"
+                        : "text-white/55 hover:text-white hover:bg-white/6"
+                    }`}
+                  >
+                    {link.label}
+                  </Link>
+                );
+              })}
               <Link
                 href="/contact"
                 prefetch={true}
@@ -133,18 +142,25 @@ export default function Header() {
           {/* Nav links */}
           <nav className="flex-1 overflow-y-auto px-4 py-6">
             <div className="flex flex-col gap-1">
-              {NAV_LINKS.map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  prefetch={true}
-                  onClick={() => setOpen(false)}
-                  className="flex items-center justify-between px-4 h-[52px] text-base font-bold text-white/65 hover:text-white hover:bg-white/6 uppercase tracking-wider transition-colors rounded-xl group"
-                >
-                  {link.label}
-                  <ArrowRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity text-[#ff6b35]" />
-                </Link>
-              ))}
+              {NAV_LINKS.map((link) => {
+                const active = pathname === link.href;
+                return (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    prefetch={true}
+                    onClick={() => setOpen(false)}
+                    className={`flex items-center justify-between px-4 h-[52px] text-base font-bold uppercase tracking-wider transition-colors rounded-xl group ${
+                      active
+                        ? "text-[#ff6b35] bg-[#ff6b35]/8"
+                        : "text-white/65 hover:text-white hover:bg-white/6"
+                    }`}
+                  >
+                    {link.label}
+                    <ArrowRight className={`w-4 h-4 transition-opacity text-[#ff6b35] ${active ? "opacity-100" : "opacity-0 group-hover:opacity-100"}`} />
+                  </Link>
+                );
+              })}
             </div>
 
             {/* Contact CTA */}

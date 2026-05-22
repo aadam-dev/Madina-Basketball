@@ -9,6 +9,7 @@ import { supabase } from "@/lib/supabase";
 import EventCard from "@/components/EventCard";
 import HeroBackground from "@/components/HeroBackground";
 import AnimateIn from "@/components/AnimateIn";
+import CountUp from "@/components/CountUp";
 
 /* ─── Data fetchers ───────────────────────────────────────────────── */
 
@@ -79,12 +80,12 @@ function announcementColors(type: string) {
 
 /* ─── Highlight clips for the reel ───────────────────────────────── */
 const CLIPS = [
-  { src: "/videos/highlights/compressed/launch-game-highlights-compressed.mp4",    label: "Launch Game Highlights" },
-  { src: "/videos/highlights/compressed/nadir-killer-3pointer-compressed.mp4",     label: "Nadir's 3-Pointer" },
-  { src: "/videos/highlights/compressed/brandon-coast-to-coast3p-compressed.mp4",  label: "Brandon Coast-to-Coast" },
-  { src: "/videos/highlights/compressed/hafiz-putback-compressed.mp4",             label: "Hafiz Put-Back" },
-  { src: "/videos/highlights/compressed/mustafa-drive-compressed.mp4",             label: "Mustafa's Drive" },
-  { src: "/videos/highlights/compressed/launch-aerial-view-compressed.mp4",        label: "Aerial View" },
+  "/videos/highlights/compressed/launch-game-highlights-compressed.mp4",
+  "/videos/highlights/compressed/t-shoots-3-pointer-compressed.mp4",      // swap: nadir stub is 0B
+  "/videos/highlights/compressed/pickup-games-highlights-compressed.mp4",  // swap: brandon stub is 0B
+  "/videos/highlights/compressed/training-sessions-highlights-compressed.mp4", // swap: hafiz stub is 0B
+  "/videos/highlights/compressed/mustafa-drive-compressed.mp4",
+  "/videos/highlights/compressed/launch-aerial-view-compressed.mp4",
 ];
 
 /* ─── Page ────────────────────────────────────────────────────────── */
@@ -189,16 +190,16 @@ export default async function Home() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-3 divide-x divide-white/10">
             {[
-              { value: "150+",    label: "Active Players",  sub: "and growing" },
-              { value: "₵44.7K",  label: "Community Raised", sub: "100% transparent" },
-              { value: "12+",     label: "Events Hosted",   sub: "since June 2025" },
-            ].map(({ value, label, sub }) => (
+              { prefix: "",  to: 150, suffix: "+",    label: "Active Players",   sub: "and growing" },
+              { prefix: "₵", to: 44.7, suffix: "K",  label: "Community Raised", sub: "100% transparent", decimals: 1 },
+              { prefix: "",  to: 12, suffix: "+",     label: "Events Hosted",    sub: "since June 2025" },
+            ].map(({ prefix, to, suffix, label, sub, decimals }) => (
               <div key={label} className="py-6 lg:py-10 px-2 sm:px-4 text-center group cursor-default">
                 <div
                   className="font-black leading-none text-white group-hover:text-[#ff6b35] transition-colors duration-300"
                   style={{ fontSize: "clamp(1.5rem, 5vw, 5rem)", letterSpacing: "-0.05em" }}
                 >
-                  {value}
+                  <CountUp to={to} prefix={prefix} suffix={suffix} decimals={decimals ?? 0} />
                 </div>
                 <div className="text-white/50 font-bold uppercase text-[0.55rem] sm:text-[0.62rem] tracking-widest mt-2">{label}</div>
                 <div className="text-white/25 text-[0.6rem] sm:text-xs mt-1 hidden sm:block">{sub}</div>
@@ -228,7 +229,7 @@ export default async function Home() {
 
           {/* 6-clip responsive grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-            {CLIPS.map(({ src, label }, i) => (
+            {CLIPS.map((src, i) => (
               <div
                 key={src}
                 className={`video-card rounded-xl relative overflow-hidden aspect-video ${i === 0 ? "sm:col-span-2 lg:col-span-1 lg:row-span-2 lg:aspect-[4/5]" : ""}`}
@@ -239,7 +240,6 @@ export default async function Home() {
                 >
                   <source src={src} type="video/mp4" />
                 </video>
-                <div className="video-label">{label}</div>
               </div>
             ))}
           </div>

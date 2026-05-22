@@ -1,150 +1,188 @@
 import Link from "next/link";
-import { Facebook, Instagram, Mail, MapPin, Phone } from "lucide-react";
+import Image from "next/image";
+import { Facebook, Instagram, Mail, MapPin, MessageCircle, ArrowUpRight } from "lucide-react";
+
+const LINKS_COURT = [
+  { href: "/about",        label: "About" },
+  { href: "/court",        label: "The Court" },
+  { href: "/journey",      label: "Our Journey" },
+  { href: "/training",     label: "Training" },
+  { href: "/teams",        label: "Our Teams" },
+  { href: "/media",        label: "Media" },
+];
+
+const LINKS_GET_INVOLVED = [
+  { href: "/register",     label: "Register to Play" },
+  { href: "/book",         label: "Book the Court" },
+  { href: "/partners",     label: "Partners & Sponsors" },
+  { href: "/transparency", label: "Transparency" },
+  { href: "/contact",      label: "Contact Us" },
+];
 
 export default function Footer() {
   return (
-    <footer className="bg-gray-900 text-gray-300">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-          {/* About */}
-          <div>
-            <h3 className="text-white font-bold text-lg mb-4">Madina Basketball</h3>
-            <p className="text-sm leading-relaxed">
-              A community-built basketball court in Libya Quarters, Madina (Accra, Ghana).
-              Built by the community, for the community.
+    <footer className="bg-[#080808] border-t border-white/8 text-white">
+
+      {/* ── Main grid ── */}
+      <div className="container mx-auto px-6 lg:px-8 py-14 lg:py-20">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-8">
+
+          {/* Brand */}
+          <div className="lg:col-span-1">
+            <Link href="/" className="flex items-center gap-3 group mb-5 w-fit">
+              <Image
+                src="/images/logo/madina-basketball-logo.png?v=3"
+                alt="Madina Basketball"
+                width={44}
+                height={44}
+                className="object-contain transition-transform duration-300 group-hover:scale-110"
+              />
+              <div className="leading-tight">
+                <div className="font-black text-white text-sm uppercase tracking-tight">
+                  Madina <span className="text-[#ff6b35]">Basketball</span>
+                </div>
+                <div className="text-[0.6rem] text-white/30 font-semibold tracking-widest uppercase">
+                  Libya Quarters · Accra
+                </div>
+              </div>
+            </Link>
+            <p className="text-white/40 text-sm leading-relaxed mb-6">
+              A community-built basketball court in Madina, Accra. Built by the people. Run by the people.
             </p>
+            {/* Social */}
+            <div className="flex gap-3">
+              <Link
+                href="https://facebook.com/madinabasketball"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Facebook"
+                className="w-9 h-9 bg-white/6 border border-white/10 rounded-lg flex items-center justify-center hover:bg-[#1877f2]/20 hover:border-[#1877f2]/40 transition-colors"
+              >
+                <Facebook size={15} className="text-white/60" />
+              </Link>
+              <Link
+                href="https://instagram.com/madinabasketball"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Instagram"
+                className="w-9 h-9 bg-white/6 border border-white/10 rounded-lg flex items-center justify-center hover:bg-[#e1306c]/20 hover:border-[#e1306c]/40 transition-colors"
+              >
+                <Instagram size={15} className="text-white/60" />
+              </Link>
+              <Link
+                href="https://wa.me/233559602056"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="WhatsApp"
+                className="w-9 h-9 bg-white/6 border border-white/10 rounded-lg flex items-center justify-center hover:bg-[#25d366]/20 hover:border-[#25d366]/40 transition-colors"
+              >
+                <MessageCircle size={15} className="text-white/60" />
+              </Link>
+            </div>
           </div>
 
-          {/* Quick Links */}
+          {/* Court */}
           <div>
-            <h3 className="text-white font-bold text-lg mb-4">Quick Links</h3>
-            <ul className="space-y-2 text-sm">
-              <li>
-                <Link href="/about" prefetch={true} className="hover:text-primary transition-colors">
-                  About the Project
-                </Link>
-              </li>
-              <li>
-                <Link href="/journey" prefetch={true} className="hover:text-primary transition-colors">
-                  Our Story
-                </Link>
-              </li>
-              <li>
-                <Link href="/media" prefetch={true} className="hover:text-primary transition-colors">
-                  Media & Gallery
-                </Link>
-              </li>
-              <li>
-                <Link href="/transparency" prefetch={true} className="hover:text-primary transition-colors">
-                  Transparency
-                </Link>
-              </li>
-              <li>
-                <Link href="/tools" prefetch={true} className="hover:text-primary transition-colors">
-                  Game Tools
-                </Link>
-              </li>
-              <li>
-                <Link href="/register" prefetch={true} className="hover:text-primary transition-colors">
-                  Register to Play
-                </Link>
-              </li>
-              <li>
-                <Link href="/book" prefetch={true} className="hover:text-primary transition-colors">
-                  Book the Court
-                </Link>
-              </li>
+            <h4 className="text-white font-black text-xs uppercase tracking-[0.2em] mb-5">The Court</h4>
+            <ul className="space-y-2.5">
+              {LINKS_COURT.map(({ href, label }) => (
+                <li key={href}>
+                  <Link
+                    href={href}
+                    prefetch={true}
+                    className="text-white/40 text-sm hover:text-white transition-colors"
+                  >
+                    {label}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 
-          {/* Legal */}
+          {/* Get Involved */}
           <div>
-            <h3 className="text-white font-bold text-lg mb-4">Legal</h3>
-            <ul className="space-y-2 text-sm">
-              <li>
-                <Link href="/privacy" prefetch={true} className="hover:text-primary transition-colors">
-                  Privacy Policy
-                </Link>
-              </li>
-              <li>
-                <Link href="/terms" prefetch={true} className="hover:text-primary transition-colors">
-                  Terms of Service
-                </Link>
-              </li>
+            <h4 className="text-white font-black text-xs uppercase tracking-[0.2em] mb-5">Get Involved</h4>
+            <ul className="space-y-2.5">
+              {LINKS_GET_INVOLVED.map(({ href, label }) => (
+                <li key={href}>
+                  <Link
+                    href={href}
+                    prefetch={true}
+                    className="text-white/40 text-sm hover:text-white transition-colors"
+                  >
+                    {label}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 
           {/* Contact */}
           <div>
-            <h3 className="text-white font-bold text-lg mb-4">Contact</h3>
-            <ul className="space-y-3 text-sm">
-              <li className="flex items-center space-x-2">
-                <MapPin size={16} className="text-primary" />
-                <span>Libya Quarters, Madina, Accra, Ghana</span>
+            <h4 className="text-white font-black text-xs uppercase tracking-[0.2em] mb-5">Find Us</h4>
+            <ul className="space-y-4 text-sm">
+              <li className="flex items-start gap-3">
+                <MapPin size={15} className="text-[#ff6b35] flex-shrink-0 mt-0.5" />
+                <span className="text-white/40 leading-snug">
+                  Libya Quarters, Madina<br />Accra, Ghana
+                </span>
               </li>
               <li>
                 <Link
                   href="https://wa.me/233559602056"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center space-x-2 hover:text-primary transition-colors"
+                  className="flex items-center gap-3 text-white/40 hover:text-[#25d366] transition-colors group"
                 >
-                  <Phone size={16} className="text-primary" />
-                  <span>WhatsApp</span>
+                  <MessageCircle size={15} className="text-[#25d366] flex-shrink-0" />
+                  <span>WhatsApp Us</span>
+                  <ArrowUpRight size={12} className="opacity-0 group-hover:opacity-100 transition-opacity" />
                 </Link>
               </li>
               <li>
                 <Link
                   href="mailto:themadinacourt@gmail.com"
-                  className="flex items-center space-x-2 hover:text-primary transition-colors"
+                  className="flex items-center gap-3 text-white/40 hover:text-[#ff6b35] transition-colors group"
                 >
-                  <Mail size={16} className="text-primary" />
-                  <span>themadinacourt@gmail.com</span>
+                  <Mail size={15} className="text-[#ff6b35] flex-shrink-0" />
+                  <span className="text-xs">themadinacourt@gmail.com</span>
+                  <ArrowUpRight size={12} className="opacity-0 group-hover:opacity-100 transition-opacity" />
                 </Link>
               </li>
             </ul>
-            <div className="flex space-x-4 mt-4">
-              <Link
-                href="https://facebook.com/madinabasketball"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="p-2 bg-gray-800 rounded-full hover:bg-primary transition-colors"
-                aria-label="Facebook"
-              >
-                <Facebook size={18} />
-              </Link>
-              <Link
-                href="https://instagram.com/madinabasketball"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="p-2 bg-gray-800 rounded-full hover:bg-primary transition-colors"
-                aria-label="Instagram"
-              >
-                <Instagram size={18} />
-              </Link>
-            </div>
+
+            {/* CTA */}
+            <Link
+              href="/register"
+              className="mt-6 flex items-center justify-center gap-2 w-full py-3 bg-[#ff6b35] text-white text-xs font-bold rounded-xl hover:bg-[#e55a2b] transition-colors uppercase tracking-wider"
+            >
+              Register to Play
+            </Link>
           </div>
         </div>
+      </div>
 
-        <div className="border-t border-gray-800 mt-8 pt-8">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-sm">
-            <p className="text-gray-400">
-              © {new Date().getFullYear()} Madina Basketball. Built with transparency and community spirit.
-            </p>
-            <div className="text-gray-400">
-              <span className="mr-2">Website by</span>
+      {/* ── Bottom bar ── */}
+      <div className="border-t border-white/6">
+        <div className="container mx-auto px-6 lg:px-8 py-5 flex flex-col sm:flex-row items-center justify-between gap-3">
+          <p className="text-white/25 text-xs">
+            © {new Date().getFullYear()} Madina Basketball. Community-built and transparency-first.
+          </p>
+          <div className="flex items-center gap-4 text-white/25 text-xs">
+            <Link href="/privacy" className="hover:text-white/50 transition-colors">Privacy</Link>
+            <Link href="/terms"   className="hover:text-white/50 transition-colors">Terms</Link>
+            <span>
+              Site by{" "}
               <a
-                href="mailto:aadamsays@gmail.com?subject=Madina Basketball Website Inquiry&body=Hi Adam,%0A%0AI'm reaching out regarding the Madina Basketball website.%0A%0A[Your message here]%0A%0ABest regards"
-                className="text-primary hover:text-primary-dark transition-colors font-semibold"
-                rel="author"
+                href="mailto:aadamsays@gmail.com"
+                className="text-[#ff6b35]/60 hover:text-[#ff6b35] transition-colors font-semibold"
               >
                 Adam
               </a>
-            </div>
+            </span>
           </div>
         </div>
       </div>
     </footer>
   );
 }
-

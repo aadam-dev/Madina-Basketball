@@ -11,58 +11,69 @@ const HIGHLIGHT_CLIPS = [
     src: "/videos/highlights/compressed/launch-game-highlights-compressed.mp4",
     label: "Launch Game Highlights",
     tag: "Launch Day",
+    poster: "/images/events/launch-day/launch-game-action-shot-01.jpg",
     featured: true,
   },
   {
     src: "/videos/highlights/compressed/nadir-killer-3pointer-compressed.mp4",
     label: "Nadir's Killer 3-Pointer",
     tag: "Top Play",
+    poster: "/images/events/launch-day/aziz-shooting.jpg",
   },
   {
     src: "/videos/highlights/compressed/brandon-coast-to-coast3p-compressed.mp4",
     label: "Brandon Coast-to-Coast",
     tag: "Top Play",
+    poster: "/images/events/launch-day/kawukudi-fast-break.jpg",
   },
   {
     src: "/videos/highlights/compressed/hafiz-putback-compressed.mp4",
     label: "Hafiz Put-Back Slam",
     tag: "Top Play",
+    poster: "/images/events/launch-day/rebound-hustle.jpg",
   },
   {
     src: "/videos/highlights/compressed/mustafa-drive-compressed.mp4",
     label: "Mustafa's Drive & Finish",
     tag: "Top Play",
+    poster: "/images/events/launch-day/hakeem-with-the-ball.jpg",
   },
   {
     src: "/videos/highlights/compressed/t-shoots-3-pointer-compressed.mp4",
     label: "T Shoots the 3",
     tag: "Top Play",
+    poster: "/images/events/launch-day/screen-set-center.jpg",
   },
   {
     src: "/videos/highlights/compressed/launch-aerial-view-compressed.mp4",
     label: "Court Aerial View",
     tag: "Launch Day",
+    poster: "/images/journey/after/hero-court.jpg",
   },
   {
     src: "/videos/highlights/compressed/night-of-legends-highlights-compressed.mp4",
     label: "Night of Legends — Full Highlights",
     tag: "Event",
+    poster: "/images/events/launch-day/courtsidemadinafans.jpg",
     featured: true,
   },
   {
     src: "/videos/highlights/compressed/night-of-legends-warmup-compressed.mp4",
     label: "Night of Legends — Warmup",
     tag: "Event",
+    poster: "/images/events/launch-day/player-portrait-01.jpg",
   },
   {
     src: "/videos/highlights/compressed/pickup-games-highlights-compressed.mp4",
     label: "Pickup Games Reel",
     tag: "Pickup",
+    poster: "/images/events/launch-day/mad-guard1.jpg",
   },
   {
     src: "/videos/highlights/compressed/training-sessions-highlights-compressed.mp4",
     label: "Training Sessions Reel",
     tag: "Training",
+    poster: "/images/events/launch-day/rebound-hustle.jpg",
   },
 ];
 
@@ -179,7 +190,7 @@ function Lightbox({
 }
 
 /* ─── VideoCard ──────────────────────────────────────────────────────────── */
-function VideoCard({ src, label, tag, big = false }: { src: string; label: string; tag?: string; big?: boolean }) {
+function VideoCard({ src, label, tag, poster, big = false }: { src: string; label: string; tag?: string; poster?: string; big?: boolean }) {
   const ref = useRef<HTMLVideoElement>(null);
   const [playing, setPlaying] = useState(false);
 
@@ -194,8 +205,10 @@ function VideoCard({ src, label, tag, big = false }: { src: string; label: strin
       <video
         ref={ref}
         src={src}
+        poster={poster}
         className="w-full h-full object-cover"
         playsInline
+        preload="metadata"
         loop
         onClick={toggle}
       />
@@ -208,9 +221,6 @@ function VideoCard({ src, label, tag, big = false }: { src: string; label: strin
           <Play size={22} className="text-white ml-1" fill="white" />
         </div>
       </div>
-      {tag && (
-        <div className="video-label">{tag}</div>
-      )}
       <div className="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-black/80 to-transparent">
         <p className="text-white text-sm font-semibold leading-tight">{label}</p>
       </div>
@@ -305,14 +315,14 @@ export default function MediaPage() {
             {/* Featured (first 2 big clips) */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4">
               {HIGHLIGHT_CLIPS.filter(c => c.featured).map((clip, i) => (
-                <VideoCard key={i} src={clip.src} label={clip.label} tag={clip.tag} big />
+                <VideoCard key={i} src={clip.src} label={clip.label} tag={clip.tag} poster={clip.poster} big />
               ))}
             </div>
 
             {/* Rest in 3-col grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {HIGHLIGHT_CLIPS.filter(c => !c.featured).map((clip, i) => (
-                <VideoCard key={i} src={clip.src} label={clip.label} tag={clip.tag} />
+                <VideoCard key={i} src={clip.src} label={clip.label} tag={clip.tag} poster={clip.poster} />
               ))}
             </div>
           </div>
