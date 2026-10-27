@@ -2,7 +2,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getSession } from "@/lib/auth";
 import { supabaseAdmin } from "@/lib/supabase-admin";
-import { FilterLinks, SetupNotice } from "@/components/admin/IntakeBits";
+import { EmptyRow, FilterLinks, PageHeader, SetupNotice, StatusBadge, nameLink, tableHead, tableWrap, td, th, tr } from "@/components/admin/IntakeBits";
 
 const ROLES = [
   { value: "volunteer", label: "Volunteer" },
@@ -37,49 +37,43 @@ export default async function JoinApplicationsPage({
 
   return (
     <div>
-      <h1 className="mb-2 text-3xl font-bold text-gray-900">Join applications</h1>
-      <p className="mb-6 text-gray-600">Volunteers, coaches, and management. Separate from player registrations.</p>
-      <div className="mb-3">
-        <FilterLinks base="/admin/join" current={searchParams.role} options={ROLES} param="role" />
-      </div>
+      <PageHeader
+        title="Join applications"
+        description="Volunteers, coaches, and management. Separate from player registrations."
+      />
+      <FilterLinks base="/admin/join" current={searchParams.role} options={ROLES} param="role" />
       <FilterLinks
         base={searchParams.role ? `/admin/join?role=${searchParams.role}` : "/admin/join"}
         current={searchParams.status}
         options={STATUSES}
       />
       <SetupNotice message={error?.message} />
-      <div className="overflow-x-auto rounded-lg bg-white shadow">
+      <div className={`${tableWrap} overflow-x-auto`}>
         <table className="min-w-full text-sm">
-          <thead className="bg-gray-50 text-left text-gray-500">
+          <thead className={tableHead}>
             <tr>
-              <th className="px-4 py-3">Name</th>
-              <th className="px-4 py-3">Role</th>
-              <th className="px-4 py-3">Phone</th>
-              <th className="px-4 py-3">Status</th>
-              <th className="px-4 py-3">Submitted</th>
+              <th className={th}>Name</th>
+              <th className={th}>Role</th>
+              <th className={th}>Phone</th>
+              <th className={th}>Submitted</th>
+              <th className={th}>Status</th>
             </tr>
           </thead>
           <tbody>
             {(data || []).map((row) => (
-              <tr key={row.id} className="border-t">
-                <td className="px-4 py-3">
-                  <Link href={`/admin/join/${row.id}`} className="font-medium text-primary hover:underline">
+              <tr key={row.id} className={tr}>
+                <td className={td}>
+                  <Link href={`/admin/join/${row.id}`} className={nameLink()}>
                     {row.full_name}
                   </Link>
                 </td>
-                <td className="px-4 py-3 capitalize">{row.role}</td>
-                <td className="px-4 py-3">{row.phone}</td>
-                <td className="px-4 py-3">{row.status}</td>
-                <td className="px-4 py-3">{new Date(row.created_at).toLocaleDateString()}</td>
+                <td className={`${td} capitalize`}>{row.role}</td>
+                <td className={td}>{row.phone}</td>
+                <td className={`${td} whitespace-nowrap text-slate-500`}>{new Date(row.created_at).toLocaleString()}</td>
+                <td className={td}><StatusBadge status={row.status} /></td>
               </tr>
             ))}
-            {!error && (data || []).length === 0 ? (
-              <tr>
-                <td className="px-4 py-8 text-gray-500" colSpan={5}>
-                  No applications yet.
-                </td>
-              </tr>
-            ) : null}
+            {!error && (data || []).length === 0 ? <EmptyRow cols={5}>No applications yet.</EmptyRow> : null}
           </tbody>
         </table>
       </div>

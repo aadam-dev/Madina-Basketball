@@ -25,10 +25,10 @@ export default async function RegistrationDetail({ params }: { params: { id: str
 
   return (
     <div className="max-w-3xl space-y-6">
-      <Link href="/admin/registrations" className="text-sm text-primary hover:underline">Back to registrations</Link>
+      <Link href="/admin/registrations" className="text-sm font-medium text-slate-500 hover:text-slate-950">Back to registrations</Link>
       <div>
-        <h1 className="text-3xl font-bold text-gray-900">{row.full_name}</h1>
-        <p className="text-gray-500">{row.status}{age !== null ? ` · age ${age}` : ""}</p>
+        <h1 className="text-2xl font-semibold tracking-tight text-slate-950">{row.full_name}</h1>
+        <p className="mt-1 text-sm capitalize text-slate-500">{row.status}{age !== null ? ` · age ${age}` : ""}</p>
         {(count || 0) > 0 ? (
           <p className="mt-2 text-sm text-amber-800">This phone matches another registration. A parent may have signed up more than one player.</p>
         ) : null}
@@ -57,7 +57,7 @@ export default async function RegistrationDetail({ params }: { params: { id: str
           created_at: row.created_at,
         }}
       />
-      <dl className="bg-white rounded-lg shadow px-6">
+      <dl className="grid gap-3 rounded-2xl border border-slate-200 bg-white p-4 sm:grid-cols-2 sm:p-5">
         <Fact label="Phone" value={row.phone} />
         <Fact label="Email" value={row.email} />
         <Fact label="Date of birth" value={row.date_of_birth} />

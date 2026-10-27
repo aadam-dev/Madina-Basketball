@@ -78,21 +78,32 @@ export default function AdminLogin() {
 
   if (checking) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-secondary to-primary flex items-center justify-center">
-        <div className="text-white">Loading...</div>
+      <div className="flex min-h-screen items-center justify-center bg-[#121418] text-sm text-white/70">
+        Loading…
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-secondary to-primary flex items-center justify-center p-4">
-      <div className="max-w-md w-full bg-white rounded-xl shadow-2xl p-8">
-        <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-primary rounded-lg mb-4">
-            <Lock className="w-8 h-8 text-white" />
+    <div className="grid min-h-screen bg-[#f4f5f7] lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]">
+      <div className="hidden flex-col justify-between bg-[#121418] px-12 py-12 text-white lg:flex">
+        <div>
+          <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-primary">Madina Basketball</p>
+          <h1 className="mt-6 max-w-sm text-4xl font-semibold tracking-tight">Backoffice</h1>
+          <p className="mt-4 max-w-sm text-sm leading-relaxed text-white/60">
+            Registrations, bookings, messages, and the court calendar in one place.
+          </p>
+        </div>
+        <p className="text-sm text-white/40">madinabasketball.com</p>
+      </div>
+      <div className="flex items-center justify-center px-4 py-12">
+      <div className="w-full max-w-md rounded-3xl border border-slate-200 bg-white p-8 shadow-[0_1px_2px_rgba(15,23,42,0.04)]">
+        <div className="mb-8">
+          <div className="mb-4 inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-slate-950">
+            <Lock className="h-5 w-5 text-white" />
           </div>
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Admin Login</h1>
-          <p className="text-gray-600">Access the Madina Basketball admin portal</p>
+          <h1 className="text-2xl font-semibold tracking-tight text-slate-950">Sign in</h1>
+          <p className="mt-1 text-sm text-slate-500">Use your admin name. The domain is already filled.</p>
         </div>
 
         {error && (
@@ -151,7 +162,7 @@ export default function AdminLogin() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-primary text-white font-semibold py-3 rounded-lg hover:bg-primary-dark transition-all transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
+            className="flex w-full items-center justify-center gap-2 rounded-full bg-slate-950 py-3 text-sm font-medium text-white hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-50"
           >
             {loading ? (
               <span>Logging in...</span>
@@ -167,11 +178,12 @@ export default function AdminLogin() {
         <div className="mt-6 text-center">
           <Link
             href="/"
-            className="text-sm text-gray-600 hover:text-primary transition-colors"
+            className="text-sm text-slate-500 hover:text-slate-950"
           >
             ← Back to website
           </Link>
         </div>
+      </div>
       </div>
     </div>
   );

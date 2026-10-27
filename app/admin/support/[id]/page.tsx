@@ -14,9 +14,9 @@ export default async function SupportDetail({ params }: { params: { id: string }
 
   return (
     <div className="max-w-3xl space-y-6">
-      <Link href="/admin/support" className="text-sm text-primary hover:underline">Back to support</Link>
-      <h1 className="text-3xl font-bold text-gray-900">{row.name}</h1>
-      <dl className="bg-white rounded-lg shadow px-6">
+      <Link href="/admin/support" className="text-sm font-medium text-slate-500 hover:text-slate-950">Back to support</Link>
+      <h1 className="text-2xl font-semibold tracking-tight text-slate-950">{row.name}</h1>
+      <dl className="grid gap-3 rounded-2xl border border-slate-200 bg-white p-4 sm:grid-cols-2 sm:p-5">
         <Fact label="Organisation" value={row.organisation} />
         <Fact label="Phone" value={row.phone} />
         <Fact label="Email" value={row.email} />

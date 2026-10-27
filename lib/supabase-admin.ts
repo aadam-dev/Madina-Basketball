@@ -1,42 +1,56 @@
 /**
- * Supabase Admin Client Configuration
- * 
- * Server-side Supabase client with service role key.
- * This client BYPASSES Row Level Security (RLS) policies.
- * 
- * SECURITY WARNING:
- * - Only use in API routes (server-side)
- * - Never expose this client to the browser
- * - Never commit the service role key to version control
- * - Always validate user permissions before using this client
+ * Server-side Supabase client with the service role key.
+ * Bypasses RLS. Never import this from a client component.
  */
 
-import { createClient } from '@supabase/supabase-js';
+import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
+let client: SupabaseClient | null = null;
 
-if (!supabaseUrl || !supabaseServiceRoleKey) {
-  throw new Error('Missing Supabase admin environment variables');
+async function adminFetch(input: RequestInfo | URL, init?: RequestInit) {
+  try {
+    return await fetch(input, init);
+  } catch (error) {
+    const cause =
+      error instanceof Error && error.cause instanceof Error ? error.cause.message : "";
+    const host = (() => {
+      try {
+        const raw = typeof input === "string" ? input : input instanceof URL ? input.href : input.url;
+        return new URL(raw).host;
+      } catch {
+        return "Supabase";
+      }
+    })();
+    throw new Error(
+      cause
+        ? `Could not reach Supabase at ${host}. ${cause}`
+        : `Could not reach Supabase at ${host}.`
+    );
+  }
 }
 
-/**
- * Admin Supabase client
- * 
- * Use this for:
- * - Admin API routes (after authentication check)
- * - Operations that need to bypass RLS
- * - Writing data that requires elevated permissions
- * 
- * Security requirements:
- * - Always call requireAuth() before using this client
- * - Validate all inputs before database operations
- * - Never use in client components or browser code
- */
-export const supabaseAdmin = createClient(supabaseUrl, supabaseServiceRoleKey, {
-  auth: {
-    autoRefreshToken: false, // No token refresh needed for service role
-    persistSession: false, // No session persistence needed
+export function getSupabaseAdmin() {
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  if (!supabaseUrl || !supabaseServiceRoleKey) {
+    throw new Error("Missing Supabase admin environment variables");
+  }
+  if (!client) {
+    client = createClient(supabaseUrl, supabaseServiceRoleKey, {
+      auth: {
+        autoRefreshToken: false,
+        persistSession: false,
+      },
+      global: { fetch: adminFetch },
+    });
+  }
+  return client;
+}
+
+export const supabaseAdmin = new Proxy({} as SupabaseClient, {
+  get(_target, prop, receiver) {
+    const real = getSupabaseAdmin();
+    const value = Reflect.get(real, prop, receiver);
+    return typeof value === "function" ? value.bind(real) : value;
   },
 });
-

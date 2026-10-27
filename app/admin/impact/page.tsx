@@ -2,16 +2,17 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getSession } from "@/lib/auth";
 import { loadImpact } from "@/lib/impact";
+import { PageHeader } from "@/components/admin/IntakeBits";
 
 function Block({ title, rows }: { title: string; rows: [string, string | number][] }) {
   return (
-    <section className="bg-white rounded-lg shadow p-6">
-      <h2 className="text-lg font-bold text-gray-900 mb-4">{title}</h2>
+    <section className="rounded-2xl border border-slate-200 bg-white p-5 sm:p-6">
+      <h2 className="mb-4 text-sm font-semibold text-slate-950">{title}</h2>
       <dl className="grid gap-3 sm:grid-cols-2">
         {rows.map(([label, value]) => (
-          <div key={label}>
-            <dt className="text-xs uppercase tracking-wide text-gray-500">{label}</dt>
-            <dd className="text-xl font-semibold text-gray-900">{value}</dd>
+          <div key={label} className="rounded-xl bg-slate-50 px-4 py-3">
+            <dt className="text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-400">{label}</dt>
+            <dd className="mt-1 text-lg font-semibold tracking-tight text-slate-950">{value}</dd>
           </div>
         ))}
       </dl>
@@ -30,19 +31,19 @@ export default async function ImpactPage() {
   const report = await loadImpact();
 
   return (
-    <div className="space-y-6 max-w-5xl">
-      <div className="flex flex-wrap items-end justify-between gap-4">
-        <div>
-          <h1 className="text-3xl font-bold text-gray-900">Impact</h1>
-          <p className="text-gray-600">Counts you can hand to a partner. No names, phones, or medical notes.</p>
-        </div>
-        <Link href="/api/admin/impact" className="rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white">
-          Download CSV
-        </Link>
-      </div>
+    <div className="max-w-5xl space-y-5">
+      <PageHeader
+        title="Impact"
+        description="Counts you can hand to a partner. No names, phones, or medical notes."
+        aside={
+          <Link href="/api/admin/impact" className="rounded-full bg-slate-950 px-4 py-2 text-sm font-medium text-white hover:bg-slate-800">
+            Download CSV
+          </Link>
+        }
+      />
       {report.error ? (
-        <p className="rounded-lg bg-amber-50 border border-amber-200 px-4 py-3 text-sm text-amber-900">
-          Some tables are missing. Run scripts/create-operations-tables.sql in Supabase. {report.error}
+        <p className="rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-950">
+          Some tables could not be read. {report.error}
         </p>
       ) : null}
       <Block

@@ -1,6 +1,6 @@
 import { redirect } from 'next/navigation';
 import { getSession } from '@/lib/auth';
-import { Calendar, FileText, Users, Trophy, Plus, Activity } from 'lucide-react';
+import { Calendar, Trophy } from 'lucide-react';
 import Link from 'next/link';
 import { supabaseAdmin } from '@/lib/supabase-admin';
 
@@ -47,226 +47,124 @@ export default async function AdminDashboard() {
     .order('game_date', { ascending: false })
     .limit(5);
 
+  const queue = [
+    { href: "/admin/registrations", label: "New registrations", value: registrationsCount },
+    { href: "/admin/join", label: "Join applications", value: joinCount },
+    { href: "/admin/bookings", label: "Booking requests", value: bookingsCount },
+    { href: "/admin/messages", label: "Open messages", value: messagesCount },
+    { href: "/admin/support", label: "New support offers", value: supportCount },
+  ];
+
   return (
-    <div>
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">Dashboard</h1>
-        <p className="text-gray-600">Welcome to the Madina Basketball admin portal</p>
+    <div className="space-y-8">
+      <div>
+        <h1 className="text-2xl font-semibold tracking-tight text-slate-950 sm:text-[1.75rem]">Dashboard</h1>
+        <p className="mt-1.5 text-sm text-slate-500">What needs a look, then the court calendar.</p>
       </div>
 
-      {/* Stats Grid - Prioritizing Activities */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-        <div className="bg-gradient-to-br from-primary to-primary-dark rounded-lg shadow-lg p-6 text-white">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm text-white/80 mb-1">Total Events</p>
-              <p className="text-4xl font-bold">{eventsCount}</p>
-              <Link href="/admin/events" className="text-xs text-white/90 hover:underline mt-2 inline-block">
-                Manage Events →
-              </Link>
-            </div>
-            <Calendar className="w-12 h-12 text-white/30" />
-          </div>
-        </div>
-
-        <div className="bg-gradient-to-br from-secondary to-secondary/80 rounded-lg shadow-lg p-6 text-white">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm text-white/80 mb-1">Total Games</p>
-              <p className="text-4xl font-bold">{gamesCount}</p>
-              <Link href="/admin/games" className="text-xs text-white/90 hover:underline mt-2 inline-block">
-                View Games →
-              </Link>
-            </div>
-            <Trophy className="w-12 h-12 text-white/30" />
-          </div>
-        </div>
-
-        <div className="bg-white rounded-lg shadow p-6">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm text-gray-600 mb-1">Team Members</p>
-              <p className="text-3xl font-bold text-gray-900">{teamCount}</p>
-            </div>
-            <Users className="w-12 h-12 text-gray-300" />
-          </div>
-        </div>
-
-        <div className="bg-white rounded-lg shadow p-6">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm text-gray-600 mb-1">Site Activity</p>
-              <p className="text-3xl font-bold text-green-600">
-                {upcomingEvents?.length || 0}
-              </p>
-              <p className="text-xs text-gray-500 mt-1">Upcoming</p>
-            </div>
-            <Activity className="w-12 h-12 text-gray-300" />
-          </div>
-        </div>
+      <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-5">
+        {queue.map((item) => (
+          <Link
+            key={item.href}
+            href={item.href}
+            className="rounded-2xl border border-slate-200 bg-white p-4 transition-colors hover:border-slate-300"
+          >
+            <p className="text-sm text-slate-500">{item.label}</p>
+            <p className="mt-2 text-3xl font-semibold tracking-tight text-slate-950">{item.value}</p>
+          </Link>
+        ))}
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-5 gap-6 mb-8">
-        <Link href="/admin/registrations" className="bg-white rounded-lg shadow p-6 hover:shadow-md">
-          <p className="text-sm text-gray-600 mb-1">New registrations</p>
-          <p className="text-3xl font-bold text-gray-900">{registrationsCount}</p>
+      <div className="grid gap-3 sm:grid-cols-3">
+        <Link href="/admin/events" className="rounded-2xl border border-slate-200 bg-white p-4">
+          <p className="text-xs font-medium uppercase tracking-[0.14em] text-slate-400">Events</p>
+          <p className="mt-2 text-2xl font-semibold tracking-tight">{eventsCount}</p>
         </Link>
-        <Link href="/admin/join" className="bg-white rounded-lg shadow p-6 hover:shadow-md">
-          <p className="text-sm text-gray-600 mb-1">Join applications</p>
-          <p className="text-3xl font-bold text-gray-900">{joinCount}</p>
+        <Link href="/admin/games" className="rounded-2xl border border-slate-200 bg-white p-4">
+          <p className="text-xs font-medium uppercase tracking-[0.14em] text-slate-400">Games</p>
+          <p className="mt-2 text-2xl font-semibold tracking-tight">{gamesCount}</p>
         </Link>
-        <Link href="/admin/bookings" className="bg-white rounded-lg shadow p-6 hover:shadow-md">
-          <p className="text-sm text-gray-600 mb-1">Booking requests</p>
-          <p className="text-3xl font-bold text-gray-900">{bookingsCount}</p>
-        </Link>
-        <Link href="/admin/messages" className="bg-white rounded-lg shadow p-6 hover:shadow-md">
-          <p className="text-sm text-gray-600 mb-1">Open messages</p>
-          <p className="text-3xl font-bold text-gray-900">{messagesCount}</p>
-        </Link>
-        <Link href="/admin/support" className="bg-white rounded-lg shadow p-6 hover:shadow-md">
-          <p className="text-sm text-gray-600 mb-1">New support offers</p>
-          <p className="text-3xl font-bold text-gray-900">{supportCount}</p>
+        <Link href="/admin/staff" className="rounded-2xl border border-slate-200 bg-white p-4">
+          <p className="text-xs font-medium uppercase tracking-[0.14em] text-slate-400">Team</p>
+          <p className="mt-2 text-2xl font-semibold tracking-tight">{teamCount}</p>
         </Link>
       </div>
 
-      {/* Quick Actions - Prioritizing Activities */}
-      <div className="bg-white rounded-lg shadow p-6 mb-8">
-        <h2 className="text-xl font-bold text-gray-900 mb-4">Quick Actions</h2>
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-          <Link
-            href="/admin/events/new"
-            className="p-4 border-2 border-primary bg-primary/5 rounded-lg hover:bg-primary hover:text-white transition-colors text-center group"
-          >
-            <Calendar className="w-8 h-8 text-primary group-hover:text-white mx-auto mb-2" />
-            <p className="font-semibold text-gray-900 group-hover:text-white">Create Event</p>
-            <p className="text-xs text-gray-600 group-hover:text-white/80 mt-1">Training, camp, tournament</p>
-          </Link>
-          <Link
-            href="/admin/events/new"
-            className="p-4 border-2 border-secondary bg-secondary/5 rounded-lg hover:bg-secondary hover:text-white transition-colors text-center group"
-          >
-            <Trophy className="w-8 h-8 text-secondary group-hover:text-white mx-auto mb-2" />
-            <p className="font-semibold text-gray-900 group-hover:text-white">Create Event/Game</p>
-            <p className="text-xs text-gray-600 group-hover:text-white/80 mt-1">Add to calendar</p>
-          </Link>
-          <Link
-            href="/admin/team/new"
-            className="p-4 border-2 border-dashed border-gray-300 rounded-lg hover:border-primary hover:bg-primary/5 transition-colors text-center"
-          >
-            <Users className="w-8 h-8 text-gray-400 mx-auto mb-2" />
-            <p className="font-semibold text-gray-900">Add Team Member</p>
-          </Link>
-          <Link
-            href="/admin/content"
-            className="p-4 border-2 border-dashed border-gray-300 rounded-lg hover:border-primary hover:bg-primary/5 transition-colors text-center"
-          >
-            <FileText className="w-8 h-8 text-gray-400 mx-auto mb-2" />
-            <p className="font-semibold text-gray-900">Edit Content</p>
-          </Link>
-        </div>
+      <div className="flex flex-wrap gap-2">
+        <Link href="/admin/events/new" className="rounded-full bg-slate-950 px-4 py-2 text-sm font-medium text-white hover:bg-slate-800">
+          New event
+        </Link>
+        <Link href="/admin/team/new" className="rounded-full bg-white px-4 py-2 text-sm font-medium text-slate-800 ring-1 ring-slate-200 hover:bg-slate-50">
+          Add team member
+        </Link>
+        <Link href="/admin/content" className="rounded-full bg-white px-4 py-2 text-sm font-medium text-slate-800 ring-1 ring-slate-200 hover:bg-slate-50">
+          Edit content
+        </Link>
       </div>
 
-      {/* Activities Grid - Events & Games */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {/* Upcoming Events */}
-        <div className="bg-white rounded-lg shadow p-6">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-xl font-bold text-gray-900 flex items-center">
-              <Calendar className="w-5 h-5 mr-2 text-primary" />
-              Upcoming Events
+      <div className="grid gap-4 lg:grid-cols-2">
+        <section className="rounded-2xl border border-slate-200 bg-white p-5">
+          <div className="mb-4 flex items-center justify-between">
+            <h2 className="flex items-center gap-2 text-sm font-semibold text-slate-950">
+              <Calendar className="h-4 w-4 text-primary" />
+              Upcoming events
             </h2>
-            <Link
-              href="/admin/events"
-              className="text-sm text-primary hover:underline"
-            >
-              View All
-            </Link>
+            <Link href="/admin/events" className="text-sm text-slate-500 hover:text-slate-950">All</Link>
           </div>
           {upcomingEvents && upcomingEvents.length > 0 ? (
-            <div className="space-y-3">
+            <ul className="space-y-2">
               {upcomingEvents.map((event) => (
-                <div
-                  key={event.id}
-                  className="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
-                >
+                <li key={event.id} className="flex items-center justify-between gap-3 rounded-xl bg-slate-50 px-3 py-3">
                   <div>
-                    <p className="font-semibold text-gray-900">{event.title}</p>
-                    <p className="text-sm text-gray-600">
-                      {new Date(event.date).toLocaleDateString()} {event.time && `at ${event.time}`}
+                    <p className="font-medium text-slate-950">{event.title}</p>
+                    <p className="text-sm text-slate-500">
+                      {new Date(event.date).toLocaleDateString()} {event.time && `· ${event.time}`}
                     </p>
                   </div>
-                  <Link
-                    href={`/admin/events/${event.id}`}
-                    className="text-sm text-primary hover:underline font-medium"
-                  >
+                  <Link href={`/admin/events/${event.id}`} className="text-sm font-medium text-slate-700 hover:text-primary">
                     Edit
                   </Link>
-                </div>
+                </li>
               ))}
-            </div>
+            </ul>
           ) : (
-            <div className="text-center py-8 text-gray-500">
-              <Calendar className="w-12 h-12 mx-auto mb-2 text-gray-300" />
-              <p className="text-sm">No upcoming events</p>
-              <Link href="/admin/events/new" className="text-sm text-primary hover:underline mt-2 inline-block">
-                Create your first event →
-              </Link>
-            </div>
+            <p className="py-8 text-center text-sm text-slate-400">
+              No upcoming events.{" "}
+              <Link href="/admin/events/new" className="text-slate-700 underline-offset-4 hover:underline">Create one</Link>
+            </p>
           )}
-        </div>
+        </section>
 
-        {/* Recent Games */}
-        <div className="bg-white rounded-lg shadow p-6">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-xl font-bold text-gray-900 flex items-center">
-              <Trophy className="w-5 h-5 mr-2 text-secondary" />
-              Recent Games
+        <section className="rounded-2xl border border-slate-200 bg-white p-5">
+          <div className="mb-4 flex items-center justify-between">
+            <h2 className="flex items-center gap-2 text-sm font-semibold text-slate-950">
+              <Trophy className="h-4 w-4 text-primary" />
+              Recent games
             </h2>
-            <Link
-              href="/admin/games"
-              className="text-sm text-secondary hover:underline"
-            >
-              View All
-            </Link>
+            <Link href="/admin/games" className="text-sm text-slate-500 hover:text-slate-950">All</Link>
           </div>
           {recentGames && recentGames.length > 0 ? (
-            <div className="space-y-3">
+            <ul className="space-y-2">
               {recentGames.map((game) => (
-                <div
-                  key={game.id}
-                  className="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
-                >
-                  <div className="flex-1">
-                    <p className="font-semibold text-gray-900 text-sm">
-                      {game.home_team} <span className="text-primary font-bold">{game.home_score}</span> - <span className="text-secondary font-bold">{game.away_score}</span> {game.away_team}
+                <li key={game.id} className="flex items-center justify-between gap-3 rounded-xl bg-slate-50 px-3 py-3">
+                  <div>
+                    <p className="text-sm font-medium text-slate-950">
+                      {game.home_team} {game.home_score} – {game.away_score} {game.away_team}
                     </p>
-                    <p className="text-xs text-gray-600 mt-1">
-                      {game.status === 'live' ? (
-                        <span className="text-red-600 font-semibold">● LIVE</span>
-                      ) : (
-                        <span>Final • {game.game_date && new Date(game.game_date).toLocaleDateString()}</span>
-                      )}
+                    <p className="mt-0.5 text-xs text-slate-500">
+                      {game.status === "live" ? <span className="font-semibold text-red-600">Live</span> : game.game_date ? new Date(game.game_date).toLocaleDateString() : "Final"}
                     </p>
                   </div>
-                  <Link
-                    href={`/game/${game.id}`}
-                    className="text-sm text-secondary hover:underline font-medium"
-                  >
+                  <Link href={`/game/${game.id}`} className="text-sm font-medium text-slate-700 hover:text-primary">
                     View
                   </Link>
-                </div>
+                </li>
               ))}
-            </div>
+            </ul>
           ) : (
-            <div className="text-center py-8 text-gray-500">
-              <Trophy className="w-12 h-12 mx-auto mb-2 text-gray-300" />
-              <p className="text-sm">No games yet</p>
-              <Link href="/admin/events/new" className="text-sm text-secondary hover:underline mt-2 inline-block">
-                Create your first event →
-              </Link>
-            </div>
+            <p className="py-8 text-center text-sm text-slate-400">No games yet.</p>
           )}
-        </div>
+        </section>
       </div>
     </div>
   );

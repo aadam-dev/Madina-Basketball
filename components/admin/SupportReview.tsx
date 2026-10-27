@@ -60,9 +60,9 @@ export function SupportReview({ endpoint, initial }: { endpoint: string; initial
   }
 
   return (
-    <form onSubmit={save} className="bg-white rounded-lg shadow p-6 space-y-4">
-      <h2 className="text-lg font-bold text-gray-900">Account for this offer</h2>
-      <p className="text-sm text-gray-600">
+    <form onSubmit={save} className="space-y-4 rounded-2xl border border-slate-200 bg-white p-5 sm:p-6">
+      <h2 className="text-sm font-semibold text-slate-950">Account for this offer</h2>
+      <p className="text-sm text-slate-500">
         Only gifts marked received count. This book is separate from the GHS 44,750 renovation total.
       </p>
       <label className="block text-sm font-medium text-gray-700">
@@ -109,7 +109,7 @@ export function SupportReview({ endpoint, initial }: { endpoint: string; initial
       </label>
       {error ? <p className="text-sm text-red-600">{error}</p> : null}
       {message ? <p className="text-sm text-green-700">{message}</p> : null}
-      <button type="submit" disabled={pending} className="rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white disabled:opacity-60">
+      <button type="submit" disabled={pending} className="rounded-full bg-slate-950 px-4 py-2 text-sm font-medium text-white hover:bg-slate-800 disabled:opacity-60">
         {pending ? "Saving…" : "Save"}
       </button>
     </form>

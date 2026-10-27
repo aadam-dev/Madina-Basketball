@@ -30,7 +30,7 @@ export default function LogoutButton() {
     <button
       onClick={handleLogout}
       disabled={loading}
-      className="text-sm text-gray-600 hover:text-red-600 flex items-center space-x-1 disabled:opacity-50"
+      className="inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm text-slate-600 hover:bg-white hover:text-slate-900 disabled:opacity-50"
     >
       <LogOut className="w-4 h-4" />
       <span>{loading ? "Logging out..." : "Logout"}</span>

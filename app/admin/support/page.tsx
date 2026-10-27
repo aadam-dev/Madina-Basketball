@@ -2,7 +2,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getSession } from "@/lib/auth";
 import { supabaseAdmin } from "@/lib/supabase-admin";
-import { FilterLinks, SetupNotice } from "@/components/admin/IntakeBits";
+import { EmptyRow, FilterLinks, PageHeader, SetupNotice, StatusBadge, nameLink, tableHead, tableWrap, td, th, tr } from "@/components/admin/IntakeBits";
 
 const STATUSES = [
   { value: "new", label: "New" },
@@ -30,36 +30,43 @@ export default async function SupportAdminPage({ searchParams }: { searchParams:
 
   return (
     <div>
-      <h1 className="text-3xl font-bold text-gray-900 mb-2">Support</h1>
-      <p className="text-gray-600 mb-2">Offers from the public invitation. Received cash on this page is not part of the GHS 44,750 renovation total.</p>
-      <p className="text-sm text-gray-500 mb-6">Cash marked received in this filtered list: GHS {receivedCash.toLocaleString()}. Pledges are not included.</p>
+      <PageHeader
+        title="Support"
+        description="Offers from the public invitation. Received cash here is separate from the GHS 44,750 renovation total."
+        aside={
+          <p className="rounded-2xl bg-white px-4 py-3 text-sm text-slate-500 ring-1 ring-slate-200">
+            Cash received in this list
+            <span className="mt-1 block text-lg font-semibold tracking-tight text-slate-950">
+              GHS {receivedCash.toLocaleString()}
+            </span>
+          </p>
+        }
+      />
       <FilterLinks base="/admin/support" current={searchParams.status} options={STATUSES} />
       <SetupNotice message={error?.message} />
-      <div className="bg-white rounded-lg shadow overflow-x-auto">
+      <div className={`${tableWrap} overflow-x-auto`}>
         <table className="min-w-full text-sm">
-          <thead className="bg-gray-50 text-left text-gray-500">
+          <thead className={tableHead}>
             <tr>
-              <th className="px-4 py-3">Name</th>
-              <th className="px-4 py-3">Kind</th>
-              <th className="px-4 py-3">Status</th>
-              <th className="px-4 py-3">Recognition</th>
+              <th className={th}>Name</th>
+              <th className={th}>Kind</th>
+              <th className={th}>Recognition</th>
+              <th className={th}>Status</th>
             </tr>
           </thead>
           <tbody>
             {(data || []).map((row) => (
-              <tr key={row.id} className="border-t">
-                <td className="px-4 py-3">
-                  <Link href={`/admin/support/${row.id}`} className="font-medium text-primary hover:underline">{row.name}</Link>
-                  {row.organisation ? <div className="text-xs text-gray-500">{row.organisation}</div> : null}
+              <tr key={row.id} className={tr}>
+                <td className={td}>
+                  <Link href={`/admin/support/${row.id}`} className={nameLink()}>{row.name}</Link>
+                  {row.organisation ? <div className="text-xs text-slate-400">{row.organisation}</div> : null}
                 </td>
-                <td className="px-4 py-3">{(row.kinds || []).join(", ")}</td>
-                <td className="px-4 py-3">{row.status}</td>
-                <td className="px-4 py-3">{row.recognize_publicly ? "Allowed after receipt" : "Private"}</td>
+                <td className={td}>{(row.kinds || []).join(", ") || "—"}</td>
+                <td className={td}>{row.recognize_publicly ? "After receipt" : "Private"}</td>
+                <td className={td}><StatusBadge status={row.status} /></td>
               </tr>
             ))}
-            {!error && (data || []).length === 0 ? (
-              <tr><td className="px-4 py-8 text-gray-500" colSpan={4}>No offers yet.</td></tr>
-            ) : null}
+            {!error && (data || []).length === 0 ? <EmptyRow cols={4}>No offers yet.</EmptyRow> : null}
           </tbody>
         </table>
       </div>

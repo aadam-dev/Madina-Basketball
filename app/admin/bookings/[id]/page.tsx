@@ -24,14 +24,14 @@ export default async function BookingDetail({ params }: { params: { id: string }
 
   return (
     <div className="max-w-3xl space-y-6">
-      <Link href="/admin/bookings" className="text-sm text-primary hover:underline">Back to bookings</Link>
-      <h1 className="text-3xl font-bold text-gray-900">{row.name}</h1>
+      <Link href="/admin/bookings" className="text-sm font-medium text-slate-500 hover:text-slate-950">Back to bookings</Link>
+      <h1 className="text-2xl font-semibold tracking-tight text-slate-950">{row.name}</h1>
       {(clashes || []).length > 0 ? (
         <p className="rounded-lg bg-amber-50 border border-amber-200 px-4 py-3 text-sm text-amber-900">
           Another confirmed booking already uses this date and slot: {(clashes || []).map((item) => item.name).join(", ")}.
         </p>
       ) : null}
-      <dl className="bg-white rounded-lg shadow px-6">
+      <dl className="grid gap-3 rounded-2xl border border-slate-200 bg-white p-4 sm:grid-cols-2 sm:p-5">
         <Fact label="Phone" value={row.phone} />
         <Fact label="Email" value={row.email} />
         <Fact label="Organisation" value={row.organisation} />

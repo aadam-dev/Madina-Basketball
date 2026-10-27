@@ -16,16 +16,16 @@ export default async function JoinDetailPage({ params }: { params: { id: string 
 
   return (
     <div className="max-w-3xl space-y-6">
-      <Link href="/admin/join" className="text-sm text-primary hover:underline">
+      <Link href="/admin/join" className="text-sm font-medium text-slate-500 hover:text-slate-950">
         Back to join applications
       </Link>
       <div>
-        <h1 className="text-3xl font-bold text-gray-900">{row.full_name}</h1>
+        <h1 className="text-2xl font-semibold tracking-tight text-slate-950">{row.full_name}</h1>
         <p className="capitalize text-gray-500">
           {row.role} · {row.status}
         </p>
       </div>
-      <dl className="rounded-lg bg-white px-6 shadow">
+      <dl className="grid gap-3 rounded-2xl border border-slate-200 bg-white p-4 sm:grid-cols-2 sm:p-5">
         <Fact label="Phone" value={row.phone} />
         <Fact label="Email" value={row.email} />
         <Fact label="Area" value={row.area === "Other" ? row.area_other : row.area} />

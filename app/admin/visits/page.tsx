@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 import { getSession } from "@/lib/auth";
 import { supabaseAdmin } from "@/lib/supabase-admin";
-import { SetupNotice } from "@/components/admin/IntakeBits";
+import { EmptyRow, PageHeader, SetupNotice, tableHead, tableWrap, td, th, tr } from "@/components/admin/IntakeBits";
 
 function startOfUtcDay(date = new Date()) {
   return new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate())).toISOString();
@@ -50,102 +50,86 @@ export default async function VisitsPage() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-3xl font-bold text-gray-900">Visits</h1>
-        <p className="mt-1 text-gray-600">
-          First-party page views. Admin routes are not counted. Data stays in our database.
-        </p>
-      </div>
-
+      <PageHeader
+        title="Visits"
+        description="First-party page views. Admin routes are not counted. Data stays in our database."
+      />
       <SetupNotice message={error?.message} />
 
-      <div className="grid gap-4 sm:grid-cols-3">
-        <div className="rounded-lg bg-white p-5 shadow">
-          <p className="text-sm text-gray-500">Today (UTC)</p>
-          <p className="text-3xl font-bold text-gray-900">{todayRes.count || 0}</p>
+      <div className="grid gap-3 sm:grid-cols-3">
+        <div className="rounded-2xl border border-slate-200 bg-white p-5">
+          <p className="text-xs font-medium uppercase tracking-[0.14em] text-slate-400">Today (UTC)</p>
+          <p className="mt-2 text-3xl font-semibold tracking-tight text-slate-950">{todayRes.count || 0}</p>
         </div>
-        <div className="rounded-lg bg-white p-5 shadow">
-          <p className="text-sm text-gray-500">Last 7 days</p>
-          <p className="text-3xl font-bold text-gray-900">{weekRows.length}</p>
+        <div className="rounded-2xl border border-slate-200 bg-white p-5">
+          <p className="text-xs font-medium uppercase tracking-[0.14em] text-slate-400">Last 7 days</p>
+          <p className="mt-2 text-3xl font-semibold tracking-tight text-slate-950">{weekRows.length}</p>
         </div>
-        <div className="rounded-lg bg-white p-5 shadow">
-          <p className="text-sm text-gray-500">Devices (7 days)</p>
-          <ul className="mt-2 space-y-1 text-sm text-gray-700">
+        <div className="rounded-2xl border border-slate-200 bg-white p-5">
+          <p className="text-xs font-medium uppercase tracking-[0.14em] text-slate-400">Devices</p>
+          <ul className="mt-3 space-y-1.5 text-sm text-slate-700">
             {devices.map(([name, count]) => (
               <li key={name} className="flex justify-between gap-4">
                 <span className="capitalize">{name}</span>
-                <span className="font-semibold">{count}</span>
+                <span className="font-medium">{count}</span>
               </li>
             ))}
-            {devices.length === 0 ? <li className="text-gray-400">No visits yet.</li> : null}
+            {devices.length === 0 ? <li className="text-slate-400">No visits yet.</li> : null}
           </ul>
         </div>
       </div>
 
-      <div className="grid gap-6 lg:grid-cols-2">
-        <div className="rounded-lg bg-white p-5 shadow">
-          <h2 className="mb-3 text-lg font-bold text-gray-900">Top pages (7 days)</h2>
-          <ul className="space-y-2 text-sm">
+      <div className="grid gap-4 lg:grid-cols-2">
+        <div className="rounded-2xl border border-slate-200 bg-white p-5">
+          <h2 className="text-sm font-semibold text-slate-950">Top pages, 7 days</h2>
+          <ul className="mt-3 text-sm">
             {topPages.map(([path, count]) => (
-              <li key={path} className="flex justify-between gap-4 border-b border-gray-50 py-2">
-                <span className="truncate font-mono text-gray-800">{path}</span>
-                <span className="font-semibold text-gray-900">{count}</span>
+              <li key={path} className="flex justify-between gap-4 border-b border-slate-100 py-2.5 last:border-0">
+                <span className="truncate font-mono text-xs text-slate-700">{path}</span>
+                <span className="font-medium text-slate-950">{count}</span>
               </li>
             ))}
-            {topPages.length === 0 ? <li className="text-gray-400">No visits yet.</li> : null}
+            {topPages.length === 0 ? <li className="text-slate-400">No visits yet.</li> : null}
           </ul>
         </div>
 
-        <div className="overflow-x-auto rounded-lg bg-white shadow">
+        <div className={`${tableWrap} overflow-x-auto`}>
           <table className="min-w-full text-sm">
-            <thead className="bg-gray-50 text-left text-gray-500">
+            <thead className={tableHead}>
               <tr>
-                <th className="px-4 py-3">When</th>
-                <th className="px-4 py-3">Path</th>
-                <th className="px-4 py-3">Device</th>
-                <th className="px-4 py-3">IP</th>
-                <th className="px-4 py-3">Place</th>
+                <th className={th}>When</th>
+                <th className={th}>Path</th>
+                <th className={th}>Device</th>
+                <th className={th}>IP</th>
+                <th className={th}>Place</th>
               </tr>
             </thead>
             <tbody>
               {recent.map((row) => (
-                <tr key={row.id} className="border-t">
-                  <td className="whitespace-nowrap px-4 py-3 text-gray-500">
+                <tr key={row.id} className={tr}>
+                  <td className={`${td} whitespace-nowrap text-slate-500`}>
                     {new Date(row.created_at).toLocaleString()}
                   </td>
-                  <td className="max-w-[12rem] truncate px-4 py-3 font-mono text-xs">{row.path}</td>
-                  <td className="px-4 py-3">
+                  <td className={`${td} max-w-[12rem] truncate font-mono text-xs`}>{row.path}</td>
+                  <td className={td}>
                     <span className="capitalize">{row.device}</span>
-                    <span className="block text-xs text-gray-400">
+                    <span className="block text-xs text-slate-400">
                       {row.browser} · {row.os}
                     </span>
                   </td>
-                  <td className="px-4 py-3 font-mono text-xs">{row.ip || "—"}</td>
-                  <td className="px-4 py-3 text-xs text-gray-600">
+                  <td className={`${td} font-mono text-xs`}>{row.ip || "—"}</td>
+                  <td className={`${td} text-xs text-slate-500`}>
                     {[row.city, row.country].filter(Boolean).join(", ") || "—"}
                   </td>
                 </tr>
               ))}
               {!error && recent.length === 0 ? (
-                <tr>
-                  <td className="px-4 py-8 text-gray-500" colSpan={5}>
-                    No visits recorded yet. Public page loads send a beacon after you run{" "}
-                    <code className="text-xs">scripts/create-site-visits-table.sql</code>.
-                  </td>
-                </tr>
+                <EmptyRow cols={5}>No visits recorded yet.</EmptyRow>
               ) : null}
             </tbody>
           </table>
         </div>
       </div>
-
-      <p className="text-sm text-gray-500">
-        Need forms and visits together? Run{" "}
-        <code className="rounded bg-gray-100 px-1.5 py-0.5 font-mono text-xs text-gray-800">
-          scripts/APPLY_MADINA_OPS.sql
-        </code>{" "}
-        in the Madina SQL editor.
-      </p>
     </div>
   );
 }

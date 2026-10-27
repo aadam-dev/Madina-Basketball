@@ -2,7 +2,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getSession } from "@/lib/auth";
 import { supabaseAdmin } from "@/lib/supabase-admin";
-import { FilterLinks, SetupNotice } from "@/components/admin/IntakeBits";
+import { EmptyRow, FilterLinks, PageHeader, SetupNotice, StatusBadge, nameLink, tableHead, tableWrap, td, th, tr } from "@/components/admin/IntakeBits";
 
 const STATUSES = [
   { value: "open", label: "Open" },
@@ -24,32 +24,34 @@ export default async function MessagesPage({ searchParams }: { searchParams: { s
 
   return (
     <div>
-      <h1 className="text-3xl font-bold text-gray-900 mb-2">Messages</h1>
-      <p className="text-gray-600 mb-6">Contact and volunteer notes. Sponsorship offers live under Support.</p>
+      <PageHeader
+        title="Messages"
+        description="Contact and volunteer notes. Sponsorship offers live under Support."
+      />
       <FilterLinks base="/admin/messages" current={searchParams.status} options={STATUSES} />
       <SetupNotice message={error?.message} />
-      <div className="bg-white rounded-lg shadow overflow-x-auto">
+      <div className={`${tableWrap} overflow-x-auto`}>
         <table className="min-w-full text-sm">
-          <thead className="bg-gray-50 text-left text-gray-500">
+          <thead className={tableHead}>
             <tr>
-              <th className="px-4 py-3">Name</th>
-              <th className="px-4 py-3">Subject</th>
-              <th className="px-4 py-3">Status</th>
+              <th className={th}>Name</th>
+              <th className={th}>Subject</th>
+              <th className={th}>Submitted</th>
+              <th className={th}>Status</th>
             </tr>
           </thead>
           <tbody>
             {(data || []).map((row) => (
-              <tr key={row.id} className="border-t">
-                <td className="px-4 py-3">
-                  <Link href={`/admin/messages/${row.id}`} className="font-medium text-primary hover:underline">{row.name}</Link>
+              <tr key={row.id} className={tr}>
+                <td className={td}>
+                  <Link href={`/admin/messages/${row.id}`} className={nameLink()}>{row.name}</Link>
                 </td>
-                <td className="px-4 py-3">{row.subject}</td>
-                <td className="px-4 py-3">{row.status}</td>
+                <td className={td}>{row.subject}</td>
+                <td className={`${td} whitespace-nowrap text-slate-500`}>{new Date(row.created_at).toLocaleString()}</td>
+                <td className={td}><StatusBadge status={row.status} /></td>
               </tr>
             ))}
-            {!error && (data || []).length === 0 ? (
-              <tr><td className="px-4 py-8 text-gray-500" colSpan={3}>No messages yet.</td></tr>
-            ) : null}
+            {!error && (data || []).length === 0 ? <EmptyRow cols={4}>No messages yet.</EmptyRow> : null}
           </tbody>
         </table>
       </div>

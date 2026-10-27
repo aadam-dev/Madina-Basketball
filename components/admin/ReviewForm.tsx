@@ -44,12 +44,12 @@ export function ReviewForm({
   }
 
   return (
-    <form onSubmit={save} className="bg-white rounded-lg shadow p-6 space-y-4">
-      <h2 className="text-lg font-bold text-gray-900">Review</h2>
-      <label className="block text-sm font-medium text-gray-700">
+    <form onSubmit={save} className="space-y-4 rounded-2xl border border-slate-200 bg-white p-5 sm:p-6">
+      <h2 className="text-sm font-semibold text-slate-950">Review</h2>
+      <label className="block text-sm font-medium text-slate-700">
         Status
         <select
-          className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2"
+          className="mt-1.5 w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm outline-none focus:border-slate-400"
           value={currentStatus}
           onChange={(event) => setCurrentStatus(event.target.value)}
         >
@@ -58,17 +58,17 @@ export function ReviewForm({
           ))}
         </select>
       </label>
-      <label className="block text-sm font-medium text-gray-700">
+      <label className="block text-sm font-medium text-slate-700">
         Notes
         <textarea
-          className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 min-h-24"
+          className="mt-1.5 min-h-28 w-full rounded-xl border border-slate-200 px-3 py-2.5 text-sm outline-none focus:border-slate-400"
           value={adminNotes}
           onChange={(event) => setAdminNotes(event.target.value)}
         />
       </label>
       {error ? <p className="text-sm text-red-600">{error}</p> : null}
       {message ? <p className="text-sm text-green-700">{message}</p> : null}
-      <button type="submit" disabled={pending} className="rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white disabled:opacity-60">
+      <button type="submit" disabled={pending} className="rounded-full bg-slate-950 px-4 py-2 text-sm font-medium text-white hover:bg-slate-800 disabled:opacity-60">
         {pending ? "Saving…" : "Save"}
       </button>
     </form>
