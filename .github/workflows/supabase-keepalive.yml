@@ -1,0 +1,45 @@
+# Keeps the free-tier Supabase project from pausing.
+# Pings Postgres through PostgREST with a real UPDATE — health endpoints do not count.
+#
+# Required GitHub repository secrets:
+#   NEXT_PUBLIC_SUPABASE_URL
+#   SUPABASE_SERVICE_ROLE_KEY
+#
+# One-time: run scripts/create-keepalive-and-roles.sql in the Supabase SQL editor.
+
+name: Supabase keepalive
+
+on:
+  schedule:
+    - cron: "0 9 * * *"
+  workflow_dispatch:
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Patch keepalive row
+        env:
+          SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          SUPABASE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+        run: |
+          set -euo pipefail
+          if [ -z "${SUPABASE_URL:-}" ] || [ -z "${SUPABASE_KEY:-}" ]; then
+            echo "Missing NEXT_PUBLIC_SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY secrets."
+            exit 1
+          fi
+          BASE="${SUPABASE_URL%/}"
+          CODE=$(curl -sS -o /tmp/keepalive-body.txt -w "%{http_code}" -X PATCH \
+            "${BASE}/rest/v1/keepalive?id=eq.1" \
+            -H "apikey: ${SUPABASE_KEY}" \
+            -H "Authorization: Bearer ${SUPABASE_KEY}" \
+            -H "Content-Type: application/json" \
+            -H "Prefer: return=minimal" \
+            -d "{\"last_ping\":\"$(date -u +%Y-%m-%dT%H:%M:%SZ)\"}")
+          echo "HTTP ${CODE}"
+          cat /tmp/keepalive-body.txt || true
+          echo
+          if [ "$CODE" != "204" ] && [ "$CODE" != "200" ]; then
+            echo "Keepalive failed. Run scripts/create-keepalive-and-roles.sql if the table is missing."
+            exit 1
+          fi

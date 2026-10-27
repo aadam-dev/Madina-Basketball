@@ -54,7 +54,7 @@ export default function TermsOfService() {
 
             {/* Court Usage Rules */}
             <div className="mb-12">
-              <h2 className="text-3xl font-bold text-gray-900 mb-6">Court Usage Rules and Regulations</h2>
+              <h2 id="court-rules" className="text-3xl font-bold text-gray-900 mb-6">Court Usage Rules and Regulations</h2>
               
               <h3 className="text-2xl font-semibold text-gray-900 mb-4">General Rules</h3>
               <ul className="list-disc pl-6 space-y-2 text-gray-700 mb-6">

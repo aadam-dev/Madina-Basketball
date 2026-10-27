@@ -198,7 +198,7 @@ export default function Partners() {
             </p>
             <div className="text-center">
               <Link
-                href="/contact"
+                href="/support"
                 className="inline-flex items-center gap-2 px-8 py-3 bg-[#ff6b35] text-white font-bold text-sm rounded-lg hover:bg-[#e55a2b] transition-colors uppercase tracking-wider"
               >
                 Become a Sponsor <ArrowRight className="w-4 h-4" />

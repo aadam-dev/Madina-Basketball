@@ -1,6 +1,7 @@
 import { MapPin, Mail, Facebook, Instagram, MessageCircle, ArrowRight } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
+import ContactForm from "@/components/forms/ContactForm";
 
 export default function Contact() {
   const faqs = [
@@ -18,15 +19,15 @@ export default function Contact() {
     },
     {
       q: "Partnerships & Sponsorships",
-      a: "Contact us via email or WhatsApp to discuss partnership opportunities, sponsorships, or support programmes.",
-      href: null,
-      cta: null,
+      a: "Lighting, equipment, and cash gifts are logged on the support form so we can account for what arrives.",
+      href: "/support",
+      cta: "Support the court",
     },
     {
       q: "Volunteer Opportunities",
-      a: "We welcome volunteers for coaching, administration, and event organisation. Reach out to learn how you can contribute.",
-      href: null,
-      cta: null,
+      a: "Volunteers, coaches, and management apply on Join the Court so roles stay clear.",
+      href: "/join",
+      cta: "Join the court",
     },
     {
       q: "Media & Press",
@@ -143,24 +144,8 @@ export default function Contact() {
           <p className="text-white/50 text-sm leading-relaxed mb-8">
             Have a question or want to get involved? Use the form below. We read every message.
           </p>
-          <div className="bg-[#111] border border-white/8 rounded-2xl p-8 text-center">
-            <div className="w-14 h-14 bg-[#ff6b35]/10 rounded-2xl flex items-center justify-center mx-auto mb-5">
-              <Mail className="w-7 h-7 text-[#ff6b35]" />
-            </div>
-            <a
-              href="https://forms.gle/MXoQwakyH3Axozh8A"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-8 py-3 bg-[#ff6b35] text-white font-bold text-sm rounded-lg hover:bg-[#e55a2b] transition-colors uppercase tracking-wider mb-4"
-            >
-              Open Contact Form <ArrowRight className="w-4 h-4" />
-            </a>
-            <p className="text-white/30 text-xs mt-3">
-              Or email directly:{" "}
-              <a href="mailto:themadinacourt@gmail.com" className="text-white/50 hover:text-[#ff6b35] transition-colors">
-                themadinacourt@gmail.com
-              </a>
-            </p>
+          <div className="bg-[#111] border border-white/8 rounded-2xl p-6 sm:p-8">
+            <ContactForm />
           </div>
         </div>
       </section>

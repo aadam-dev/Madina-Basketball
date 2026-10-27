@@ -12,9 +12,12 @@ const LINKS_COURT = [
 ];
 
 const LINKS_GET_INVOLVED = [
+  { href: "/join",         label: "Join the Court" },
   { href: "/register",     label: "Register to Play" },
+  { href: "/play",         label: "Play the Court Game" },
   { href: "/book",         label: "Book the Court" },
   { href: "/partners",     label: "Partners & Sponsors" },
+  { href: "/support",      label: "Support the Court" },
   { href: "/transparency", label: "Transparency" },
   { href: "/contact",      label: "Contact Us" },
 ];

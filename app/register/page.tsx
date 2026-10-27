@@ -1,4 +1,5 @@
 import { Users, CheckCircle, FileText } from "lucide-react";
+import RegisterForm from "@/components/forms/RegisterForm";
 
 export default function Register() {
   return (
@@ -119,32 +120,8 @@ export default function Register() {
                 Please fill out the registration form below. This helps us understand our community
                 and keep you informed about training sessions, events, and court updates.
               </p>
-              
-              {/* Registration Form Link */}
-              <div className="bg-white rounded-lg p-8 shadow-sm text-center">
-                <FileText className="w-16 h-16 text-primary mx-auto mb-4" />
-                <h3 className="text-2xl font-bold mb-4">Complete Your Registration</h3>
-                <p className="text-gray-600 mb-6">
-                  Click the button below to access our registration form and join the Madina Basketball community.
-                </p>
-                <a
-                  href="https://tinyurl.com/madinacourtregisteration"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-block px-8 py-4 bg-primary text-white font-semibold rounded-lg hover:bg-primary-dark transition-all transform hover:scale-105"
-                >
-                  Open Registration Form
-                </a>
-                <p className="text-sm text-gray-500 mt-4">
-                  Or visit: <a href="https://tinyurl.com/madinacourtregisteration" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline break-all">tinyurl.com/madinacourtregisteration</a>
-                </p>
-              </div>
-
-              <div className="mt-6 text-sm text-gray-600">
-                <p>
-                  <strong>Note:</strong> If the form doesn't load, you can access it directly via our
-                  social media pages or contact us for assistance.
-                </p>
+              <div className="bg-white rounded-lg p-6 sm:p-8 shadow-sm">
+                <RegisterForm />
               </div>
             </div>
           </div>

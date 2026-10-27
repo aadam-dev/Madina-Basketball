@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import Link from "next/link";
 
 type Phase = "planning" | "renovation" | "active";
 
@@ -9,6 +10,8 @@ interface TimelineEvent {
   title: string;
   description: string;
   phase: Phase;
+  href?: string;
+  linkLabel?: string;
 }
 
 interface Props {
@@ -172,6 +175,11 @@ export default function JourneyTimeline({ events }: Props) {
                 <p className="text-white/45 text-sm leading-relaxed">
                   {event.description}
                 </p>
+                {event.href && event.linkLabel ? (
+                  <Link href={event.href} className="inline-block mt-3 text-xs font-bold uppercase tracking-wider text-[#ff6b35] hover:underline">
+                    {event.linkLabel}
+                  </Link>
+                ) : null}
               </div>
             </div>
           );

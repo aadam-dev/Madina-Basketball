@@ -14,6 +14,7 @@ const NAV_LINKS = [
   { href: "/training",  label: "Training" },
   { href: "/media",     label: "Media" },
   { href: "/partners",  label: "Partners" },
+  { href: "/play",      label: "Play" },
   { href: "/tools",     label: "Tools" },
 ];
 

@@ -7,7 +7,7 @@ export const metadata = {
 };
 
 export default function PrivacyPolicy() {
-  const lastUpdated = "January 2025";
+  const lastUpdated = "October 2026";
 
   return (
     <div className="min-h-screen bg-white">
@@ -44,17 +44,18 @@ export default function PrivacyPolicy() {
             </div>
 
             {/* Information We Collect */}
-            <div className="mb-12">
+            <div className="mb-12" id="your-information">
               <h2 className="text-3xl font-bold text-gray-900 mb-6">Information We Collect</h2>
               
               <h3 className="text-2xl font-semibold text-gray-900 mb-4">Personal Information</h3>
               <p className="text-gray-700 mb-4">
-                We collect personal information that you voluntarily provide to us when you:
+                We collect personal information that you voluntarily provide on this website when you:
               </p>
               <ul className="list-disc pl-6 space-y-2 text-gray-700 mb-6">
-                <li><strong>Register to Play:</strong> Name, email address, phone number, age, skill level, and other registration details</li>
-                <li><strong>Book the Court:</strong> Name, contact information, booking dates and times, and event details</li>
-                <li><strong>Contact Us:</strong> Name, email address, phone number, and message content</li>
+                <li><strong>Register to Play:</strong> Name, date of birth, phone number, optional email, area, skill level, how you want to play, an emergency contact, and, for players under 18, a parent or guardian. A medical note is optional and only for emergencies.</li>
+                <li><strong>Book the Court:</strong> Name, phone, optional email, organisation, date, time, and the purpose of the booking.</li>
+                <li id="messages"><strong>Contact Us:</strong> Name, phone, optional email, and the message. Volunteer notes are stored with the message so we can reply.</li>
+                <li id="support"><strong>Support the court:</strong> Name, phone, optional organisation and email, and what you are offering. This form does not collect payment. Your contact details stay private unless you allow us to list your name after a gift is received.</li>
                 <li><strong>Use Game Tools:</strong> Team names, player names, jersey numbers, and game statistics (stored locally in your browser or passed via URL parameters)</li>
               </ul>
 
@@ -62,21 +63,26 @@ export default function PrivacyPolicy() {
               <p className="text-gray-700 mb-4">
                 When you visit our website, we may automatically collect certain information, including:
               </p>
-              <ul className="list-disc pl-6 space-y-2 text-gray-700">
+              <ul className="list-disc pl-6 space-y-2 text-gray-700" id="visits">
                 <li>IP address and browser type</li>
                 <li>Device information and operating system</li>
-                <li>Pages visited and time spent on pages</li>
+                <li>Pages visited on this site</li>
                 <li>Referring website addresses</li>
+                <li>Screen size and language when your browser sends them</li>
+                <li>Approximate country or city when our host provides it</li>
               </ul>
+              <p className="mt-4 text-gray-700">
+                These page visits are stored in our own database for the court team. We do not sell them, and we do not send them to Google Analytics. Admin pages are not counted.
+              </p>
             </div>
 
             {/* How We Collect Information */}
             <div className="mb-12">
               <h2 className="text-3xl font-bold text-gray-900 mb-6">How We Collect Information</h2>
               <ul className="list-disc pl-6 space-y-2 text-gray-700">
-                <li><strong>Google Forms:</strong> Registration, booking, and contact forms are hosted on Google Forms. Data submitted through these forms is collected by Google and stored in their systems.</li>
+                <li><strong>Forms on this website:</strong> Registration, booking, contact, and support offers are stored in our database. They are not sent to Google Forms.</li>
                 <li><strong>Direct Contact:</strong> Information you provide when contacting us via email, WhatsApp, or other communication channels</li>
-                <li><strong>Website Usage:</strong> Information collected automatically through website analytics and server logs</li>
+                <li><strong>Website visits:</strong> A short first-party beacon records public page views in our database for the admin visits screen</li>
                 <li><strong>Admin Portal:</strong> Authentication credentials for authorized administrators</li>
               </ul>
             </div>
@@ -88,10 +94,12 @@ export default function PrivacyPolicy() {
                 We use the information we collect for the following purposes:
               </p>
               <ul className="list-disc pl-6 space-y-2 text-gray-700">
-                <li>To process and manage player registrations</li>
+                <li>To process and manage player registrations, including calling an emergency contact if someone is hurt</li>
                 <li>To handle court booking requests and confirmations</li>
                 <li>To respond to your inquiries and provide customer support</li>
-                <li>To send you updates about events, training sessions, and court activities (with your consent)</li>
+                <li>To account for sponsorship and gifts that actually arrive</li>
+                <li id="impact-reports">To publish aggregate impact reports for the community and partners. Those reports may count players by age group, area, and skill. They never include a name, phone, email, emergency contact, guardian, medical note, or message.</li>
+                <li>To notify administrators that a form was submitted. Those alerts name the person and the type of form. They do not include medical notes, guardian details, message text, or gift amounts.</li>
                 <li>To improve our website and services</li>
                 <li>To ensure the security and proper functioning of our website</li>
                 <li>To comply with legal obligations</li>
@@ -104,8 +112,7 @@ export default function PrivacyPolicy() {
               
               <h3 className="text-2xl font-semibold text-gray-900 mb-4">Where Your Data is Stored</h3>
               <ul className="list-disc pl-6 space-y-2 text-gray-700 mb-6">
-                <li><strong>Google Forms:</strong> Registration, booking, and contact form data is stored on Google's servers, subject to Google's Privacy Policy</li>
-                <li><strong>Supabase:</strong> Website content, events, team member information, and admin authentication data is stored in Supabase (PostgreSQL database hosted on secure servers)</li>
+                <li id="bookings"><strong>Our database:</strong> Registration, booking, contact, and support records are stored in Supabase (PostgreSQL). Court-use totals, such as date, purpose, and hours, may appear in reports without contact details. The public fundraising sheet for the renovation remains a separate Google Sheet.</li>
                 <li><strong>Vercel:</strong> Website hosting and deployment platform</li>
                 <li><strong>Local Storage:</strong> Game tool data (team rosters, scores) may be stored locally in your browser and is not transmitted to our servers</li>
               </ul>
@@ -130,7 +137,7 @@ export default function PrivacyPolicy() {
                 We do not sell, trade, or rent your personal information to third parties. We may share your information only in the following circumstances:
               </p>
               <ul className="list-disc pl-6 space-y-2 text-gray-700">
-                <li><strong>Service Providers:</strong> With trusted third-party service providers who assist us in operating our website (Google Forms, Supabase, Vercel), subject to confidentiality agreements</li>
+                <li><strong>Service Providers:</strong> With trusted providers who host the website and database (Supabase, Vercel), subject to their privacy terms</li>
                 <li><strong>Legal Requirements:</strong> When required by law, court order, or government regulation</li>
                 <li><strong>Safety and Security:</strong> To protect the rights, property, or safety of Madina Basketball, our users, or others</li>
                 <li><strong>With Your Consent:</strong> When you have given explicit consent for us to share your information</li>
@@ -144,7 +151,6 @@ export default function PrivacyPolicy() {
                 Our website uses the following third-party services that may collect or process your information:
               </p>
               <ul className="list-disc pl-6 space-y-2 text-gray-700">
-                <li><strong>Google Forms:</strong> For registration, booking, and contact forms. Subject to <Link href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">Google's Privacy Policy</Link></li>
                 <li><strong>Supabase:</strong> For database and storage services. Subject to <Link href="https://supabase.com/privacy" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">Supabase's Privacy Policy</Link></li>
                 <li><strong>Vercel:</strong> For website hosting. Subject to <Link href="https://vercel.com/legal/privacy-policy" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">Vercel's Privacy Policy</Link></li>
               </ul>
@@ -176,9 +182,10 @@ export default function PrivacyPolicy() {
                 We retain your personal information only for as long as necessary to fulfill the purposes outlined in this Privacy Policy, unless a longer retention period is required or permitted by law. Specifically:
               </p>
               <ul className="list-disc pl-6 space-y-2 text-gray-700">
-                <li>Registration data: Retained while you remain an active member of the community</li>
+                <li>Registration data: Retained while you remain part of the community</li>
                 <li>Booking records: Retained for operational and record-keeping purposes</li>
-                <li>Contact inquiries: Retained until the inquiry is resolved and for a reasonable period thereafter</li>
+                <li>Contact inquiries: Retained until the inquiry is resolved and for a reasonable period afterward</li>
+                <li>Support offers and received gifts: Retained so the court can account for what arrived</li>
                 <li>Admin authentication data: Retained while the account is active</li>
               </ul>
             </div>
@@ -187,9 +194,8 @@ export default function PrivacyPolicy() {
             <div className="mb-12">
               <h2 className="text-3xl font-bold text-gray-900 mb-6">Children's Privacy</h2>
               <p className="text-gray-700">
-                Our services are open to players of all ages, including minors. If you are under 18, please ensure you have 
-                parental or guardian consent before providing personal information. We take special care with information 
-                provided by or about minors and comply with applicable laws regarding children's privacy.
+                Our services are open to players of all ages, including minors. If you are under 18, a parent or guardian must agree before we store your registration.
+                We keep guardian details for safety and do not publish them.
               </p>
             </div>
 

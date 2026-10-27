@@ -67,6 +67,8 @@ const timelineEvents = [
     title: "Lighting System: Lessons Learned",
     description: "An attempted solar lighting installation revealed supply chain issues. Batteries sourced from China proved defective and were removed. The court returned to grid power. A proper lighting upgrade remains a priority.",
     phase: "active" as const,
+    href: "/support?focus=lighting",
+    linkLabel: "Support the lighting upgrade",
   },
   {
     date: "Today",

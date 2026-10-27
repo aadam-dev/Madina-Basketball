@@ -11,15 +11,25 @@ export default async function AdminDashboard() {
     redirect('/admin/login');
   }
   // Fetch statistics
-  const [eventsResult, teamResult, gamesResult] = await Promise.all([
-    supabaseAdmin.from('events').select('id', { count: 'exact' }),
-    supabaseAdmin.from('team_members').select('id', { count: 'exact' }),
-    supabaseAdmin.from('games').select('id', { count: 'exact' }),
+  const [eventsResult, teamResult, gamesResult, registrationsResult, bookingsResult, messagesResult, supportResult, joinResult] = await Promise.all([
+    supabaseAdmin.from('events').select('id', { count: 'exact', head: true }),
+    supabaseAdmin.from('team_members').select('id', { count: 'exact', head: true }),
+    supabaseAdmin.from('games').select('id', { count: 'exact', head: true }),
+    supabaseAdmin.from('player_registrations').select('id', { count: 'exact', head: true }).eq('status', 'new'),
+    supabaseAdmin.from('court_bookings').select('id', { count: 'exact', head: true }).eq('status', 'requested'),
+    supabaseAdmin.from('contact_messages').select('id', { count: 'exact', head: true }).eq('status', 'open'),
+    supabaseAdmin.from('support_offers').select('id', { count: 'exact', head: true }).eq('status', 'new'),
+    supabaseAdmin.from('role_applications').select('id', { count: 'exact', head: true }).eq('status', 'new'),
   ]);
 
   const eventsCount = eventsResult.count || 0;
   const teamCount = teamResult.count || 0;
   const gamesCount = gamesResult.count || 0;
+  const registrationsCount = registrationsResult.count || 0;
+  const bookingsCount = bookingsResult.count || 0;
+  const messagesCount = messagesResult.count || 0;
+  const supportCount = supportResult.count || 0;
+  const joinCount = joinResult.count || 0;
 
   // Get upcoming events
   const { data: upcomingEvents } = await supabaseAdmin
@@ -94,6 +104,29 @@ export default async function AdminDashboard() {
             <Activity className="w-12 h-12 text-gray-300" />
           </div>
         </div>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-5 gap-6 mb-8">
+        <Link href="/admin/registrations" className="bg-white rounded-lg shadow p-6 hover:shadow-md">
+          <p className="text-sm text-gray-600 mb-1">New registrations</p>
+          <p className="text-3xl font-bold text-gray-900">{registrationsCount}</p>
+        </Link>
+        <Link href="/admin/join" className="bg-white rounded-lg shadow p-6 hover:shadow-md">
+          <p className="text-sm text-gray-600 mb-1">Join applications</p>
+          <p className="text-3xl font-bold text-gray-900">{joinCount}</p>
+        </Link>
+        <Link href="/admin/bookings" className="bg-white rounded-lg shadow p-6 hover:shadow-md">
+          <p className="text-sm text-gray-600 mb-1">Booking requests</p>
+          <p className="text-3xl font-bold text-gray-900">{bookingsCount}</p>
+        </Link>
+        <Link href="/admin/messages" className="bg-white rounded-lg shadow p-6 hover:shadow-md">
+          <p className="text-sm text-gray-600 mb-1">Open messages</p>
+          <p className="text-3xl font-bold text-gray-900">{messagesCount}</p>
+        </Link>
+        <Link href="/admin/support" className="bg-white rounded-lg shadow p-6 hover:shadow-md">
+          <p className="text-sm text-gray-600 mb-1">New support offers</p>
+          <p className="text-3xl font-bold text-gray-900">{supportCount}</p>
+        </Link>
       </div>
 
       {/* Quick Actions - Prioritizing Activities */}

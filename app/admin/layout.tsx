@@ -1,7 +1,7 @@
 import { redirect } from 'next/navigation';
 import { getSession } from '@/lib/auth';
 import Link from 'next/link';
-import { LogOut, Calendar, FileText, Users, Home, LayoutDashboard, UserCog, Trophy, Image as ImageIcon, Megaphone } from 'lucide-react';
+import { Calendar, FileText, Users, Home, LayoutDashboard, UserCog, Trophy, Image as ImageIcon, Megaphone, ClipboardList, Inbox, HeartHandshake, BarChart3, UserPlus, Eye } from 'lucide-react';
 import LogoutButton from '@/components/admin/LogoutButton';
 import NotificationBell from '@/components/admin/NotificationBell';
 
@@ -103,6 +103,42 @@ export default async function AdminLayout({
                 >
                   <Megaphone className="w-4 h-4" />
                   <span>Announcements</span>
+                </Link>
+              </div>
+            </div>
+
+            <div>
+              <div className="px-4 mb-2 text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                Operations
+              </div>
+              <div className="space-y-1">
+                <Link href="/admin/registrations" className="flex items-center space-x-3 px-4 py-2.5 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors text-sm">
+                  <ClipboardList className="w-4 h-4" />
+                  <span>Registrations</span>
+                </Link>
+                <Link href="/admin/join" className="flex items-center space-x-3 px-4 py-2.5 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors text-sm">
+                  <UserPlus className="w-4 h-4" />
+                  <span>Join applications</span>
+                </Link>
+                <Link href="/admin/bookings" className="flex items-center space-x-3 px-4 py-2.5 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors text-sm">
+                  <Calendar className="w-4 h-4" />
+                  <span>Bookings</span>
+                </Link>
+                <Link href="/admin/messages" className="flex items-center space-x-3 px-4 py-2.5 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors text-sm">
+                  <Inbox className="w-4 h-4" />
+                  <span>Messages</span>
+                </Link>
+                <Link href="/admin/support" className="flex items-center space-x-3 px-4 py-2.5 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors text-sm">
+                  <HeartHandshake className="w-4 h-4" />
+                  <span>Support</span>
+                </Link>
+                <Link href="/admin/impact" className="flex items-center space-x-3 px-4 py-2.5 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors text-sm">
+                  <BarChart3 className="w-4 h-4" />
+                  <span>Impact</span>
+                </Link>
+                <Link href="/admin/visits" className="flex items-center space-x-3 px-4 py-2.5 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors text-sm">
+                  <Eye className="w-4 h-4" />
+                  <span>Visits</span>
                 </Link>
               </div>
             </div>

@@ -91,6 +91,10 @@ export default function NotificationBell() {
         return "text-purple-600 bg-purple-50";
       case "contact":
         return "text-orange-600 bg-orange-50";
+      case "support":
+        return "text-rose-700 bg-rose-50";
+      case "join":
+        return "text-teal-700 bg-teal-50";
       default:
         return "text-gray-600 bg-gray-50";
     }

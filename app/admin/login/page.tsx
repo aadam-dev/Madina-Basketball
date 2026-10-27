@@ -5,9 +5,21 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Lock, Mail, ArrowRight } from "lucide-react";
 
+const ADMIN_EMAIL_DOMAIN = "madinabasketball.com";
+
+function buildAdminEmail(localPart: string): string {
+  const trimmed = localPart.trim().toLowerCase();
+  if (!trimmed) return "";
+  if (trimmed.includes("@")) {
+    const [local] = trimmed.split("@");
+    return `${local}@${ADMIN_EMAIL_DOMAIN}`;
+  }
+  return `${trimmed}@${ADMIN_EMAIL_DOMAIN}`;
+}
+
 export default function AdminLogin() {
   const router = useRouter();
-  const [email, setEmail] = useState("");
+  const [localPart, setLocalPart] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -30,6 +42,13 @@ export default function AdminLogin() {
     e.preventDefault();
     setError("");
     setLoading(true);
+
+    const email = buildAdminEmail(localPart);
+    if (!email) {
+      setError("Enter your admin username.");
+      setLoading(false);
+      return;
+    }
 
     try {
       const response = await fetch("/api/auth/login", {
@@ -84,20 +103,30 @@ export default function AdminLogin() {
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
-              Email Address
+            <label htmlFor="email-local" className="block text-sm font-medium text-gray-700 mb-2">
+              Email
             </label>
-            <div className="relative">
-              <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
-              <input
-                id="email"
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
-                placeholder="admin@example.com"
-              />
+            <div className="relative flex rounded-lg border border-gray-300 focus-within:ring-2 focus-within:ring-primary focus-within:border-transparent overflow-hidden">
+              <div className="relative flex-1 min-w-0">
+                <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none" />
+                <input
+                  id="email-local"
+                  type="text"
+                  autoComplete="username"
+                  value={localPart}
+                  onChange={(e) => setLocalPart(e.target.value.replace(/@.*/, ""))}
+                  required
+                  className="w-full pl-10 pr-2 py-3 border-0 focus:ring-0 focus:outline-none"
+                  placeholder="admin"
+                  aria-describedby="email-domain"
+                />
+              </div>
+              <span
+                id="email-domain"
+                className="shrink-0 self-stretch flex items-center px-3 bg-gray-50 text-gray-600 text-sm border-l border-gray-300 select-none"
+              >
+                @{ADMIN_EMAIL_DOMAIN}
+              </span>
             </div>
           </div>
 

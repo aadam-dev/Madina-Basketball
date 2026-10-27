@@ -38,9 +38,10 @@ export async function GET(request: NextRequest) {
   }
 }
 
-// POST - Create a new notification
+// POST - Create a new notification (admins only; public forms write from the server)
 export async function POST(request: NextRequest) {
   try {
+    await requireAuth();
     const body = await request.json();
     const { type, title, message, data, link } = body;
 
@@ -68,7 +69,10 @@ export async function POST(request: NextRequest) {
     }
 
     return NextResponse.json(notification);
-  } catch (error) {
+  } catch (error: any) {
+    if (error.message === 'Unauthorized') {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
     console.error('Error creating notification:', error);
     return NextResponse.json(
       { error: 'Failed to create notification' },

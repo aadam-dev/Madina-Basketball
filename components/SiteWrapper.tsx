@@ -12,11 +12,13 @@
 
 "use client";
 
+import { Suspense } from "react";
 import { usePathname } from "next/navigation";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import OfflineIndicator from "@/components/OfflineIndicator";
 import FloatingActions from "@/components/FloatingActions";
+import VisitBeacon from "@/components/VisitBeacon";
 import { useOfflineSync } from "@/lib/hooks/useGameAutoSave";
 
 export default function SiteWrapper({ children }: { children: React.ReactNode }) {
@@ -44,6 +46,9 @@ export default function SiteWrapper({ children }: { children: React.ReactNode })
       <Footer />
       <FloatingActions />
       <OfflineIndicator />
+      <Suspense fallback={null}>
+        <VisitBeacon />
+      </Suspense>
     </>
   );
 }
