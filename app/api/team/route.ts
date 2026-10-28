@@ -39,7 +39,7 @@ export async function POST(request: NextRequest) {
     await requireAuth(); // Ensure user is authenticated
 
     const body = await request.json();
-    const { name, role, description, image_url, section, order_index = 0 } = body;
+    const { name, role, description, bio, image_url, section, order_index = 0 } = body;
 
     // Validation
     if (!name || !role || !section) {
@@ -54,7 +54,7 @@ export async function POST(request: NextRequest) {
       .insert({
         name,
         role,
-        description,
+        bio: bio ?? description ?? null,
         image_url,
         section,
         order_index,

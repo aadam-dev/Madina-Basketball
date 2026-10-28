@@ -18,7 +18,7 @@ export default function TeamMemberForm({ memberId, initialData }: TeamMemberForm
   const [formData, setFormData] = useState({
     name: "",
     role: "",
-    description: "",
+    bio: "",
     image_url: "",
     section: "executive",
     order_index: 0,
@@ -29,7 +29,7 @@ export default function TeamMemberForm({ memberId, initialData }: TeamMemberForm
       setFormData({
         name: initialData.name || "",
         role: initialData.role || "",
-        description: initialData.description || "",
+        bio: initialData.bio || initialData.description || "",
         image_url: initialData.image_url || "",
         section: initialData.section || "executive",
         order_index: initialData.order_index || 0,
@@ -89,7 +89,7 @@ export default function TeamMemberForm({ memberId, initialData }: TeamMemberForm
         throw new Error(data.error || "Failed to save team member");
       }
 
-      router.push("/admin/team");
+      router.push("/admin/staff");
       router.refresh();
     } catch (err: any) {
       setError(err.message || "An error occurred");
@@ -171,11 +171,11 @@ export default function TeamMemberForm({ memberId, initialData }: TeamMemberForm
             Description
           </label>
           <textarea
-            value={formData.description}
-            onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+            value={formData.bio}
+            onChange={(e) => setFormData({ ...formData, bio: e.target.value })}
             rows={4}
             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
-            placeholder="Team member description"
+            placeholder="Short bio"
           />
         </div>
 
@@ -214,7 +214,7 @@ export default function TeamMemberForm({ memberId, initialData }: TeamMemberForm
       <div className="flex items-center justify-end space-x-4 pt-4 border-t">
         <button
           type="button"
-          onClick={() => router.push("/admin/team")}
+          onClick={() => router.push("/admin/staff")}
           className="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50"
         >
           Cancel

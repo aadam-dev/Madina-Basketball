@@ -44,7 +44,7 @@ export async function PUT(
     await requireAuth(); // Ensure user is authenticated
 
     const body = await request.json();
-    const { name, role, description, image_url, section, order_index } = body;
+    const { name, role, description, bio, image_url, section, order_index } = body;
 
     const updateData: any = {
       updated_at: new Date().toISOString(),
@@ -52,7 +52,7 @@ export async function PUT(
 
     if (name !== undefined) updateData.name = name;
     if (role !== undefined) updateData.role = role;
-    if (description !== undefined) updateData.description = description;
+    if (bio !== undefined || description !== undefined) updateData.bio = bio ?? description ?? null;
     if (image_url !== undefined) updateData.image_url = image_url;
     if (section !== undefined) updateData.section = section;
     if (order_index !== undefined) updateData.order_index = order_index;

@@ -26,7 +26,7 @@ import ServiceWorkerRegistration from "@/components/ServiceWorkerRegistration";
  */
 const poppins = Poppins({
   subsets: ["latin"],
-  weight: ["400", "600", "700"], // Regular, Semi-bold, Bold
+  weight: ["400", "500", "600", "700"],
   variable: "--font-poppins",
   display: "swap", // Show fallback font until Poppins loads
   preload: true, // Preload font for faster rendering

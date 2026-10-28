@@ -30,35 +30,42 @@ type Item = { href: string; label: string; icon: typeof LayoutDashboard };
 const GROUPS: { label: string; items: Item[] }[] = [
   {
     label: "Overview",
-    items: [{ href: "/admin", label: "Dashboard", icon: LayoutDashboard }],
-  },
-  {
-    label: "Operations",
     items: [
-      { href: "/admin/registrations", label: "Registrations", icon: ClipboardList },
-      { href: "/admin/join", label: "Join applications", icon: UserPlus },
-      { href: "/admin/bookings", label: "Bookings", icon: Calendar },
-      { href: "/admin/messages", label: "Messages", icon: Inbox },
-      { href: "/admin/support", label: "Support", icon: HeartHandshake },
-      { href: "/admin/impact", label: "Impact", icon: BarChart3 },
-      { href: "/admin/visits", label: "Visits", icon: Eye },
+      { href: "/admin", label: "Dashboard", icon: LayoutDashboard },
+      { href: "/admin/impact", label: "Analytics", icon: BarChart3 },
     ],
   },
   {
-    label: "Content",
+    label: "Inbox",
     items: [
-      { href: "/admin/content", label: "Page content", icon: FileText },
-      { href: "/admin/events", label: "Events", icon: Calendar },
-      { href: "/admin/games", label: "Games", icon: Trophy },
-      { href: "/admin/media", label: "Media", icon: ImageIcon },
-      { href: "/admin/announcements", label: "Announcements", icon: Megaphone },
+      { href: "/admin/registrations", label: "Registrations", icon: ClipboardList },
+      { href: "/admin/join", label: "Join", icon: UserPlus },
+      { href: "/admin/bookings", label: "Bookings", icon: Calendar },
+      { href: "/admin/messages", label: "Messages", icon: Inbox },
+      { href: "/admin/support", label: "Support", icon: HeartHandshake },
     ],
   },
   {
     label: "People",
     items: [
-      { href: "/admin/players", label: "Players", icon: Users },
+      { href: "/admin/players", label: "Roster", icon: Users },
       { href: "/admin/staff", label: "Staff", icon: UserCog },
+    ],
+  },
+  {
+    label: "Court",
+    items: [
+      { href: "/admin/events", label: "Events", icon: Calendar },
+      { href: "/admin/games", label: "Games", icon: Trophy },
+      { href: "/admin/visits", label: "Visits", icon: Eye },
+    ],
+  },
+  {
+    label: "Site",
+    items: [
+      { href: "/admin/content", label: "Content", icon: FileText },
+      { href: "/admin/media", label: "Media", icon: ImageIcon },
+      { href: "/admin/announcements", label: "Announcements", icon: Megaphone },
     ],
   },
 ];
@@ -70,10 +77,10 @@ function isActive(pathname: string, href: string) {
 
 function NavLinks({ pathname, onNavigate }: { pathname: string; onNavigate?: () => void }) {
   return (
-    <nav className="space-y-6">
+    <nav className="space-y-7">
       {GROUPS.map((group) => (
         <div key={group.label}>
-          <p className="px-3 text-[11px] font-semibold uppercase tracking-[0.16em] text-white/35">
+          <p className="px-2.5 text-[10px] font-semibold uppercase tracking-[0.18em] text-white/30">
             {group.label}
           </p>
           <div className="mt-2 space-y-0.5">
@@ -85,14 +92,14 @@ function NavLinks({ pathname, onNavigate }: { pathname: string; onNavigate?: () 
                   key={item.href}
                   href={item.href}
                   onClick={onNavigate}
-                  className={`flex items-center gap-3 rounded-xl px-3 py-2 text-sm transition-colors ${
+                  className={`group flex items-center gap-2.5 rounded-lg px-2.5 py-2 text-[13px] transition-colors ${
                     active
-                      ? "bg-white text-slate-950"
-                      : "text-white/70 hover:bg-white/10 hover:text-white"
+                      ? "bg-white text-slate-950 shadow-sm"
+                      : "text-white/65 hover:bg-white/10 hover:text-white"
                   }`}
                 >
-                  <Icon className={`h-4 w-4 ${active ? "text-primary" : "text-white/45"}`} />
-                  <span className="font-medium">{item.label}</span>
+                  <Icon className={`h-4 w-4 shrink-0 ${active ? "text-primary" : "text-white/40 group-hover:text-white/70"}`} />
+                  <span className="font-medium tracking-tight">{item.label}</span>
                 </Link>
               );
             })}
@@ -120,13 +127,13 @@ export function AdminShell({
   const local = email.split("@")[0] || email;
 
   return (
-    <div className="min-h-screen bg-[#f4f5f7] text-slate-900">
-      <aside className="fixed inset-y-0 left-0 z-40 hidden w-[248px] flex-col border-r border-white/5 bg-[#121418] px-3 py-5 md:flex">
-        <Link href="/admin" className="px-3 pb-6">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-primary">Madina</p>
-          <p className="mt-1 text-lg font-semibold tracking-tight text-white">Backoffice</p>
+    <div className="min-h-screen bg-[#f3f4f6] text-slate-900">
+      <aside className="fixed inset-y-0 left-0 z-40 hidden w-[220px] flex-col bg-[#0f1115] px-2.5 py-4 md:flex">
+        <Link href="/admin" className="mb-6 px-2.5">
+          <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-primary">Madina</p>
+          <p className="mt-0.5 text-[15px] font-semibold tracking-tight text-white">Operations</p>
         </Link>
-        <div className="flex-1 overflow-y-auto pb-6">
+        <div className="flex-1 overflow-y-auto pb-4">
           <NavLinks pathname={pathname} />
         </div>
       </aside>
@@ -135,18 +142,18 @@ export function AdminShell({
         <button
           type="button"
           aria-label="Close menu"
-          className="fixed inset-0 z-40 bg-slate-950/40 md:hidden"
+          className="fixed inset-0 z-40 bg-slate-950/45 md:hidden"
           onClick={() => setOpen(false)}
         />
       ) : null}
 
       <aside
-        className={`fixed inset-y-0 left-0 z-50 w-[248px] flex-col border-r border-white/5 bg-[#121418] px-3 py-5 md:hidden ${
+        className={`fixed inset-y-0 left-0 z-50 w-[220px] flex-col bg-[#0f1115] px-2.5 py-4 md:hidden ${
           open ? "flex" : "hidden"
         }`}
       >
-        <div className="mb-6 flex items-center justify-between px-3">
-          <p className="text-lg font-semibold tracking-tight text-white">Backoffice</p>
+        <div className="mb-5 flex items-center justify-between px-2.5">
+          <p className="text-[15px] font-semibold tracking-tight text-white">Operations</p>
           <button type="button" onClick={() => setOpen(false)} className="text-white/70" aria-label="Close">
             <X className="h-5 w-5" />
           </button>
@@ -156,9 +163,9 @@ export function AdminShell({
         </div>
       </aside>
 
-      <div className="md:pl-[248px]">
-        <header className="sticky top-0 z-30 flex h-14 items-center justify-between gap-3 border-b border-slate-200/80 bg-[#f4f5f7]/85 px-4 backdrop-blur-md sm:px-6">
-          <div className="flex items-center gap-3">
+      <div className="md:pl-[220px]">
+        <header className="sticky top-0 z-30 flex h-12 items-center justify-between gap-3 border-b border-slate-200/70 bg-[#f3f4f6]/90 px-4 backdrop-blur-md sm:px-6">
+          <div className="flex items-center gap-2">
             <button
               type="button"
               className="rounded-lg p-2 text-slate-600 hover:bg-white md:hidden"
@@ -168,22 +175,22 @@ export function AdminShell({
               <Menu className="h-5 w-5" />
             </button>
             <p className="text-sm text-slate-500">
-              Signed in as <span className="font-medium text-slate-800">{local}</span>
+              <span className="font-medium text-slate-800">{local}</span>
             </p>
           </div>
-          <div className="flex items-center gap-1 sm:gap-2">
+          <div className="flex items-center gap-1">
             <NotificationBell />
             <Link
               href="/"
-              className="inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm text-slate-600 hover:bg-white hover:text-slate-900"
+              className="inline-flex items-center gap-1.5 rounded-full px-2.5 py-1.5 text-sm text-slate-600 hover:bg-white hover:text-slate-900"
             >
               <Home className="h-4 w-4" />
-              <span className="hidden sm:inline">View site</span>
+              <span className="hidden sm:inline">Site</span>
             </Link>
             <LogoutButton />
           </div>
         </header>
-        <main className="px-4 py-6 sm:px-6 lg:px-8 lg:py-8">{children}</main>
+        <main className="px-4 py-5 sm:px-6 lg:px-8 lg:py-7">{children}</main>
       </div>
     </div>
   );
