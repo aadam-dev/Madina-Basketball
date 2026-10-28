@@ -14,8 +14,8 @@ const DEFAULT_CSV =
 const POLICY = "2026-10";
 
 const GENDER_BY_FULL_NAME = {
-  phoebe: "woman",
-  "phoebe owusu": "woman",
+  phoebe: "female",
+  "phoebe owusu": "female",
 };
 
 function parseCsv(text) {
@@ -146,34 +146,69 @@ function mapInterests(involvement, playStyle, gender) {
   if (/regular games/i.test(text)) set.add("pickup");
   if (/training/i.test(text)) set.add("training");
   if (/actively/i.test(playStyle)) set.add("competitive");
-  if (gender === "woman") set.add("girls_women");
+  if (gender === "female") set.add("girls_women");
   if (!set.size) set.add("pickup");
   return [...set];
 }
 
 function mapGender(fullName) {
   const key = fullName.trim().toLowerCase().replace(/\s+/g, " ");
-  return GENDER_BY_FULL_NAME[key] || "man";
+  return GENDER_BY_FULL_NAME[key] || "male";
 }
 
-function profileNotes(row) {
-  const lines = [];
-  const nick = get(row, "Nickname / Preferred Name");
-  const position = get(row, "Primary Playing Position");
-  const jersey = get(row, "Jersey Number (if any)");
+function mapPosition(raw) {
+  const text = raw.toLowerCase();
+  if (!text) return null;
+  if (text.includes("guard") || text.includes("point") || text.includes("shooting")) return "guard";
+  if (text.includes("forward") || text.includes("wing")) return "forward";
+  if (text.includes("center") || text.includes("post")) return "center";
+  return "flexible";
+}
+
+function mapDays(raw) {
+  const text = raw.toLowerCase();
+  const days = [];
+  const map = [
+    ["mon", /mon/],
+    ["tue", /tue/],
+    ["wed", /wed/],
+    ["thu", /thu|thur/],
+    ["fri", /fri/],
+    ["sat", /sat/],
+    ["sun", /sun/],
+  ];
+  for (const [key, re] of map) if (re.test(text)) days.push(key);
+  return days;
+}
+
+function mapTimes(raw) {
+  const text = raw.toLowerCase();
+  const times = [];
+  if (/morn/.test(text)) times.push("morning");
+  if (/after/.test(text)) times.push("afternoon");
+  if (/even|night/.test(text)) times.push("evening");
+  return times;
+}
+
+function profileFields(row) {
+  const nick = get(row, "Nickname / Preferred Name") || null;
+  const position = mapPosition(get(row, "Primary Playing Position"));
+  const jersey = get(row, "Jersey Number (if any)") || null;
   const teams = get(row, "If yes, what team(s)");
   const teamAff = get(row, "Do you play with a specific team? (Team Affiliation)");
-  const days = get(row, "Available Days ", "Available Days");
-  const times = get(row, "Available Times");
-  const playerNotes = get(row, "Additional Notes or Concerns (if any)");
-
-  if (nick) lines.push(`Nickname: ${nick}`);
-  if (position) lines.push(`Position: ${position}`);
-  if (jersey) lines.push(`Jersey: ${jersey}`);
-  if (/^yes$/i.test(teamAff) && teams) lines.push(`Team: ${teams}`);
-  if (days || times) lines.push(`Available: ${[days, times].filter(Boolean).join(" · ")}`);
-  if (playerNotes) lines.push(playerNotes);
-  return lines.length ? lines.join("\n") : null;
+  const team_name = /^yes$/i.test(teamAff) && teams ? teams : null;
+  const available_days = mapDays(get(row, "Available Days ", "Available Days"));
+  const available_times = mapTimes(get(row, "Available Times"));
+  const player_notes = get(row, "Additional Notes or Concerns (if any)") || null;
+  return {
+    nickname: nick,
+    playing_position: position,
+    jersey_number: jersey,
+    team_name,
+    available_days,
+    available_times,
+    player_notes,
+  };
 }
 
 function mapRow(row) {
@@ -232,7 +267,8 @@ function mapRow(row) {
     medical_notes: null,
     photo_consent: photo,
     consents,
-    admin_notes: profileNotes(row),
+    admin_notes: null,
+    ...profileFields(row),
     created_at: createdAt,
   };
 }

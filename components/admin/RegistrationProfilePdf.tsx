@@ -8,7 +8,7 @@ export type ProfileData = {
   id: string;
   full_name: string;
   status: string;
-  date_of_birth: string;
+  date_of_birth: string | null;
   age: number | null;
   gender: string | null;
   phone: string;
@@ -153,7 +153,7 @@ export function RegistrationProfilePdf({ profile }: { profile: ProfileData }) {
               </div>
               <div className="rounded-xl border border-white/10 bg-white/5 p-4">
                 <p className="text-[10px] font-bold uppercase tracking-widest text-white/40">Born</p>
-                <p className="mt-1 text-lg font-semibold">{profile.date_of_birth}</p>
+                <p className="mt-1 text-lg font-semibold">{profile.date_of_birth || "Not given"}</p>
               </div>
               <div className="rounded-xl border border-white/10 bg-white/5 p-4">
                 <p className="text-[10px] font-bold uppercase tracking-widest text-white/40">Gender</p>

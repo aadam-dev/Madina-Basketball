@@ -96,9 +96,16 @@ export default function Header() {
               <Link
                 href="/contact"
                 prefetch={true}
-                className="ml-3 px-5 py-2 bg-[#ff6b35] text-white text-[0.78rem] font-bold rounded-lg hover:bg-[#e55a2b] transition-colors uppercase tracking-wider"
+                className="ml-2 px-3 py-2 text-[0.78rem] font-semibold uppercase tracking-wider text-white/55 transition-colors hover:text-white"
               >
                 Contact
+              </Link>
+              <Link
+                href="/register"
+                prefetch={true}
+                className="ml-1 px-5 py-2 bg-[#ff6b35] text-white text-[0.78rem] font-bold rounded-lg hover:bg-[#e55a2b] transition-colors uppercase tracking-wider"
+              >
+                Register
               </Link>
             </div>
 
@@ -164,13 +171,20 @@ export default function Header() {
               })}
             </div>
 
-            {/* Contact CTA */}
-            <div className="mt-6 pt-6 border-t border-white/8">
+            <div className="mt-6 space-y-2 border-t border-white/8 pt-6">
+              <Link
+                href="/register"
+                prefetch={true}
+                onClick={() => setOpen(false)}
+                className="flex h-[52px] w-full items-center justify-center rounded-xl bg-[#ff6b35] text-base font-bold uppercase tracking-wider text-white transition-colors hover:bg-[#e55a2b]"
+              >
+                Register to Play
+              </Link>
               <Link
                 href="/contact"
                 prefetch={true}
                 onClick={() => setOpen(false)}
-                className="flex items-center justify-center h-[52px] w-full bg-[#ff6b35] text-white text-base font-bold rounded-xl hover:bg-[#e55a2b] transition-colors uppercase tracking-wider"
+                className="flex h-[48px] w-full items-center justify-center rounded-xl border border-white/15 text-sm font-semibold uppercase tracking-wider text-white/70 transition-colors hover:bg-white/5 hover:text-white"
               >
                 Contact Us
               </Link>

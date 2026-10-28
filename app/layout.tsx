@@ -36,7 +36,10 @@ const poppins = Poppins({
  * SEO Metadata
  * Used for search engines and social media sharing
  */
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://madinaball.vercel.app";
+
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   title: "Madina Basketball | Community-Built Court, Now Active",
   description: "A grassroots basketball initiative in Libya Quarters, Madina (Accra, Ghana). Community-renovated court, now active with training programs, pick-up games, and bookings.",
   keywords: "basketball, Madina, Accra, Ghana, community sports, youth development, Libya Quarters",
@@ -51,12 +54,13 @@ export const metadata: Metadata = {
     statusBarStyle: 'default',
     title: 'MBB Score',
   },
-  viewport: {
-    width: 'device-width',
-    initialScale: 1,
-    maximumScale: 5,
-    userScalable: true,
-  },
+};
+
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+  userScalable: true,
 };
 
 /**

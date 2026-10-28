@@ -7,9 +7,12 @@ import {
   CONTACT_SUBJECTS,
   CONSENT_COPY,
   DURATIONS,
+  AVAILABLE_DAYS,
+  AVAILABLE_TIMES,
   GENDERS,
   HEARD_FROM,
   INTERESTS,
+  PLAYING_POSITIONS,
   POLICY_VERSION,
   RELATIONSHIPS,
   SKILL_LEVELS,
@@ -87,7 +90,13 @@ function consentsField(expected: { key: ConsentKey; required: boolean }[]) {
 export const registerSchema = z
   .object({
     full_name: requiredText("Full name"),
-    date_of_birth: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "Enter a valid date of birth."),
+    nickname: z.string().trim().max(80).optional().transform((value) => value || null),
+    date_of_birth: z
+      .string()
+      .trim()
+      .refine((value) => value === "" || /^\d{4}-\d{2}-\d{2}$/.test(value), "Enter a valid date of birth.")
+      .transform((value) => (value === "" ? null : value)),
+    under_18: z.boolean().optional().default(false),
     gender: z.union([z.enum(GENDERS), z.literal("")]).transform((value) => (value === "" ? null : value)),
     phone: phoneField,
     email: emailField,
@@ -95,7 +104,15 @@ export const registerSchema = z
     area_other: z.string().trim().max(80).optional().transform((value) => value || null),
     skill_level: z.enum(SKILL_LEVELS, { errorMap: () => ({ message: "Choose a skill level." }) }),
     interests: z.array(z.enum(INTERESTS)).min(1, "Choose at least one way you want to play."),
+    playing_position: z
+      .union([z.enum(PLAYING_POSITIONS), z.literal("")])
+      .transform((value) => (value === "" ? null : value)),
+    jersey_number: z.string().trim().max(10).optional().transform((value) => value || null),
+    team_name: z.string().trim().max(120).optional().transform((value) => value || null),
+    available_days: z.array(z.enum(AVAILABLE_DAYS)).default([]),
+    available_times: z.array(z.enum(AVAILABLE_TIMES)).default([]),
     heard_from: z.union([z.enum(HEARD_FROM), z.literal("")]).transform((value) => (value === "" ? null : value)),
+    player_notes: z.string().trim().max(500).optional().transform((value) => value || null),
     emergency_name: requiredText("Emergency contact name"),
     emergency_relationship: z.enum(RELATIONSHIPS, { errorMap: () => ({ message: "Choose a relationship." }) }),
     emergency_phone: phoneField,
@@ -112,19 +129,21 @@ export const registerSchema = z
     ]),
   })
   .superRefine((value, ctx) => {
-    const age = ageFromDob(value.date_of_birth);
-    if (age === null || age < 6 || age > 80) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        path: ["date_of_birth"],
-        message: "Age must be between 6 and 80.",
-      });
+    const age = value.date_of_birth ? ageFromDob(value.date_of_birth) : null;
+    if (value.date_of_birth) {
+      if (age === null || age < 6 || age > 80) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          path: ["date_of_birth"],
+          message: "Age must be between 6 and 80.",
+        });
+      }
     }
-    if (value.area === "Other" && !value.area_other) {
+    if ((value.area === "Other" || value.area === "Nearby community") && !value.area_other) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
         path: ["area_other"],
-        message: "Tell us the area.",
+        message: value.area === "Nearby community" ? "Which nearby area?" : "Tell us the area.",
       });
     }
     if (value.emergency_phone === value.phone) {
@@ -134,7 +153,11 @@ export const registerSchema = z
         message: "Use a number that is not the player's own phone.",
       });
     }
-    if (age !== null && age < 18) {
+    const minor = (age !== null && age < 18) || (!value.date_of_birth && value.under_18);
+    if (!value.date_of_birth && value.under_18 === undefined) {
+      // under_18 defaults false; if no DOB we still allow adults through without the toggle
+    }
+    if (minor) {
       if (!value.guardian_name) {
         ctx.addIssue({ code: z.ZodIssueCode.custom, path: ["guardian_name"], message: "Guardian name is required for players under 18." });
       }
@@ -151,11 +174,12 @@ export const registerSchema = z
     }
   })
   .transform((value) => {
-    const age = ageFromDob(value.date_of_birth);
-    const minor = age !== null && age < 18;
+    const age = value.date_of_birth ? ageFromDob(value.date_of_birth) : null;
+    const minor = (age !== null && age < 18) || (!value.date_of_birth && value.under_18);
     const photo = value.consents.find((item) => item.key === "photo")?.accepted === true;
+    const { under_18: _under18, ...rest } = value;
     return {
-      ...value,
+      ...rest,
       guardian_name: minor ? value.guardian_name : null,
       guardian_relationship: minor ? value.guardian_relationship : null,
       guardian_phone: minor && value.guardian_phone ? normalizeGhanaPhone(value.guardian_phone) : null,

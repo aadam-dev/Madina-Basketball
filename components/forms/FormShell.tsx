@@ -2,6 +2,7 @@
 
 import type { ReactNode } from "react";
 import type { Tone } from "./controls";
+import { StepProgress } from "./controls";
 
 export function FormShell({
   tone,
@@ -19,11 +20,8 @@ export function FormShell({
   children: ReactNode;
 }) {
   const shell = tone === "dark" ? "form-shell-dark" : "form-shell-light";
-  const titleColor = tone === "dark" ? "text-white" : "text-gray-900";
-  const subColor = tone === "dark" ? "text-white/55" : "text-gray-600";
-  const stepIdle = tone === "dark" ? "text-white/35 border-white/15" : "text-gray-400 border-gray-200";
-  const stepActive = "text-[#ff6b35] border-[#ff6b35] form-rim-glow";
-  const stepDone = tone === "dark" ? "text-white border-[#ff6b35]/60" : "text-gray-800 border-[#ff6b35]/70";
+  const titleColor = tone === "dark" ? "text-white" : "text-slate-950";
+  const subColor = tone === "dark" ? "text-white/55" : "text-slate-600";
 
   return (
     <div className={`${shell} p-6 sm:p-8`}>
@@ -40,7 +38,7 @@ export function FormShell({
           />
         </svg>
       </div>
-      <div className="pointer-events-none absolute left-4 bottom-4 opacity-40" aria-hidden="true">
+      <div className="pointer-events-none absolute bottom-4 left-4 opacity-40" aria-hidden="true">
         <svg width="72" height="72" viewBox="0 0 72 72">
           <circle cx="36" cy="36" r="28" fill="none" stroke="#ff6b35" strokeWidth="2" strokeDasharray="4 6" />
           <circle cx="36" cy="36" r="10" fill="none" stroke="#004e89" strokeWidth="2" />
@@ -50,30 +48,14 @@ export function FormShell({
 
       <div className="relative z-10">
         <p className="mb-2 text-[0.65rem] font-bold uppercase tracking-[0.18em] text-[#ff6b35]">Madina Court</p>
-        <h3 className={`text-2xl font-black tracking-tight ${titleColor}`}>{title}</h3>
-        {subtitle ? <p className={`mt-1 text-sm ${subColor}`}>{subtitle}</p> : null}
+        <h3 className={`text-balance text-2xl font-black tracking-tight sm:text-[1.75rem] ${titleColor}`}>{title}</h3>
+        {subtitle ? <p className={`mt-1.5 max-w-xl text-pretty text-sm leading-relaxed ${subColor}`}>{subtitle}</p> : null}
 
-        {steps && steps.length > 0 ? (
-          <ol className="mt-6 mb-2 flex flex-wrap gap-2">
-            {steps.map((label, index) => {
-              const active = index === (activeStep ?? 0);
-              const done = index < (activeStep ?? 0);
-              return (
-                <li
-                  key={label}
-                  className={`rounded-full border px-3 py-1 text-xs font-semibold transition-colors ${
-                    active ? stepActive : done ? stepDone : stepIdle
-                  }`}
-                >
-                  <span className="mr-1 opacity-60">{index + 1}.</span>
-                  {label}
-                </li>
-              );
-            })}
-          </ol>
+        {steps && steps.length > 0 && typeof activeStep === "number" ? (
+          <StepProgress tone={tone} steps={steps} activeStep={activeStep} />
         ) : null}
 
-        <div key={activeStep ?? "form"} className="form-step-in mt-6">
+        <div key={activeStep ?? "form"} className="form-step-in mt-7">
           {children}
         </div>
       </div>

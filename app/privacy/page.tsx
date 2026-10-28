@@ -52,7 +52,7 @@ export default function PrivacyPolicy() {
                 We collect personal information that you voluntarily provide on this website when you:
               </p>
               <ul className="list-disc pl-6 space-y-2 text-gray-700 mb-6">
-                <li><strong>Register to Play:</strong> Name, date of birth, phone number, optional email, area, skill level, how you want to play, an emergency contact, and, for players under 18, a parent or guardian. A medical note is optional and only for emergencies.</li>
+                <li><strong>Register to Play:</strong> Name, phone number, email (if provided), area, skill level, how you want to play, optional date of birth and player details, an emergency contact, and, for players under 18, a parent or guardian. A medical note is optional and only for emergencies.</li>
                 <li><strong>Book the Court:</strong> Name, phone, optional email, organisation, date, time, and the purpose of the booking.</li>
                 <li id="messages"><strong>Contact Us:</strong> Name, phone, optional email, and the message. Volunteer notes are stored with the message so we can reply.</li>
                 <li id="support"><strong>Support the court:</strong> Name, phone, optional organisation and email, and what you are offering. This form does not collect payment. Your contact details stay private unless you allow us to list your name after a gift is received.</li>

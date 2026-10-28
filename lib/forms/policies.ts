@@ -1,11 +1,14 @@
 export const POLICY_VERSION = "2026-10";
 
 export const AREAS = ["Libya Quarters", "Madina", "Nearby community", "Other"] as const;
-export const GENDERS = ["woman", "man", "prefer_not_to_say"] as const;
+export const GENDERS = ["male", "female", "prefer_not_to_say"] as const;
 export const SKILL_LEVELS = ["beginner", "intermediate", "advanced"] as const;
 export const INTERESTS = ["pickup", "training", "competitive", "girls_women"] as const;
 export const HEARD_FROM = ["friend", "social", "event", "school", "other"] as const;
 export const RELATIONSHIPS = ["parent", "guardian", "spouse", "sibling", "friend", "other"] as const;
+export const PLAYING_POSITIONS = ["guard", "forward", "center", "flexible"] as const;
+export const AVAILABLE_DAYS = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"] as const;
+export const AVAILABLE_TIMES = ["morning", "afternoon", "evening"] as const;
 
 export const JOIN_ROLES = ["volunteer", "coach", "management"] as const;
 export const MANAGEMENT_AREAS = ["operations", "finance", "events", "comms", "youth"] as const;

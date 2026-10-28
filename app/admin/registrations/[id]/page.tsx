@@ -64,12 +64,25 @@ export default async function RegistrationDetail({ params }: { params: { id: str
       <dl className="grid gap-3 rounded-2xl border border-slate-200 bg-white p-4 sm:grid-cols-2 sm:p-5">
         <Fact label="Phone" value={row.phone} />
         <Fact label="Email" value={row.email} />
+        <Fact label="Nickname" value={row.nickname} />
         <Fact label="Date of birth" value={row.date_of_birth || "Not given"} />
         <Fact label="Gender" value={row.gender} />
         <Fact label="Area" value={displayArea(row.area, row.area_other)} />
         <Fact label="Skill" value={row.skill_level} />
         <Fact label="Interests" value={(row.interests || []).join(", ")} />
+        <Fact label="Position" value={row.playing_position} />
+        <Fact label="Jersey" value={row.jersey_number} />
+        <Fact label="Team" value={row.team_name} />
+        <Fact
+          label="Availability"
+          value={
+            [row.available_days?.length ? `Days: ${(row.available_days || []).join(", ")}` : null, row.available_times?.length ? `Times: ${(row.available_times || []).join(", ")}` : null]
+              .filter(Boolean)
+              .join(" · ") || null
+          }
+        />
         <Fact label="Heard from" value={row.heard_from} />
+        <Fact label="Player notes" value={row.player_notes} />
         <Fact label="Emergency contact" value={`${row.emergency_name} (${row.emergency_relationship}) ${row.emergency_phone}`} />
         <Fact label="Guardian" value={row.guardian_name ? `${row.guardian_name} (${row.guardian_relationship}) ${row.guardian_phone}` : null} />
         <Fact label="Medical note" value={row.medical_notes} />
