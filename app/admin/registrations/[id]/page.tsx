@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { getSession } from "@/lib/auth";
+import { displayArea } from "@/lib/forms/location";
 import { ageFromDob } from "@/lib/forms/phone";
 import { supabaseAdmin } from "@/lib/supabase-admin";
 import { Fact } from "@/components/admin/IntakeBits";
@@ -21,14 +22,17 @@ export default async function RegistrationDetail({ params }: { params: { id: str
     .neq("id", row.id);
 
   const consents = Array.isArray(row.consents) ? row.consents : [];
-  const age = ageFromDob(row.date_of_birth);
+  const age = row.date_of_birth ? ageFromDob(row.date_of_birth) : null;
 
   return (
     <div className="max-w-3xl space-y-6">
       <Link href="/admin/registrations" className="text-sm font-medium text-slate-500 hover:text-slate-950">Back to registrations</Link>
       <div>
         <h1 className="text-2xl font-semibold tracking-tight text-slate-950">{row.full_name}</h1>
-        <p className="mt-1 text-sm capitalize text-slate-500">{row.status}{age !== null ? ` · age ${age}` : ""}</p>
+        <p className="mt-1 text-sm capitalize text-slate-500">
+          {row.status}
+          {row.date_of_birth ? (age !== null ? ` · age ${age}` : ` · ${row.date_of_birth}`) : " · birthday not given"}
+        </p>
         {(count || 0) > 0 ? (
           <p className="mt-2 text-sm text-amber-800">This phone matches another registration. A parent may have signed up more than one player.</p>
         ) : null}
@@ -43,7 +47,7 @@ export default async function RegistrationDetail({ params }: { params: { id: str
           gender: row.gender,
           phone: row.phone,
           email: row.email,
-          area: row.area === "Other" ? row.area_other || "Other" : row.area,
+          area: displayArea(row.area, row.area_other),
           skill_level: row.skill_level,
           interests: row.interests || [],
           emergency_name: row.emergency_name,
@@ -60,9 +64,9 @@ export default async function RegistrationDetail({ params }: { params: { id: str
       <dl className="grid gap-3 rounded-2xl border border-slate-200 bg-white p-4 sm:grid-cols-2 sm:p-5">
         <Fact label="Phone" value={row.phone} />
         <Fact label="Email" value={row.email} />
-        <Fact label="Date of birth" value={row.date_of_birth} />
+        <Fact label="Date of birth" value={row.date_of_birth || "Not given"} />
         <Fact label="Gender" value={row.gender} />
-        <Fact label="Area" value={row.area === "Other" ? row.area_other : row.area} />
+        <Fact label="Area" value={displayArea(row.area, row.area_other)} />
         <Fact label="Skill" value={row.skill_level} />
         <Fact label="Interests" value={(row.interests || []).join(", ")} />
         <Fact label="Heard from" value={row.heard_from} />

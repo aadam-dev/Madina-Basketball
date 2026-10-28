@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getSession } from "@/lib/auth";
+import { displayArea } from "@/lib/forms/location";
 import { supabaseAdmin } from "@/lib/supabase-admin";
 import { EmptyRow, FilterLinks, PageHeader, SetupNotice, StatusBadge, nameLink, tableHead, tableWrap, td, th, tr } from "@/components/admin/IntakeBits";
 
@@ -21,7 +22,7 @@ export default async function RegistrationsPage({
 
   let query = supabaseAdmin
     .from("player_registrations")
-    .select("id, full_name, phone, status, area, skill_level, created_at")
+    .select("id, full_name, phone, status, area, area_other, skill_level, created_at")
     .order("created_at", { ascending: false })
     .limit(200);
   if (searchParams.status) query = query.eq("status", searchParams.status);
@@ -59,7 +60,7 @@ export default async function RegistrationsPage({
                   ) : null}
                 </td>
                 <td className={td}>{row.phone}</td>
-                <td className={td}>{row.area}</td>
+                <td className={td}>{displayArea(row.area, row.area_other)}</td>
                 <td className={`${td} capitalize`}>{row.skill_level}</td>
                 <td className={`${td} whitespace-nowrap text-slate-500`}>{new Date(row.created_at).toLocaleString()}</td>
                 <td className={td}><StatusBadge status={row.status} /></td>

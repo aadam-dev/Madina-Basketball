@@ -9,28 +9,20 @@ export const metadata: Metadata = {
 
 export default function PlayPage() {
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-white">
-      <section className="border-b border-white/10 bg-gradient-to-br from-[#14110e] via-[#0a0a0a] to-[#0d1a14] py-12 sm:py-16">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <p className="mb-2 text-[0.7rem] font-bold uppercase tracking-[0.2em] text-[#ff6b35]">
-            Madina Court · Play
+    <div className="relative min-h-screen overflow-hidden bg-[#0c0b0a] text-white">
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_50%_0%,rgba(255,107,53,0.14),transparent_55%),radial-gradient(ellipse_at_80%_100%,rgba(26,58,42,0.35),transparent_45%)]"
+      />
+      <div className="relative mx-auto flex min-h-screen max-w-xl flex-col px-4 pb-10 pt-8 sm:px-6 sm:pt-10">
+        <header className="mb-5 text-center sm:mb-6">
+          <p className="font-[family-name:var(--font-poppins)] text-2xl font-black tracking-tight text-white sm:text-3xl">
+            Madina Basketball
           </p>
-          <h1 className="max-w-3xl text-4xl font-black tracking-tight sm:text-5xl">
-            Shoot on our court
-          </h1>
-          <p className="mt-4 max-w-2xl text-base leading-relaxed text-white/60">
-            Drawn like the outdoor court in Libya Quarters: key, free-throw circle, three-point arc,
-            orange lines. Playable and short of full FIBA size, same as the real floor. Stats stay on
-            this device.
-          </p>
-        </div>
-      </section>
-
-      <section className="py-10 sm:py-14">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <CourtGame />
-        </div>
-      </section>
+          <p className="mt-1.5 text-sm text-white/50">Shoot on the outdoor court. Stats stay on this device.</p>
+        </header>
+        <CourtGame />
+      </div>
     </div>
   );
 }
